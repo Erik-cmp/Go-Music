@@ -13,9 +13,8 @@ import MediaItem from "./MediaItem";
 import LikeButton from "./LikeButton";
 import Slider from "./Slider";
 import usePlayer from "@/hooks/usePlayer";
-import { BiRefresh } from "react-icons/bi";
-import { IoMdRefresh } from "react-icons/io";
 import RestartButton from "./RestartButton";
+import { useMediaQuery } from 'react-responsive';
 
 interface PlayerContentProps {
   song: Song;
@@ -126,6 +125,9 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
     sound.seek(0);    
   };
 
+  const isMobile = useMediaQuery({ maxWidth: 722 });
+  const isSpecialDevice = useMediaQuery({ minWidth: 422 });
+
   return (  
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
       <div className="
@@ -138,7 +140,12 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
           items-center                    
           gap-x-2                                   
         ">
-          <div className="truncate max-w-[60vw] md:max-w-[28vw] text-sm md:text-base min-w-[60vw]">
+          <div className={`
+            text-sm md:text-base 
+            ${isMobile ? 'w-[60vw]' : 'max-w-[28vw]'}
+            ${isSpecialDevice ? 'w-[70vw]' : ''}
+            truncate
+          `}>
             <MediaItem data={song} />
           </div>
           <LikeButton songId={song.id} songTitle={song.title} />            
