@@ -3,11 +3,13 @@
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { FaPlay } from "react-icons/fa"
+import useOnPlay from "@/hooks/useOnPlay";
+import { Song } from "@/types";
 
 interface ListItemProps {
   image: string;
   name: string;
-  href: string;
+  href: string;  
 }
 
 const ListItem: React.FC<ListItemProps> = ({
@@ -15,7 +17,7 @@ const ListItem: React.FC<ListItemProps> = ({
   name,
   href
 }) => {
-  const router = useRouter();
+  const router = useRouter();  
 
   const onClick = () => {
     // Add auth b4 push
@@ -53,23 +55,6 @@ const ListItem: React.FC<ListItemProps> = ({
       <p className="font-medium truncate py-5">
         {name}
       </p>
-      <div className="
-        absolute
-        transition
-        opacity-0
-        rounded-full
-        flex
-        items-center
-        justify-center
-        bg-blue-500
-        p-4
-        drop-shadow-md
-        right-5
-        group-hover:opacity-100
-        hover:scale-110
-      ">
-        <FaPlay className="text-black" />
-      </div>
     </button>
   );
 }

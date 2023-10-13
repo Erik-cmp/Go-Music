@@ -8,6 +8,8 @@ import UserProvider from "@/providers/UserProvider";
 import ModalProvider from "@/providers/ModalProvider";
 import ToasterProvider from "@/providers/ToasterProvider";
 import getSongsByUserId from "@/actions/getSongsByUserId";
+import { VolumeProvider } from '@/contexts/VolumeContext';
+import Player from "@/components/Player";
 
 const figtree = Figtree({ subsets: ["latin"] });
 
@@ -28,15 +30,18 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={figtree.className}>
-        <ToasterProvider />
-        <SupabaseProvider>
-          <UserProvider>
-            <ModalProvider />
-            <Sidebar songs={userSongs}>
-              {children}
-            </Sidebar>
-          </UserProvider>
-        </SupabaseProvider>
+        <VolumeProvider>
+          <ToasterProvider />
+          <SupabaseProvider>
+            <UserProvider>
+              <ModalProvider />
+              <Sidebar songs={userSongs}>
+                {children}
+              </Sidebar>
+              <Player />
+            </UserProvider>
+          </SupabaseProvider>
+        </VolumeProvider>
       </body>
     </html>
   );
