@@ -7,7 +7,7 @@ interface RestartButtonProps {
 const RestartButton: React.FC<RestartButtonProps> = ({ onClick }) => {
   return (
     <button onClick={onClick} className="focus:outline-none">
-      <IoMdRefresh size={25} className="text-neutral-400 cursor-pointer hover:text-white transition" />
+      <IoMdRefresh size={25} className="text-white cursor-pointer hover:text-neutral-400 transition" />
     </button>
   );
 };

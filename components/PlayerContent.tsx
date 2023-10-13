@@ -134,15 +134,15 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
         justify-start
       ">
         <div className="
-          flex
-          items-center
-          gap-x-2
+          flex                  
+          items-center                    
+          gap-x-2                                   
         ">
-          <div className="truncate max-w-[60vw] md:max-w-[28vw] text-sm md:text-base">
+          <div className="truncate max-w-[60vw] md:max-w-[28vw] text-sm md:text-base min-w-[60vw]">
             <MediaItem data={song} />
           </div>
-          <LikeButton songId={song.id} songTitle={song.title} />
-          <RestartButton onClick={handleRestart} />
+          <LikeButton songId={song.id} songTitle={song.title} />            
+          <RestartButton onClick={handleRestart} />                      
         </div>
       </div>
       <div className="
