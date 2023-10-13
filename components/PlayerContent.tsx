@@ -140,16 +140,11 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
           items-center                    
           gap-x-2                                   
         ">
-          <div className={`
-            text-sm md:text-base 
-            ${isMobile ? 'w-[60vw]' : 'max-w-[28vw]'}
-            ${isSpecialDevice ? 'w-[70vw]' : ''}
-            truncate
-          `}>
+          <div className="truncate max-w-[60vw] md:max-w-[28vw] text-sm md:text-base">
             <MediaItem data={song} />
           </div>
-          <LikeButton songId={song.id} songTitle={song.title} />            
-          <RestartButton onClick={handleRestart} />                      
+          <LikeButton songId={song.id} songTitle={song.title} />
+          <RestartButton onClick={handleRestart} />                  
         </div>
       </div>
       <div className="
