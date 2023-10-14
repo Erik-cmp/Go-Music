@@ -14,8 +14,6 @@ import LikeButton from "./LikeButton";
 import Slider from "./Slider";
 import usePlayer from "@/hooks/usePlayer";
 import RestartButton from "./RestartButton";
-import { useMediaQuery } from 'react-responsive';
-
 interface PlayerContentProps {
   song: Song;
   songUrl: string;
@@ -29,7 +27,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
   const { volume, setVolume } = useVolume();
   const [prevVolume, setPrevVolume] = useState(1);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [songProgress, setSongProgress] = useState(0);
+  const [songProgress, setSongProgress] = useState(0);  
 
   const Icon = isPlaying ? BsPauseFill : BsPlayFill
   const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave
@@ -125,9 +123,6 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
     sound.seek(0);    
   };
 
-  const isMobile = useMediaQuery({ maxWidth: 722 });
-  const isSpecialDevice = useMediaQuery({ minWidth: 422 });
-
   return (  
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
       <div className="
@@ -144,7 +139,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
             <MediaItem data={song} />
           </div>
           <LikeButton songId={song.id} songTitle={song.title} />
-          <RestartButton onClick={handleRestart} />                  
+          <RestartButton onClick={handleRestart} />          
         </div>
       </div>
       <div className="

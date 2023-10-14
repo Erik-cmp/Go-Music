@@ -8,11 +8,14 @@ export const revalidate = 0;
 
 export default async function Home() {
   const songs = await getSongs();
+
+  // throw new Error('test');
+
   return (
     <div className="
       bg-neutral-900
       rounded-lg
-      h-full
+      h-[calc(100%-80px)]
       w-full
       overflow-hidden
       overflow-y-auto      
@@ -20,7 +23,7 @@ export default async function Home() {
       <Header>
         <div className="mb-2">
           <h1 className="
-            text-white
+            text-white                        
             text-6xl
             font-bold
           ">
