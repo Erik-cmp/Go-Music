@@ -1,0 +1,37 @@
+.seek-bar {
+  width: 30vw;
+  height: 4px;
+  border-radius: 4px;
+  background-color: #888;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.seek-bar:hover {
+  background-color: #ccc;
+}
+
+.seek-bar::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.seek-bar::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+@media (max-width: 822px) {
+  .seek-bar {
+    width: 20vw;
+  }
+}
