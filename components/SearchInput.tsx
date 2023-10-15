@@ -27,7 +27,7 @@ const SearchInput = () => {
 
   return (  
     <Input 
-      placeholder="Search song by title"
+      placeholder="Insert song title or author"
       value={value}
       onChange={(e) => setValue(e.target.value)}
     />

@@ -28,8 +28,7 @@ const AuthModal = () => {
       onClose();
     }
   }, [session, router, onClose])
-  
-
+    
   return (  
     <Modal
       title="Welcome Back to Go-Tunes"
@@ -38,10 +37,9 @@ const AuthModal = () => {
       onChange={onChange}
     >
       <Auth 
-        theme="dark"
-        magicLink
+        theme="dark"        
         providers={["github", "google"]}
-        supabaseClient={supabaseClient}
+        supabaseClient={supabaseClient}        
         appearance={{
           theme: ThemeSupa,
           variables: {
@@ -52,7 +50,7 @@ const AuthModal = () => {
               }
             }
           }
-        }}
+        }}        
       />
     </Modal>
   );

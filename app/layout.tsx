@@ -8,9 +8,10 @@ import UserProvider from "@/providers/UserProvider";
 import ModalProvider from "@/providers/ModalProvider";
 import ToasterProvider from "@/providers/ToasterProvider";
 import getSongsByUserId from "@/actions/getSongsByUserId";
-import { VolumeProvider } from '@/contexts/VolumeContext';
+import { VolumeProvider } from "@/contexts/VolumeContext";
 import Player from "@/components/Player";
 import getActiveProductsWithPrices from "@/actions/getActiveProductsWithPrices";
+import { ShuffleProvider } from "@/contexts/ShuffleContext";
 
 const figtree = Figtree({ subsets: ["latin"] });
 
@@ -28,7 +29,7 @@ export default async function RootLayout({
 }) {
   const userSongs = await getSongsByUserId();
   const products = await getActiveProductsWithPrices();
-  
+
   return (
     <html lang="en">
       <body className={figtree.className}>
@@ -36,11 +37,11 @@ export default async function RootLayout({
           <ToasterProvider />
           <SupabaseProvider>
             <UserProvider>
-              <ModalProvider products={products}/>              
-                <Sidebar songs={userSongs}>
-                  {children}
-                </Sidebar>              
-              <Player />
+              <ModalProvider products={products} />
+              <Sidebar songs={userSongs}>{children}</Sidebar>
+              <ShuffleProvider>
+                <Player />
+              </ShuffleProvider>              
             </UserProvider>
           </SupabaseProvider>
         </VolumeProvider>

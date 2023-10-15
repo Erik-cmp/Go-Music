@@ -88,8 +88,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({
   return (  
     <button 
       onClick={handleLike}
-      className="
-        onClick={hanldeLike}
+      className="        
         hover:opacity-75
         transition
     ">

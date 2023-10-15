@@ -4,7 +4,7 @@ import { Song } from "@/types";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
 import { HiSpeakerWave, HiSpeakerXMark } from "react-icons/hi2";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useVolume } from "@/contexts/VolumeContext";
 // @ts-ignore
 import useSound from "use-sound";
@@ -13,9 +13,11 @@ import MediaItem from "./MediaItem";
 import LikeButton from "./LikeButton";
 import Slider from "./Slider";
 import usePlayer from "@/hooks/usePlayer";
-import RestartButton from "./RestartButton";
 import "./css/SeekBar.css";
 import ProgressBar from "./ProgressBar";
+import { IoMdRefresh } from "react-icons/io";
+import { IoMdShuffle } from "react-icons/io";
+import { useShuffle } from "@/contexts/ShuffleContext";
 interface PlayerContentProps {
   song: Song;
   songUrl: string;
@@ -24,11 +26,16 @@ interface PlayerContentProps {
 const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   const player = usePlayer();
   const { volume, setVolume } = useVolume();
+  const { shuffle, toggleShuffle } = useShuffle();  
+
   const [prevVolume, setPrevVolume] = useState(1);
   const [isPlaying, setIsPlaying] = useState(false);
   const [songProgress, setSongProgress] = useState(0);
   const [seekValue, setSeekValue] = useState(0);
   const [isSeeking, setIsSeeking] = useState(false);
+  const [repeat, setRepeat] = useState(false);
+  const [isAtEnd, setIsAtEnd] = useState(false);
+  const [hasToggledShuffle, setHasToggledShuffle] = useState(false);
 
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
   const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave;
@@ -54,20 +61,31 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
     }
 
     const currentIndex = player.ids.findIndex((id) => id === player.activeId);
-    const prevSong = player.ids[currentIndex - 1];
+    const previousSong = player.ids[currentIndex - 1];
 
-    if (!prevSong) {
+    if (!previousSong) {
       return player.setId(player.ids[player.ids.length - 1]);
     }
 
-    player.setId(prevSong);
+    player.setId(previousSong);
   };
+
+  const checkIfAtEnd = () => {
+    const progress = sound?.seek() || 0;
+    const duration = sound?.duration() || 0;    
+    // console.log(`${progress} >= ${duration - 0.2}`);    
+    if (progress >= (duration - 0.2)) {
+      setIsAtEnd(true);
+    } else {
+      setIsAtEnd(false);
+    }
+  };  
 
   const [play, { pause, sound }] = useSound(songUrl, {
     volume: volume,
     onplay: () => {
       console.log("Song starts playing");
-      setIsPlaying(true);
+      setIsPlaying(true);   
     },
     onend: () => {
       onPlayNext();
@@ -76,14 +94,14 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
     format: ["mp3"],
   });
 
-  console.log("sound:", sound);
+  // console.log("sound:", sound);
 
   useEffect(() => {
     sound?.play();
 
     const updateProgress = () => {
       const progress = (sound?.seek() || 0) / sound?.duration() || 0;
-      console.log(progress);
+      // console.log(progress);
       setSongProgress(progress * 100);
     };
 
@@ -95,12 +113,20 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
     };
   }, [sound]);
 
+  useEffect(() => {    
+    const interval = setInterval(checkIfAtEnd, 100);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [sound]);    
+
   useEffect(() => {
     setSeekValue(songProgress);
   }, [songProgress]);
 
   const handlePlay = () => {
-    console.log("isPlaying:", isPlaying);
+    console.log("handlePlay called!");
     if (!isPlaying) {
       play();
     } else {
@@ -115,13 +141,6 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
       setPrevVolume(volume);
       setVolume(0);
     }
-  };
-
-  const handleRestart = () => {
-    if (!isPlaying) {
-      play();
-    }
-    sound.seek(0);
   };
 
   const formatTime = (seconds: number) => {
@@ -149,6 +168,42 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
     play();
   };
 
+  const handleToggleRepeat = () => {
+    setRepeat(repeat => !repeat);
+  };
+  
+  useEffect(() => {
+    console.log(isAtEnd);
+    console.log(repeat);
+    if (isAtEnd && repeat) {
+      sound.seek(0);      
+    }
+  }, [isAtEnd, repeat]);
+
+  const shufflePlaylist = () => {    
+    const shuffledIds = [...player.ids];
+    for (let i = shuffledIds.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledIds[i], shuffledIds[j]] = [shuffledIds[j], shuffledIds[i]];
+    }
+    console.log(`"Shuffled id:" ${shuffledIds}`);
+    player.setIds(shuffledIds);
+  };  
+
+  useEffect(() => {
+    if (shuffle) {
+      shufflePlaylist();
+    }     
+    if (hasToggledShuffle && !shuffle) {      
+      window.location.reload();
+    }    
+  }, [shuffle, hasToggledShuffle]);
+
+  const handleToggleShuffle = () => {
+    toggleShuffle();   
+    setHasToggledShuffle(true);
+  };  
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
       <div
@@ -168,8 +223,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
           <div className="truncate max-w-[60vw] md:max-w-[28vw] text-sm md:text-base">
             <MediaItem data={song} />
           </div>
-          <LikeButton songId={song.id} songTitle={song.title} />
-          <RestartButton onClick={handleRestart} />
+          <LikeButton songId={song.id} songTitle={song.title} />         
         </div>
       </div>
       <div
@@ -197,7 +251,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
             cursor-pointer
           "
         >
-          <Icon size={30} className="text-black" />
+          <Icon size={24} className="text-black" />
         </div>
       </div>
 
@@ -224,6 +278,9 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
           mb-1
         "
         >
+          <button onClick={handleToggleShuffle} className={`transform transition ${shuffle ? "text-blue-500 hover:text-blue-400" : "text-neutral-400 hover:text-white"}`}>
+            <IoMdShuffle size={18} />
+          </button>           
           <AiFillStepBackward
             onClick={onPlayPrev}
             size={24}
@@ -262,6 +319,12 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
             transition
           "
           />
+          <button onClick={handleToggleRepeat} className="rotate-90">
+            <IoMdRefresh
+              size={24}
+              className={`transform transition ${repeat ? 'text-blue-500 hover:text-blue-400' : 'text-neutral-400 hover:text-white'}`}
+            />
+          </button>                   
         </div>
         <div className="flex items-center justify-end mr-4 gap-x-2">
           <div className="text-neutral-400 text-xs cursor-default">
@@ -297,8 +360,8 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
         </div>
       </div>
       <div className="md:hidden w-full h-1 bg-black absolute bottom-0 left-0">
-        <ProgressBar songProgress={songProgress} onSeek={handleSeekChange} />      
-      </div>         
+        <ProgressBar songProgress={songProgress} onSeek={handleSeekChange} />
+      </div>
     </div>
   );
 };
