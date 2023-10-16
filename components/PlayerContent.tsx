@@ -51,7 +51,11 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
 
-  const VolumeIcon = volume === 0 ? RxSpeakerOff : volume >= 0 && volume <= 0.3 ? RxSpeakerQuiet : volume > 0.3 && volume <= 0.6 ? RxSpeakerModerate : RxSpeakerLoud;
+  const VolumeIcon = 
+  volume === 0 ? RxSpeakerOff : 
+  volume >= 0 && volume <= 0.3 ? RxSpeakerQuiet : 
+  volume > 0.3 && volume <= 0.6 ? RxSpeakerModerate : 
+  RxSpeakerLoud;
 
   const onPlayNext = () => {
     if (player.ids.length === 0) {
