@@ -3,12 +3,7 @@
 import { Song } from "@/types";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
-import {
-  RxSpeakerOff,
-  RxSpeakerQuiet,
-  RxSpeakerModerate,
-  RxSpeakerLoud,
-} from "react-icons/rx";
+import { RxSpeakerOff, RxSpeakerQuiet, RxSpeakerModerate, RxSpeakerLoud } from "react-icons/rx";
 import { FC, MouseEventHandler, useEffect, useState } from "react";
 import { useVolume } from "@/contexts/VolumeContext";
 // @ts-ignore
@@ -22,12 +17,21 @@ import ProgressBar from "./ProgressBar";
 import { IoMdRefresh } from "react-icons/io";
 import { IoMdShuffle } from "react-icons/io";
 import { useShuffle } from "@/contexts/ShuffleContext";
+import { useRouter } from "next/navigation";
 
 import "./css/SeekBar.css";
 import "./css/Animation.css";
+import { IconType } from "react-icons";
 interface PlayerContentProps {
   song: Song;
   songUrl: string;
+}
+
+interface VolumeIconProps {
+  volume: number;
+  onClick: MouseEventHandler<SVGElement>;
+  className: string;
+  size: number;
 }
 
 const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
@@ -42,63 +46,47 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   const [isSeeking, setIsSeeking] = useState(false);
   const [repeat, setRepeat] = useState(false);
   const [isAtEnd, setIsAtEnd] = useState(false);
-  const [isShuffleEnabled, setIsShuffleEnabled] = useState(false);
-  const [shuffledPlaylist, setShuffledPlaylist] = useState<string[]>([]);
-  const [shuffledIndex, setShuffledIndex] = useState(0);
-  const [hasShuffled, setHasShuffled] = useState(false);
+  const [hasToggledShuffle, setHasToggledShuffle] = useState(false);
   const [isSongDetailVisible, setIsSongDetailVisible] = useState(false);
 
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
 
-  const VolumeIcon =
-    volume === 0
-      ? RxSpeakerOff
-      : volume >= 0 && volume <= 0.3
-      ? RxSpeakerQuiet
-      : volume > 0.3 && volume <= 0.6
-      ? RxSpeakerModerate
-      : RxSpeakerLoud;
+  const VolumeIcon = 
+  volume === 0 ? RxSpeakerOff : 
+  volume >= 0 && volume <= 0.3 ? RxSpeakerQuiet : 
+  volume > 0.3 && volume <= 0.6 ? RxSpeakerModerate : 
+  RxSpeakerLoud;
 
-      const onPlayNext = () => {
-        if (player.ids.length === 0) {
-          return;
-        }
-      
-        if (isShuffleEnabled) {
-          const nextIndex = (shuffledIndex + 1) % shuffledPlaylist.length;
-          setShuffledIndex(nextIndex);
-          player.setId(shuffledPlaylist[nextIndex]);
-        } else {
-          const currentIndex = player.ids.findIndex((id) => id === player.activeId);
-          const nextSong = player.ids[(currentIndex + 1) % player.ids.length];
-          player.setId(nextSong);
-        }
-      };
-      
-      const onPlayPrev = () => {
-        if (player.ids.length === 0) {
-          return;
-        }
-      
-        // if (isShuffleEnabled) {
-        //   const prevIndex = (shuffledIndex - 1 + shuffledPlaylist.length) % shuffledPlaylist.length;
-        //   setShuffledIndex(prevIndex);
-        //   player.setId(shuffledPlaylist[prevIndex]);
-        // } else {
-        //   const currentIndex = player.ids.findIndex((id) => id === player.activeId);
-        //   const previousSongIndex = (currentIndex - 1 + player.ids.length) % player.ids.length;
-        //   const previousSong = player.ids[previousSongIndex];
-        //   player.setId(previousSong);
-        // }
+  const onPlayNext = () => {
+    if (player.ids.length === 0) {
+      return;
+    }
 
-        const currentIndex = player.ids.findIndex((id) => id === player.activeId);
-        const previousSongIndex = (currentIndex - 1 + player.ids.length) % player.ids.length;
-        const previousSong = player.ids[previousSongIndex];
-        player.setId(previousSong);        
-      };
-      
-      
-  
+    const currentIndex = player.ids.findIndex((id) => id === player.activeId);
+    const nextSong = player.ids[currentIndex + 1];
+
+    if (!nextSong) {
+      return player.setId(player.ids[0]);
+    }
+
+    player.setId(nextSong);
+  };
+
+  const onPlayPrev = () => {
+    if (player.ids.length === 0) {
+      return;
+    }
+
+    const currentIndex = player.ids.findIndex((id) => id === player.activeId);
+    const previousSong = player.ids[currentIndex - 1];
+
+    if (!previousSong) {
+      return player.setId(player.ids[player.ids.length - 1]);
+    }
+
+    player.setId(previousSong);
+  };
+
   const checkIfAtEnd = () => {
     const progress = sound?.seek() || 0;
     const duration = sound?.duration() || 0;
@@ -209,6 +197,30 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
     }
   }, [isAtEnd, repeat]);
 
+  const shufflePlaylist = () => {
+    const shuffledIds = [...player.ids];
+    for (let i = shuffledIds.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledIds[i], shuffledIds[j]] = [shuffledIds[j], shuffledIds[i]];
+    }
+    console.log(`"Shuffled id:" ${shuffledIds}`);
+    player.setIds(shuffledIds);
+  };
+
+  useEffect(() => {
+    if (shuffle) {
+      shufflePlaylist();
+    }
+    if (hasToggledShuffle && !shuffle) {
+      window.location.reload();
+    }
+  }, [shuffle, hasToggledShuffle]);
+
+  const handleToggleShuffle = () => {
+    toggleShuffle();
+    setHasToggledShuffle(true);
+  };
+
   const showSongDetail = () => {
     setIsSongDetailVisible(true);
   };
@@ -216,43 +228,6 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   const hideSongDetail = () => {
     setIsSongDetailVisible(false);
   };
-
-  const handleShuffleToggle = () => {
-    toggleShuffle();
-    setIsShuffleEnabled(!shuffle);
-    if (!hasShuffled) {
-      shufflePlaylist();
-      setHasShuffled(true);
-    }
-  };
-
-  const shufflePlaylist = () => {
-    const shuffledOrder = shuffleArray(player.ids.slice());
-    console.log(shuffledOrder);
-    setShuffledPlaylist(shuffledOrder);    
-    setShuffledIndex(0);
-  };
-
-  const shuffleArray = (array: string[]) => {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  };
-
-  useEffect(() => {
-    setIsShuffleEnabled(shuffle);
-  
-    if (shuffle && shuffledPlaylist.length === 0 && !hasShuffled) {      
-      shufflePlaylist();
-      setHasShuffled(true);
-    } else if (!shuffle) {      
-      setShuffledPlaylist([]);
-      setShuffledIndex(0);
-    }
-  }, [shuffle, hasShuffled]);
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
@@ -351,9 +326,9 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
         "
         >
           <button
-            onClick={handleShuffleToggle}
+            onClick={handleToggleShuffle}
             className={`transform transition ${
-              isShuffleEnabled
+              shuffle
                 ? "text-blue-500 hover:text-blue-400"
                 : "text-neutral-400 hover:text-white"
             }`}
@@ -435,11 +410,11 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
       <div className="hidden md:flex w-full justify-end pr-2">
         <div className="flex items-center gap-x-2 w-[120px]">
-          <VolumeIcon
-            onClick={toggleMute}
-            className="cursor-pointer text-white hover:opacity-75 transition"
-            size={34}
-          />
+            <VolumeIcon 
+              onClick={toggleMute} 
+              className="cursor-pointer text-white hover:opacity-75 transition" 
+              size={34} 
+            />
           <Slider value={volume} onChange={(value) => setVolume(value)} />
         </div>
       </div>
