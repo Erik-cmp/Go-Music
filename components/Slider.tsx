@@ -29,7 +29,7 @@ const Slider: React.FC<SliderProps> = ({
     value={[value]}
     onValueChange={handleChange}
     max={1}
-    step={0.1}
+    step={0.01}
     aria-label="Volume"
     >
       <RadixSlider.Track
