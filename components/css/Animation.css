@@ -1,0 +1,9 @@
+.slide-out {
+  transform: translateY(100%);
+  transition: transform 0.2s ease-in-out;
+}
+
+.slide-in {
+  transform: translateY(0);
+  transition: transform 0.2s ease-in-out;
+}

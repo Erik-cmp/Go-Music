@@ -13,11 +13,14 @@ import MediaItem from "./MediaItem";
 import LikeButton from "./LikeButton";
 import Slider from "./Slider";
 import usePlayer from "@/hooks/usePlayer";
-import "./css/SeekBar.css";
 import ProgressBar from "./ProgressBar";
 import { IoMdRefresh } from "react-icons/io";
 import { IoMdShuffle } from "react-icons/io";
 import { useShuffle } from "@/contexts/ShuffleContext";
+import { useRouter } from "next/navigation";
+
+import "./css/SeekBar.css";
+import "./css/Animation.css";
 interface PlayerContentProps {
   song: Song;
   songUrl: string;
@@ -26,7 +29,7 @@ interface PlayerContentProps {
 const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   const player = usePlayer();
   const { volume, setVolume } = useVolume();
-  const { shuffle, toggleShuffle } = useShuffle();  
+  const { shuffle, toggleShuffle } = useShuffle();
 
   const [prevVolume, setPrevVolume] = useState(1);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -36,9 +39,12 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   const [repeat, setRepeat] = useState(false);
   const [isAtEnd, setIsAtEnd] = useState(false);
   const [hasToggledShuffle, setHasToggledShuffle] = useState(false);
+  const [isSongDetailVisible, setIsSongDetailVisible] = useState(false);
 
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
   const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave;
+
+  const router = useRouter();
 
   const onPlayNext = () => {
     if (player.ids.length === 0) {
@@ -72,20 +78,20 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
   const checkIfAtEnd = () => {
     const progress = sound?.seek() || 0;
-    const duration = sound?.duration() || 0;    
-    // console.log(`${progress} >= ${duration - 0.2}`);    
-    if (progress >= (duration - 0.2)) {
+    const duration = sound?.duration() || 0;
+    // console.log(`${progress} >= ${duration - 0.2}`);
+    if (progress >= duration - 0.2) {
       setIsAtEnd(true);
     } else {
       setIsAtEnd(false);
     }
-  };  
+  };
 
   const [play, { pause, sound }] = useSound(songUrl, {
     volume: volume,
     onplay: () => {
       console.log("Song starts playing");
-      setIsPlaying(true);   
+      setIsPlaying(true);
     },
     onend: () => {
       onPlayNext();
@@ -113,13 +119,13 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
     };
   }, [sound]);
 
-  useEffect(() => {    
+  useEffect(() => {
     const interval = setInterval(checkIfAtEnd, 100);
 
     return () => {
       clearInterval(interval);
     };
-  }, [sound]);    
+  }, [sound]);
 
   useEffect(() => {
     setSeekValue(songProgress);
@@ -169,18 +175,18 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   };
 
   const handleToggleRepeat = () => {
-    setRepeat(repeat => !repeat);
+    setRepeat((repeat) => !repeat);
   };
-  
+
   useEffect(() => {
     console.log(isAtEnd);
     console.log(repeat);
     if (isAtEnd && repeat) {
-      sound.seek(0);      
+      sound.seek(0);
     }
   }, [isAtEnd, repeat]);
 
-  const shufflePlaylist = () => {    
+  const shufflePlaylist = () => {
     const shuffledIds = [...player.ids];
     for (let i = shuffledIds.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -188,21 +194,29 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
     }
     console.log(`"Shuffled id:" ${shuffledIds}`);
     player.setIds(shuffledIds);
-  };  
+  };
 
   useEffect(() => {
     if (shuffle) {
       shufflePlaylist();
-    }     
-    if (hasToggledShuffle && !shuffle) {      
+    }
+    if (hasToggledShuffle && !shuffle) {
       window.location.reload();
-    }    
+    }
   }, [shuffle, hasToggledShuffle]);
 
   const handleToggleShuffle = () => {
-    toggleShuffle();   
+    toggleShuffle();
     setHasToggledShuffle(true);
-  };  
+  };
+
+  const showSongDetail = () => {
+    setIsSongDetailVisible(true);
+  };
+
+  const hideSongDetail = () => {
+    setIsSongDetailVisible(false);
+  };
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
@@ -220,10 +234,32 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
           gap-x-2                                   
         "
         >
-          <div className="truncate max-w-[60vw] md:max-w-[28vw] text-sm md:text-base">
-            <MediaItem data={song} />
+          <div className="md:hidden">
+            <div
+              className="truncate max-w-[60vw] text-sm"
+              onClick={showSongDetail}
+            >
+              <MediaItem data={song} />
+            </div>
           </div>
-          <LikeButton songId={song.id} songTitle={song.title} />         
+
+          {/* TODO: Code song detail here */}
+          <div
+            className={`fixed top-0 left-0 bg-neutral-900 text-white flex flex-col items-center justify-center gap-y-4 w-full h-full z-10 ${
+              isSongDetailVisible ? "slide-in" : "slide-out"
+            }`}
+          >
+            <h1>Song Detail</h1>
+            <button onClick={hideSongDetail}>Close</button>
+          </div>
+
+          <div className="hidden md:block">
+            <div className="truncate max-w-[28vw] text-base">
+              <MediaItem data={song} />
+            </div>
+          </div>
+
+          <LikeButton songId={song.id} songTitle={song.title} />
         </div>
       </div>
       <div
@@ -278,9 +314,16 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
           mb-1
         "
         >
-          <button onClick={handleToggleShuffle} className={`transform transition ${shuffle ? "text-blue-500 hover:text-blue-400" : "text-neutral-400 hover:text-white"}`}>
+          <button
+            onClick={handleToggleShuffle}
+            className={`transform transition ${
+              shuffle
+                ? "text-blue-500 hover:text-blue-400"
+                : "text-neutral-400 hover:text-white"
+            }`}
+          >
             <IoMdShuffle size={18} />
-          </button>           
+          </button>
           <AiFillStepBackward
             onClick={onPlayPrev}
             size={24}
@@ -322,10 +365,15 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
           <button onClick={handleToggleRepeat} className="rotate-90">
             <IoMdRefresh
               size={24}
-              className={`transform transition ${repeat ? 'text-blue-500 hover:text-blue-400' : 'text-neutral-400 hover:text-white'}`}
+              className={`transform transition ${
+                repeat
+                  ? "text-blue-500 hover:text-blue-400"
+                  : "text-neutral-400 hover:text-white"
+              }`}
             />
-          </button>                   
+          </button>
         </div>
+
         <div className="flex items-center justify-end mr-4 gap-x-2">
           <div className="text-neutral-400 text-xs cursor-default">
             {formatTime(sound?.seek() || 0)}

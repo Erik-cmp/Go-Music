@@ -3,6 +3,7 @@ import Header from "@/components/Header"
 import ListItem from "@/components/ListItem"
 
 import PageContent from "./components/PageContent";
+import Greeting from "./components/Greeting";
 
 export const revalidate = 0;
 
@@ -22,13 +23,7 @@ export default async function Home() {
     ">
       <Header>
         <div className="mb-2">
-          <h1 className="
-            text-white                        
-            text-6xl
-            font-bold
-          ">
-            Welcome Back
-          </h1>
+          <Greeting />
           <div className="
             grid
             grid-cols-1

@@ -19,8 +19,7 @@ const ListItem: React.FC<ListItemProps> = ({
 }) => {
   const router = useRouter();  
 
-  const onClick = () => {
-    // Add auth b4 push
+  const onClick = () => {    
     router.push(href);
   }
 
