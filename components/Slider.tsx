@@ -1,6 +1,5 @@
-"use client"
-
-import * as RadixSlider from "@radix-ui/react-slider"
+import * as RadixSlider from "@radix-ui/react-slider";
+import { useState } from 'react';
 
 interface SliderProps {
   value?: number;
@@ -15,22 +14,29 @@ const Slider: React.FC<SliderProps> = ({
     onChange?.(newValue[0]);
   }
 
-  return (  
-    <RadixSlider.Root className="
-      relative
-      flex
-      items-center
-      select-none
-      touch-none
-      w-full
-      h-10
-    "
-    defaultValue={[1]}
-    value={[value]}
-    onValueChange={handleChange}
-    max={1}
-    step={0.01}
-    aria-label="Volume"
+  const [isHovered, setIsHovered] = useState(false);
+  
+  const circlePosition = (value * 100) - 6;
+
+  return (
+    <RadixSlider.Root
+      className="
+        relative
+        flex
+        items-center
+        select-none
+        touch-none
+        w-full
+        h-8      
+      "
+      defaultValue={[1]}
+      value={[value]}
+      onValueChange={handleChange}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}        
+      max={1}
+      step={0.01}
+      aria-label="Volume"
     >
       <RadixSlider.Track
         className="
@@ -38,20 +44,36 @@ const Slider: React.FC<SliderProps> = ({
           relative
           grow
           rounded-full
-          h-[3px]
+          h-[4px]
         "
       >
-        <RadixSlider.Range 
-          className="
+        <RadixSlider.Range
+          className={`
             absolute
-            bg-white
             rounded-full
             h-full
-          "
+            transition            
+            ${isHovered ? 'bg-blue-500' : 'bg-white'}
+          `}
         />
+        {isHovered && (
+          <div
+            className="
+              w-3
+              h-3
+              bg-white
+              rounded-full
+              absolute
+              top-1/2
+              transform -translate-y-1/2
+              transition
+            "
+            style={{ left: `${circlePosition}%` }}
+          ></div>
+        )}
       </RadixSlider.Track>
     </RadixSlider.Root>
   );
 }
- 
+
 export default Slider;

@@ -3,7 +3,7 @@
 import { Song } from "@/types";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
-import { FaVolumeMute, FaVolumeDown, FaVolumeUp } from "react-icons/fa";
+import { RxSpeakerOff, RxSpeakerQuiet, RxSpeakerModerate, RxSpeakerLoud } from "react-icons/rx";
 import { FC, MouseEventHandler, useEffect, useState } from "react";
 import { useVolume } from "@/contexts/VolumeContext";
 // @ts-ignore
@@ -50,20 +50,8 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   const [isSongDetailVisible, setIsSongDetailVisible] = useState(false);
 
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
-  const VolumeIcon: FC<VolumeIconProps> = ({ volume, onClick, className, size }) => {
-    let Icon: IconType;
-    if (volume === 0) {
-      Icon = FaVolumeMute;
-    } else if (volume < 0.5) {
-      Icon = FaVolumeDown;
-    } else {
-      Icon = FaVolumeUp;
-    }
-  
-    return <Icon onClick={onClick} className={className} size={size} />;
-  };
 
-  const router = useRouter();
+  const VolumeIcon = volume === 0 ? RxSpeakerOff : volume >= 0 && volume <= 0.3 ? RxSpeakerQuiet : volume > 0.3 && volume <= 0.6 ? RxSpeakerModerate : RxSpeakerLoud;
 
   const onPlayNext = () => {
     if (player.ids.length === 0) {
@@ -418,7 +406,11 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
       <div className="hidden md:flex w-full justify-end pr-2">
         <div className="flex items-center gap-x-2 w-[120px]">
-          <VolumeIcon volume={volume} onClick={toggleMute} className="cursor-pointer" size={34} />
+            <VolumeIcon 
+              onClick={toggleMute} 
+              className="cursor-pointer text-white hover:opacity-75 transition" 
+              size={34} 
+            />
           <Slider value={volume} onChange={(value) => setVolume(value)} />
         </div>
       </div>
