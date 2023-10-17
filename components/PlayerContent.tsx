@@ -3,7 +3,12 @@
 import { Song } from "@/types";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
-import { RxSpeakerOff, RxSpeakerQuiet, RxSpeakerModerate, RxSpeakerLoud } from "react-icons/rx";
+import {
+  RxSpeakerOff,
+  RxSpeakerQuiet,
+  RxSpeakerModerate,
+  RxSpeakerLoud,
+} from "react-icons/rx";
 import { FC, MouseEventHandler, useEffect, useState } from "react";
 import { useVolume } from "@/contexts/VolumeContext";
 // @ts-ignore
@@ -20,6 +25,8 @@ import { useShuffle } from "@/contexts/ShuffleContext";
 
 import "./css/SeekBar.css";
 import "./css/Animation.css";
+import Header from "./Header";
+import ListItem from "./ListItem";
 interface PlayerContentProps {
   song: Song;
   songUrl: string;
@@ -42,11 +49,14 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
 
-  const VolumeIcon = 
-  volume === 0 ? RxSpeakerOff : 
-  volume >= 0 && volume <= 0.3 ? RxSpeakerQuiet : 
-  volume > 0.3 && volume <= 0.6 ? RxSpeakerModerate : 
-  RxSpeakerLoud;
+  const VolumeIcon =
+    volume === 0
+      ? RxSpeakerOff
+      : volume >= 0 && volume <= 0.3
+      ? RxSpeakerQuiet
+      : volume > 0.3 && volume <= 0.6
+      ? RxSpeakerModerate
+      : RxSpeakerLoud;
 
   const onPlayNext = () => {
     if (shuffle) {
@@ -68,7 +78,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
       }
     }
   };
-  
+
   const onPlayPrev = () => {
     if (player.ids.length === 0) {
       return;
@@ -102,7 +112,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
       setIsPlaying(true);
     },
     onend: () => {
-      onPlayNext();      
+      onPlayNext();
     },
     onpause: () => setIsPlaying(false),
     format: ["mp3"],
@@ -202,9 +212,9 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
     setIsSongDetailVisible(false);
   };
 
-  const toggleShuffleMode = () => {    
+  const toggleShuffleMode = () => {
     toggleShuffle();
-  };  
+  };
 
   useEffect(() => {
     if (!sound) {
@@ -213,7 +223,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
     const checkIfAtEnd2 = () => {
       const progress = sound?.seek() || 0;
-      const duration = sound?.duration() || 0;      
+      const duration = sound?.duration() || 0;
       if (progress >= duration - 0.2) {
         onPlayNext();
       }
@@ -225,7 +235,6 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
       clearInterval(interval);
     };
   }, [sound]);
-  
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
@@ -254,13 +263,16 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
           {/* TODO: Code song detail here */}
           <div
-            className={`fixed top-0 left-0 bg-neutral-900 text-white flex flex-col items-center justify-center gap-y-4 w-full h-full z-10 ${
+            className={`fixed top-0 left-0 flex flex-col items-center justify-center gap-y-4 w-full h-full z-10 ${
               isSongDetailVisible ? "slide-in" : "slide-out"
             }`}
+            style={{
+              background:
+                "linear-gradient(to bottom, #1e3a8a 0%, #171717 35%, #171717 35%, #171717 100%)",
+            }}
           >
-            <h1>Song Detail</h1>            
             <button onClick={hideSongDetail}>Close</button>
-          </div>
+          </div>
 
           <div className="hidden md:block">
             <div className="truncate max-w-[28vw] text-base">
@@ -409,11 +421,11 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
       <div className="hidden md:flex w-full justify-end pr-2">
         <div className="flex items-center gap-x-2 w-[120px]">
-            <VolumeIcon 
-              onClick={toggleMute} 
-              className="cursor-pointer text-white hover:opacity-75 transition" 
-              size={34} 
-            />
+          <VolumeIcon
+            onClick={toggleMute}
+            className="cursor-pointer text-white hover:opacity-75 transition"
+            size={34}
+          />
           <Slider value={volume} onChange={(value) => setVolume(value)} />
         </div>
       </div>
