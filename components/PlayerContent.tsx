@@ -258,7 +258,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
               isSongDetailVisible ? "slide-in" : "slide-out"
             }`}
           >
-            <h1>Song Detail</h1>
+            <h1>Song Detail</h1>            
             <button onClick={hideSongDetail}>Close</button>
           </div>
 
