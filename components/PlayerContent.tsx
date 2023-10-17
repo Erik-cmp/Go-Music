@@ -17,21 +17,12 @@ import ProgressBar from "./ProgressBar";
 import { IoMdRefresh } from "react-icons/io";
 import { IoMdShuffle } from "react-icons/io";
 import { useShuffle } from "@/contexts/ShuffleContext";
-import { useRouter } from "next/navigation";
 
 import "./css/SeekBar.css";
 import "./css/Animation.css";
-import { IconType } from "react-icons";
 interface PlayerContentProps {
   song: Song;
   songUrl: string;
-}
-
-interface VolumeIconProps {
-  volume: number;
-  onClick: MouseEventHandler<SVGElement>;
-  className: string;
-  size: number;
 }
 
 const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
@@ -46,8 +37,8 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   const [isSeeking, setIsSeeking] = useState(false);
   const [repeat, setRepeat] = useState(false);
   const [isAtEnd, setIsAtEnd] = useState(false);
-  const [hasToggledShuffle, setHasToggledShuffle] = useState(false);
   const [isSongDetailVisible, setIsSongDetailVisible] = useState(false);
+  const [isPlayNextEnabled, setIsPlayNextEnabled] = useState(true);
 
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
 
@@ -58,20 +49,26 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   RxSpeakerLoud;
 
   const onPlayNext = () => {
-    if (player.ids.length === 0) {
-      return;
+    if (shuffle) {
+      const remainingSongs = player.ids.filter((id) => id !== player.activeId);
+
+      if (remainingSongs.length > 0) {
+        const randomIndex = Math.floor(Math.random() * remainingSongs.length);
+        const nextSong = remainingSongs[randomIndex];
+        player.setId(nextSong);
+      }
+    } else {
+      const currentIndex = player.ids.findIndex((id) => id === player.activeId);
+      const nextSong = player.ids[currentIndex + 1];
+
+      if (!nextSong) {
+        player.setId(player.ids[0]);
+      } else {
+        player.setId(nextSong);
+      }
     }
-
-    const currentIndex = player.ids.findIndex((id) => id === player.activeId);
-    const nextSong = player.ids[currentIndex + 1];
-
-    if (!nextSong) {
-      return player.setId(player.ids[0]);
-    }
-
-    player.setId(nextSong);
   };
-
+  
   const onPlayPrev = () => {
     if (player.ids.length === 0) {
       return;
@@ -101,11 +98,11 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   const [play, { pause, sound }] = useSound(songUrl, {
     volume: volume,
     onplay: () => {
-      console.log("Song starts playing");
+      // console.log("Song starts playing");
       setIsPlaying(true);
     },
     onend: () => {
-      onPlayNext();
+      onPlayNext();      
     },
     onpause: () => setIsPlaying(false),
     format: ["mp3"],
@@ -143,7 +140,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   }, [songProgress]);
 
   const handlePlay = () => {
-    console.log("handlePlay called!");
+    // console.log("handlePlay called!");
     if (!isPlaying) {
       play();
     } else {
@@ -190,36 +187,12 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   };
 
   useEffect(() => {
-    console.log(isAtEnd);
-    console.log(repeat);
+    // console.log(isAtEnd);
+    // console.log(repeat);
     if (isAtEnd && repeat) {
       sound.seek(0);
     }
   }, [isAtEnd, repeat]);
-
-  const shufflePlaylist = () => {
-    const shuffledIds = [...player.ids];
-    for (let i = shuffledIds.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffledIds[i], shuffledIds[j]] = [shuffledIds[j], shuffledIds[i]];
-    }
-    console.log(`"Shuffled id:" ${shuffledIds}`);
-    player.setIds(shuffledIds);
-  };
-
-  useEffect(() => {
-    if (shuffle) {
-      shufflePlaylist();
-    }
-    if (hasToggledShuffle && !shuffle) {
-      window.location.reload();
-    }
-  }, [shuffle, hasToggledShuffle]);
-
-  const handleToggleShuffle = () => {
-    toggleShuffle();
-    setHasToggledShuffle(true);
-  };
 
   const showSongDetail = () => {
     setIsSongDetailVisible(true);
@@ -228,6 +201,31 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   const hideSongDetail = () => {
     setIsSongDetailVisible(false);
   };
+
+  const toggleShuffleMode = () => {    
+    toggleShuffle();
+  };  
+
+  useEffect(() => {
+    if (!sound) {
+      return;
+    }
+
+    const checkIfAtEnd2 = () => {
+      const progress = sound?.seek() || 0;
+      const duration = sound?.duration() || 0;      
+      if (progress >= duration - 0.2) {
+        onPlayNext();
+      }
+    };
+
+    const interval = setInterval(checkIfAtEnd2, 150);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [sound]);
+  
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
@@ -325,8 +323,9 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
           mb-1
         "
         >
+          {/* Shuffle Button Here */}
           <button
-            onClick={handleToggleShuffle}
+            onClick={toggleShuffleMode}
             className={`transform transition ${
               shuffle
                 ? "text-blue-500 hover:text-blue-400"
