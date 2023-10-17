@@ -8,12 +8,14 @@ import { BiSearch } from "react-icons/bi";
 import { FaUserAlt } from "react-icons/fa";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { toast } from "react-hot-toast";
+import { useState } from "react";
 
 import useAuthModal from "@/hooks/useAuthModal";
 import { useUser } from "@/hooks/useUser";
 import Button from "./Button";
 import usePlayer from "@/hooks/usePlayer";
 import { TbPlaylist } from "react-icons/tb";
+import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 
 interface HeaderProps {
   children: React.ReactNode;
@@ -38,6 +40,16 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
     }
   };
 
+  const [isHeaderFixed, setHeaderFixed] = useState(false);
+
+  useScrollPosition(({ currPos }) => {
+    if (currPos.y < -10) {
+      setHeaderFixed(true);
+    } else {
+      setHeaderFixed(false);
+    }
+  });  
+
   return (
     <div
       className={twMerge(
@@ -47,6 +59,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
       from-blue-700
       p-6
     `,
+        isHeaderFixed ? "fixed top-0 w-full bg-blue-700" : "",
         className
       )}
     >

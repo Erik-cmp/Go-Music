@@ -23,6 +23,7 @@ import ProgressBar from "./ProgressBar";
 import { IoMdRefresh } from "react-icons/io";
 import { IoMdShuffle } from "react-icons/io";
 import { useShuffle } from "@/contexts/ShuffleContext";
+import { useSongDetail } from "@/contexts/SongDetailContext";
 
 import "./css/SeekBar.css";
 import "./css/Animation.css";
@@ -39,6 +40,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   const player = usePlayer();
   const { volume, setVolume } = useVolume();
   const { shuffle, toggleShuffle } = useShuffle();
+  const { isSongDetailVisible, setIsSongDetailVisible } = useSongDetail();
 
   const [prevVolume, setPrevVolume] = useState(1);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -47,7 +49,6 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   const [isSeeking, setIsSeeking] = useState(false);
   const [repeat, setRepeat] = useState(false);
   const [isAtEnd, setIsAtEnd] = useState(false);
-  const [isSongDetailVisible, setIsSongDetailVisible] = useState(false);
   const [isPlayNextEnabled, setIsPlayNextEnabled] = useState(true);
 
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;

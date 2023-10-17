@@ -13,6 +13,7 @@ import Player from "@/components/Player";
 import getActiveProductsWithPrices from "@/actions/getActiveProductsWithPrices";
 import { ShuffleProvider } from "@/contexts/ShuffleContext";
 import Head from "next/head";
+import { SongDetailProvider } from '@/contexts/SongDetailContext';
 
 const figtree = Figtree({ subsets: ["latin"] });
 
@@ -42,10 +43,12 @@ export default async function RootLayout({
           <SupabaseProvider>
             <UserProvider>
               <ModalProvider products={products} />
-              <Sidebar songs={userSongs}>{children}</Sidebar>
-              <ShuffleProvider>
-                <Player />
-              </ShuffleProvider>
+              <SongDetailProvider>
+                <Sidebar songs={userSongs}>{children}</Sidebar>
+                <ShuffleProvider>
+                  <Player />
+                </ShuffleProvider>
+              </SongDetailProvider>
             </UserProvider>
           </SupabaseProvider>
         </VolumeProvider>
