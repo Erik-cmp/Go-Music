@@ -33,6 +33,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
+      <Head>
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+      </Head>
       <body className={figtree.className}>
         <VolumeProvider>
           <ToasterProvider />
