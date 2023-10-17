@@ -12,11 +12,13 @@ import toast from "react-hot-toast";
 interface LikeButtonProps {
   songId: string;
   songTitle: string;
+  size: number;
 }
 
 const LikeButton: React.FC<LikeButtonProps> = ({
   songId,
-  songTitle
+  songTitle,
+  size
 }) => {
   const router = useRouter();
   const { supabaseClient } = useSessionContext();
@@ -92,7 +94,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({
         hover:opacity-75
         transition
     ">
-      <Icon color={isLiked ? '#3B82F6' : 'white'} size={25}/>
+      <Icon color={isLiked ? '#3B82F6' : 'white'} size={size}/>
     </button>
   );
 }

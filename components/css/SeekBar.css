@@ -35,3 +35,9 @@
     width: 20vw;
   }
 }
+
+@media (max-width: 422px) {
+  .seek-bar {
+    width: 100vw;
+  }
+}

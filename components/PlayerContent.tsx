@@ -8,8 +8,9 @@ import {
   RxSpeakerQuiet,
   RxSpeakerModerate,
   RxSpeakerLoud,
+  RxCaretDown,
 } from "react-icons/rx";
-import { FC, MouseEventHandler, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useVolume } from "@/contexts/VolumeContext";
 // @ts-ignore
 import useSound from "use-sound";
@@ -27,6 +28,8 @@ import "./css/SeekBar.css";
 import "./css/Animation.css";
 import Header from "./Header";
 import ListItem from "./ListItem";
+import Image from "next/image";
+import useLoadImage from "@/hooks/useLoadImage";
 interface PlayerContentProps {
   song: Song;
   songUrl: string;
@@ -57,6 +60,8 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
       : volume > 0.3 && volume <= 0.6
       ? RxSpeakerModerate
       : RxSpeakerLoud;
+
+  const imagePath = useLoadImage(song);
 
   const onPlayNext = () => {
     if (shuffle) {
@@ -254,7 +259,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
         >
           <div className="md:hidden">
             <div
-              className="truncate max-w-[60vw] text-sm"
+              className="truncate max-w-[80vw] text-sm"
               onClick={showSongDetail}
             >
               <MediaItem data={song} />
@@ -271,16 +276,173 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                 "linear-gradient(to bottom, #1e3a8a 0%, #171717 35%, #171717 35%, #171717 100%)",
             }}
           >
-            <button onClick={hideSongDetail}>Close</button>
-          </div>
+            <div className="fixed top-0 left-0 p-4 z-10">
+              <RxCaretDown
+                onClick={hideSongDetail}
+                className="text-white"
+                size={42}
+              >
+                Close
+              </RxCaretDown>
+            </div>
+            <div
+              className="
+            flex
+            flex-col 
+            w-[85vw]
+            h-[85vh]
+            pt-[8vh]
+            "
+            >
+              <div
+                className="
+                relative
+                aspect-w-1
+                aspect-h-1
+                h-1/2
+                rounded-lg
+                overflow-hidden
+              "
+              >
+                <Image
+                  className="object-fill rounded-lg"
+                  src={imagePath || "/images/liked.png"}
+                  layout="fill"
+                  alt="Image"
+                />
+              </div>
+              <div
+                className="
+                flex
+                justify-between
+                items-center
+                pt-8
+                "
+              >
+                <div className="flex flex-col">
+                  <div className="marquee-container w-[70vw]">
+                    <p
+                      className={`text-white text-2xl font-semibold ${
+                        song.title.length > 22 ? "marquee-text" : ""
+                      }`}
+                    >
+                      {song.title}
+                    </p>
+                  </div>
+                  <p className="text-neutral-400 text-xl font-semibold">
+                    {song.author}
+                  </p>
+                </div>
+                <div>
+                  <LikeButton
+                    songId={song.id}
+                    songTitle={song.title}
+                    size={42}
+                  />
+                </div>
+              </div>
+              <div className="flex items-center pt-8">
+                <input
+                  type="range"
+                  value={seekValue}
+                  onChange={handleSeekChange}
+                  onMouseDown={handleSeekStart}
+                  onMouseUp={handleSeekEnd}
+                  min="0"
+                  max="100"
+                  step="1"
+                  className="seek-bar"
+                />
+              </div>
+              <div className="flex justify-between pt-3">
+                <div className="text-neutral-400 text-sm cursor-default">
+                  {formatTime(sound?.seek() || 0)}
+                </div>
+                <div className="text-neutral-400 text-sm cursor-default">
+                  {formatTime(sound?.duration() || 0)}
+                </div>
+              </div>
+              <div
+                className=" 
+                  flex               
+                  justify-between
+                  items-center
+                  w-full        
+                  gap-x-2  
+                  pt-6
+                  
+                "
+              >
+                <button
+                  onClick={toggleShuffleMode}
+                  className={`transform transition ${
+                    shuffle
+                      ? "text-blue-500 hover:text-blue-400"
+                      : "text-neutral-400 hover:text-white"
+                  }`}
+                >
+                  <IoMdShuffle size={24} />
+                </button>
+                <AiFillStepBackward
+                  onClick={onPlayPrev}
+                  size={42}
+                  className="
+                    text-neutral-400
+                    cursor-pointer
+                    hover:text-white
+                    transition
+                  "
+                />
+                <div
+                  onClick={handlePlay}
+                  className="
+                    flex
+                    items-center
+                    justify-center
+                    h-20
+                    w-20
+                    rounded-full
+                    bg-blue-500
+                    p-1
+                    cursor-pointer
+                    hover:scale-110
+                    transform             
+                  "
+                >
+                  <Icon size={48} className="text-black" />
+                </div>
+                <AiFillStepForward
+                  onClick={onPlayNext}
+                  size={42}
+                  className="
+                    text-neutral-400
+                    cursor-pointer
+                    hover:text-white
+                    transition
+                  "
+                />
+                <button onClick={handleToggleRepeat} className="rotate-90">
+                  <IoMdRefresh
+                    size={30}
+                    className={`transform transition ${
+                      repeat
+                        ? "text-blue-500 hover:text-blue-400"
+                        : "text-neutral-400 hover:text-white"
+                    }`}
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
 
           <div className="hidden md:block">
             <div className="truncate max-w-[28vw] text-base">
               <MediaItem data={song} />
             </div>
           </div>
-
-          <LikeButton songId={song.id} songTitle={song.title} />
+          <div className="hidden md:block">
+            <LikeButton songId={song.id} songTitle={song.title} size={25} />
+          </div>
         </div>
       </div>
       <div
@@ -303,12 +465,11 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
             items-center
             justify-center
             rounded-full
-            bg-blue-500
             p-1
             cursor-pointer
           "
         >
-          <Icon size={24} className="text-black" />
+          <Icon size={40} className="text-white" />
         </div>
       </div>
 

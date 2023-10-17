@@ -7,3 +7,23 @@
   transform: translateY(0);
   transition: transform 0.2s ease-in-out;
 }
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.marquee-container {
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+}
+
+.marquee-text {
+  animation: marquee 12s linear infinite;
+}
+
