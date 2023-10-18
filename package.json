@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint"
   },
-  "dependencies": {    
+  "dependencies": {
     "@n8tb1t/use-scroll-position": "^2.0.3",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-slider": "^1.1.2",
@@ -20,6 +20,7 @@
     "@supabase/supabase-js": "^2.38.1",
     "next": "13.5.4",
     "node-vibrant": "^3.1.6",
+    "p5": "^1.7.0",
     "query-string": "^8.1.0",
     "react": "^18",
     "react-dom": "^18",
@@ -33,7 +34,7 @@
     "stripe": "^13.9.0",
     "tailwind-merge": "^1.14.0",
     "uniqid": "^5.4.0",
-    "use-sound": "^4.0.1",    
+    "use-sound": "^4.0.1",
     "zustand": "^4.4.3"
   },
   "devDependencies": {
