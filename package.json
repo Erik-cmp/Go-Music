@@ -39,7 +39,6 @@
   "devDependencies": {
     "@types/uniqid": "^5.3.2",
     "encoding": "^0.1.13",
-    "supabase": "^1.100.1",
-    "tailwindcss": "^3"    
+    "supabase": "^1.100.1"     
   }
 }
