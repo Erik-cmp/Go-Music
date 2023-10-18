@@ -299,7 +299,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
             flex-col 
             w-[82vw]
             h-[82vh]            
-            pt-4
+            pt-16
             "
             >
               <div className="relative w-[80vw] aspect-square">
