@@ -326,7 +326,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                 "
               >
                 <div className="flex flex-col">
-                  <div className="marquee-container w-[70vw]">
+                  <div className="marquee-container max-w-[70vw]">
                     <p
                       className={`text-white text-2xl font-semibold ${
                         song.title.length > 22 ? "marquee-text" : ""
