@@ -11,7 +11,7 @@ import {
   RxSpeakerLoud,
   RxCaretDown,
 } from "react-icons/rx";
-import Vibrant from 'node-vibrant';
+import Vibrant from "node-vibrant";
 // @ts-ignore
 import useSound from "use-sound";
 
@@ -49,7 +49,9 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   const [repeat, setRepeat] = useState(false);
   const [isAtEnd, setIsAtEnd] = useState(false);
   const [isPlayNextEnabled, setIsPlayNextEnabled] = useState(true);
-  const [backgroundColor, setBackgroundColor] = useState('linear-gradient(to bottom, #1e3a8a 0%, #171717 75%, #171717 75%, #171717 100%)');  
+  const [backgroundColor, setBackgroundColor] = useState(
+    "linear-gradient(to bottom, #1e3a8a 0%, #171717 75%, #171717 75%, #171717 100%)"
+  );
 
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
 
@@ -62,7 +64,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
       ? RxSpeakerModerate
       : RxSpeakerLoud;
 
-  const imagePath = useLoadImage(song);  
+  const imagePath = useLoadImage(song);
 
   const onPlayNext = () => {
     if (shuffle) {
@@ -244,9 +246,12 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
   useEffect(() => {
     let v = Vibrant.from(imagePath || "");
-    v.getPalette()
-     .then((palette) => setBackgroundColor(`linear-gradient(to bottom, ${palette.Vibrant?.hex} 0%, #171717 75%, #171717 75%, #171717 100%)`));    
-  }, [imagePath]);  
+    v.getPalette().then((palette) =>
+      setBackgroundColor(
+        `linear-gradient(to bottom, ${palette.Vibrant?.hex} 0%, #171717 75%, #171717 75%, #171717 100%)`
+      )
+    );
+  }, [imagePath]);
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
@@ -265,10 +270,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
         "
         >
           <div className="md:hidden">
-            <div
-              className="truncate w-[80vw] text-sm"
-              onClick={showSongDetail}
-            >
+            <div className="truncate w-[80vw] text-sm" onClick={showSongDetail}>
               <MediaItem data={song} />
             </div>
           </div>
@@ -296,20 +298,11 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
             flex
             flex-col 
             w-[85vw]
-            h-[85vh]
-            pt-[8vh]
+            h-[85vh]            
+            pt-10
             "
             >
-              <div
-                className="
-                relative
-                aspect-w-1
-                aspect-h-1
-                h-1/2
-                rounded-lg
-                overflow-hidden
-              "
-              >
+              <div className="relative w-[85vw] aspect-square">
                 <Image
                   className="object-fill rounded-lg"
                   src={imagePath || "/images/liked.png"}
@@ -322,7 +315,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                 flex
                 justify-between
                 items-center
-                pt-8
+                pt-4
                 "
               >
                 <div className="flex flex-col">
@@ -347,7 +340,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                   />
                 </div>
               </div>
-              <div className="flex items-center pt-8">
+              <div className="flex items-center pt-4">
                 <input
                   type="range"
                   value={seekValue}
@@ -375,8 +368,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                   items-center
                   w-full        
                   gap-x-2  
-                  pt-6
-                  
+                  pt-2                  
                 "
               >
                 <button
@@ -441,7 +433,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
             </div>
           </div>
 
-          {/* MOBILE SONG DETAIL END */}          
+          {/* MOBILE SONG DETAIL END */}
 
           <div className="hidden md:block">
             <div className="truncate max-w-[28vw] text-base">
