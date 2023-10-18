@@ -38,6 +38,14 @@ const AccountContent = () => {
     <div className="mb-7 px-6">
       {!subscription && (
         <div className="flex flex-col gap-y-4">
+          <p className="flex flex-col gap-y-4 text-2xl font-semibold">User Information:</p>
+          {user && (
+            <div className="flex flex-col gap-y-4 text-sm lg:text-base mb-4">
+              <p> <b>User ID:</b> {user.id}</p>
+              <p> <b>Email:</b> {user.email}</p>              
+            </div>
+          )}
+          <p className="flex flex-col gap-y-4 text-2xl font-semibold">Subscription:</p>          
           <p>
             No active plan.
           </p>
