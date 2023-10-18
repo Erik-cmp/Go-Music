@@ -194,7 +194,8 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
             </div>
           ) : (
             <>
-              <div>
+              {/* Hide this div on mobile */}
+              <div className="hidden md:flex">
                 <Button
                   onClick={AuthModal.onOpen}
                   className="
