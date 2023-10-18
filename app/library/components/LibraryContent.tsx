@@ -65,7 +65,7 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
         <div
         style={{
           position: "fixed",
-          bottom: "100px",
+          bottom: "85px",
           right: "12px",                          
         }}
         className="
