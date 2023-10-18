@@ -266,7 +266,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
         >
           <div className="md:hidden">
             <div
-              className="truncate max-w-[80vw] text-sm"
+              className="truncate w-[80vw] text-sm"
               onClick={showSongDetail}
             >
               <MediaItem data={song} />
