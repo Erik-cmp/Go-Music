@@ -29,7 +29,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ songProgress, onSeek }) => {
         style={{ width: `${songProgress}%`, transition: "width 0.1s ease-in-out" }}
       ></div>
       {hovered && (
-        <div style={{ position: "absolute", left: 0, right: 0 }}>
+        <div style={{ position: "absolute", left: 0, right: 0, bottom: 0 }}>
           <input type="range" value={songProgress} onChange={(e) => handleSeekChange(Number(e.target.value))} />
         </div>
       )}

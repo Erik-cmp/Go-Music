@@ -16,7 +16,7 @@ export default async function Home() {
     <div className="
       bg-neutral-900
       rounded-lg
-      h-[calc(100%-80px)]
+      md:h-[calc(100%-80px)] h-[calc(100%-60px)]
       w-full
       overflow-hidden
       overflow-y-auto      

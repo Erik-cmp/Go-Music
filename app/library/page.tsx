@@ -10,7 +10,7 @@ const Library = async () => {
     <div 
       className="
         bg-neutral-900                
-        h-[calc(100vh-95px)]
+        md:h-[calc(100vh-95px)] h-[calc(100vh-75px)]
         w-full
         overflow-hidden
         overflow-y-auto

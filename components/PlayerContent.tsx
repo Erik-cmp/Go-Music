@@ -259,18 +259,18 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
         className="
         flex
         w-full
-        justify-start
+        justify-start        
       "
       >
         <div
           className="
           flex                  
           items-center                    
-          gap-x-2                                   
+          gap-x-2                      
         "
         >
-          <div className="md:hidden">
-            <div className="truncate w-[80vw] text-sm" onClick={showSongDetail}>
+          <div className="md:hidden w-[82vw] z-10" onClick={showSongDetail}>
+            <div className="truncate text-sm">
               <MediaItem data={song} />
             </div>
           </div>
@@ -297,12 +297,12 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
               className="
             flex
             flex-col 
-            w-[85vw]
-            h-[85vh]            
-            pt-10
+            w-[82vw]
+            h-[82vh]            
+            pt-4
             "
             >
-              <div className="relative w-[85vw] aspect-square">
+              <div className="relative w-[80vw] aspect-square">
                 <Image
                   className="object-fill rounded-lg"
                   src={imagePath || "/images/liked.png"}
@@ -315,32 +315,30 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                 flex
                 justify-between
                 items-center
-                pt-4
+                pt-6
                 "
               >
                 <div className="flex flex-col">
-                  <div className="marquee-container max-w-[70vw]">
+                  <div className="marquee-container w-[70vw]">
                     <p
-                      className={`text-white text-2xl font-semibold ${
-                        song.title.length > 22 ? "marquee-text" : ""
+                      className={`text-white text-xl font-semibold ${
+                        song.title.length > 27 ? "marquee-text" : ""
                       }`}
                     >
                       {song.title}
                     </p>
                   </div>
-                  <p className="text-neutral-400 text-xl font-semibold">
-                    {song.author}
-                  </p>
+                  <p className="text-neutral-400">{song.author}</p>
                 </div>
                 <div>
                   <LikeButton
                     songId={song.id}
                     songTitle={song.title}
-                    size={42}
+                    size={36}
                   />
                 </div>
               </div>
-              <div className="flex items-center pt-4">
+              <div className="flex items-center pt-6">
                 <input
                   type="range"
                   value={seekValue}
@@ -353,11 +351,11 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                   className="seek-bar"
                 />
               </div>
-              <div className="flex justify-between pt-3">
-                <div className="text-neutral-400 text-sm cursor-default">
+              <div className="flex justify-between pt-4">
+                <div className="text-neutral-400 text-xs cursor-default">
                   {formatTime(sound?.seek() || 0)}
                 </div>
-                <div className="text-neutral-400 text-sm cursor-default">
+                <div className="text-neutral-400 text-xs cursor-default">
                   {formatTime(sound?.duration() || 0)}
                 </div>
               </div>
@@ -367,8 +365,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                   justify-between
                   items-center
                   w-full        
-                  gap-x-2  
-                  pt-2                  
+                  gap-x-2                               
                 "
               >
                 <button
@@ -383,7 +380,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                 </button>
                 <AiFillStepBackward
                   onClick={onPlayPrev}
-                  size={42}
+                  size={32}
                   className="
                     text-neutral-400
                     cursor-pointer
@@ -397,8 +394,8 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                     flex
                     items-center
                     justify-center
-                    h-20
-                    w-20
+                    h-16
+                    w-16
                     rounded-full
                     bg-white
                     p-1
@@ -407,11 +404,11 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                     transform             
                   "
                 >
-                  <Icon size={48} className="text-black" />
+                  <Icon size={40} className="text-black" />
                 </div>
                 <AiFillStepForward
                   onClick={onPlayNext}
-                  size={42}
+                  size={32}
                   className="
                     text-neutral-400
                     cursor-pointer
@@ -459,8 +456,6 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
         <div
           onClick={handlePlay}
           className="
-            h-10
-            w-10
             flex
             items-center
             justify-center
