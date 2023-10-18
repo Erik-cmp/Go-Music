@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
@@ -8,14 +9,12 @@ import { BiSearch } from "react-icons/bi";
 import { FaUserAlt } from "react-icons/fa";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { toast } from "react-hot-toast";
-import { useState } from "react";
 
 import useAuthModal from "@/hooks/useAuthModal";
 import { useUser } from "@/hooks/useUser";
 import Button from "./Button";
 import usePlayer from "@/hooks/usePlayer";
 import { TbPlaylist } from "react-icons/tb";
-import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 
 interface HeaderProps {
   children: React.ReactNode;
@@ -40,15 +39,27 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
     }
   };
 
-  const [isHeaderFixed, setHeaderFixed] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  useScrollPosition(({ currPos }) => {
-    if (currPos.y < -10) {
-      setHeaderFixed(true);
-    } else {
-      setHeaderFixed(false);
+  useEffect(() => {
+    console.log("useEffect is running");
+    const handleScroll = () => {
+      const offset = window.scrollY;
+      const scrollThreshold = 50;
+      console.log(offset);
+      console.log(scrollThreshold);
+      if (offset > scrollThreshold) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
     }
-  });  
+
+    window.addEventListener('scroll', handleScroll);    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);      
+    };
+  }, [])  
 
   return (
     <div
@@ -58,11 +69,11 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
       bg-gradient-to-b
       from-blue-700
       p-6
-    `,
-        isHeaderFixed ? "fixed top-0 w-full bg-blue-700" : "",
+      ${isScrolled ? 'fixed top-0 bg-blue-900 rounded-tl-lg rounded-tr-lg p-6' : ''}
+    `,        
         className
       )}
-    >
+    >      
       <div
         className="
         w-full

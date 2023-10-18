@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mapbox/node-pre-gyp": "^1.0.11",
     "@n8tb1t/use-scroll-position": "^2.0.3",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-slider": "^1.1.2",
@@ -18,7 +19,10 @@
     "@supabase/auth-ui-react": "^0.4.5",
     "@supabase/auth-ui-shared": "^0.1.7",
     "@supabase/supabase-js": "^2.38.1",
+    "color-thief": "^2.2.5",
+    "colorthief": "^2.4.0",
     "next": "13.5.4",
+    "node-vibrant": "^3.1.6",
     "query-string": "^8.1.0",
     "react": "^18",
     "react-dom": "^18",
@@ -33,6 +37,7 @@
     "tailwind-merge": "^1.14.0",
     "uniqid": "^5.4.0",
     "use-sound": "^4.0.1",
+    "vibrant": "^0.0.1",
     "zustand": "^4.4.3"
   },
   "devDependencies": {

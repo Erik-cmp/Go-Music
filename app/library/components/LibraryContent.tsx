@@ -66,7 +66,7 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
         style={{
           position: "fixed",
           bottom: "100px",
-          right: "15px",                          
+          right: "12px",                          
         }}
         className="
           bg-blue-500
@@ -80,7 +80,7 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
       >
         <BsPlus 
           onClick={onClick}
-          size={30}
+          size={34}
           className="text-black"
         />
       </div>

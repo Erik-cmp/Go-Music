@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Song } from "@/types";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
@@ -10,8 +11,7 @@ import {
   RxSpeakerLoud,
   RxCaretDown,
 } from "react-icons/rx";
-import { useEffect, useState } from "react";
-import { useVolume } from "@/contexts/VolumeContext";
+import Vibrant from 'node-vibrant';
 // @ts-ignore
 import useSound from "use-sound";
 
@@ -22,13 +22,12 @@ import usePlayer from "@/hooks/usePlayer";
 import ProgressBar from "./ProgressBar";
 import { IoMdRefresh } from "react-icons/io";
 import { IoMdShuffle } from "react-icons/io";
+import { useVolume } from "@/contexts/VolumeContext";
 import { useShuffle } from "@/contexts/ShuffleContext";
 import { useSongDetail } from "@/contexts/SongDetailContext";
 
 import "./css/SeekBar.css";
 import "./css/Animation.css";
-import Header from "./Header";
-import ListItem from "./ListItem";
 import Image from "next/image";
 import useLoadImage from "@/hooks/useLoadImage";
 interface PlayerContentProps {
@@ -50,6 +49,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   const [repeat, setRepeat] = useState(false);
   const [isAtEnd, setIsAtEnd] = useState(false);
   const [isPlayNextEnabled, setIsPlayNextEnabled] = useState(true);
+  const [backgroundColor, setBackgroundColor] = useState('linear-gradient(to bottom, #1e3a8a 0%, #171717 75%, #171717 75%, #171717 100%)');  
 
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
 
@@ -62,7 +62,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
       ? RxSpeakerModerate
       : RxSpeakerLoud;
 
-  const imagePath = useLoadImage(song);
+  const imagePath = useLoadImage(song);  
 
   const onPlayNext = () => {
     if (shuffle) {
@@ -242,6 +242,12 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
     };
   }, [sound]);
 
+  useEffect(() => {
+    let v = Vibrant.from(imagePath || "");
+    v.getPalette()
+     .then((palette) => setBackgroundColor(`linear-gradient(to bottom, ${palette.Vibrant?.hex} 0%, #171717 75%, #171717 75%, #171717 100%)`));    
+  }, [imagePath]);  
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
       <div
@@ -267,24 +273,23 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
             </div>
           </div>
 
-          {/* TODO: Code song detail here */}
+          {/* MOBILE SONG DETAIL START */}
           <div
             className={`fixed top-0 left-0 flex flex-col items-center justify-center gap-y-4 w-full h-full z-10 ${
               isSongDetailVisible ? "slide-in" : "slide-out"
             }`}
-            style={{
-              background:
-                "linear-gradient(to bottom, #1e3a8a 0%, #171717 35%, #171717 35%, #171717 100%)",
-            }}
+            style={{ background: backgroundColor }}
           >
             <div className="fixed top-0 left-0 p-4 z-10">
-              <RxCaretDown
-                onClick={hideSongDetail}
-                className="text-white"
-                size={42}
-              >
-                Close
-              </RxCaretDown>
+              <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center">
+                <RxCaretDown
+                  onClick={hideSongDetail}
+                  className="text-white"
+                  size={34}
+                >
+                  Close
+                </RxCaretDown>
+              </div>
             </div>
             <div
               className="
@@ -347,8 +352,8 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                   type="range"
                   value={seekValue}
                   onChange={handleSeekChange}
-                  onMouseDown={handleSeekStart}
-                  onMouseUp={handleSeekEnd}
+                  onTouchStart={handleSeekStart}
+                  onTouchEnd={handleSeekEnd}
                   min="0"
                   max="100"
                   step="1"
@@ -403,7 +408,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                     h-20
                     w-20
                     rounded-full
-                    bg-blue-500
+                    bg-white
                     p-1
                     cursor-pointer
                     hover:scale-110
@@ -435,6 +440,8 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
               </div>
             </div>
           </div>
+
+          {/* MOBILE SONG DETAIL END */}          
 
           <div className="hidden md:block">
             <div className="truncate max-w-[28vw] text-base">

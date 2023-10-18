@@ -20,7 +20,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ songProgress, onSeek }) => {
 
   return (
     <div
-      className="w-full h-8 bg-black"
+      className="w-full h-[3px] bg-black"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
