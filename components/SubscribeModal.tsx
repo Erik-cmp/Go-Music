@@ -102,7 +102,7 @@ const SubscribeModal: React.FC<SubscribeModalProps> = ({
     content = (
       <div className="text-center">
         <p className="font-bold mb-2 text-sm text-neutral-400">
-        You're already subscribed, thank you for your support!
+        You are already subscribed, thank you for your support!
         </p>        
       </div>
     )
