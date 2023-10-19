@@ -19,7 +19,7 @@ const Player = () => {
       bg-black
       w-full
       md:py-2 py-1
-      md:h-[80px] h-[72px]
+      h-[72px]
       md:px-4 px-1   
       flex
       items-center

@@ -52,7 +52,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children, songs }) => {
           flex-col
           gap-y-2
           bg-black
-          md:h-[calc(100%-80px)] h-[calc(100%-60px)]
+          md:h-[calc(100%-72px)] h-[calc(100%-60px)]
           w-[300px]
           p-2
         "

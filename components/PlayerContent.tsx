@@ -544,8 +544,8 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
             flex
             items-center
             justify-center
-            h-10
-            w-10
+            h-9
+            w-9
             rounded-full
             bg-blue-500
             p-1
@@ -554,7 +554,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
             transform             
           "
           >
-            <Icon size={30} className="text-black" />
+            <Icon size={28} className="text-black" />
           </div>
           <AiFillStepForward
             onClick={onPlayNext}
