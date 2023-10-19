@@ -48,7 +48,6 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   const [isSeeking, setIsSeeking] = useState(false);
   const [repeat, setRepeat] = useState(false);
   const [isAtEnd, setIsAtEnd] = useState(false);
-  const [isPlayNextEnabled, setIsPlayNextEnabled] = useState(true);
   const [backgroundColor, setBackgroundColor] = useState(
     "linear-gradient(to bottom, #1e3a8a 0%, #171717 75%, #171717 75%, #171717 100%)"
   );

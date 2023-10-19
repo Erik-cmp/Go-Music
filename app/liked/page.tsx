@@ -1,4 +1,4 @@
-import Image from "next/image"
+import Image from "next/image";
 
 import getLikedSongs from "@/actions/getLikedSongs";
 import Header from "@/components/Header";
@@ -9,32 +9,37 @@ export const revalidate = 0;
 const Liked = async () => {
   const songs = await getLikedSongs();
 
-  return (  
-    <div className="
+  return (
+    <div
+      className="
       bg-neutral-900
       rounded-lg
       md:h-[calc(100%-72px)] h-[calc(100%-60px)]
       w-full
       overflow-hidden
       overflow-y-auto
-    ">
+    "
+    >
       <Header>
-        <div className="mt-20">
-          <div className="
-            flex
-            flex-col
-            md:flex-row
+        <div className="md:mt-20 mt-8">
+          <div
+            className="
+            flex            
+            md:flex-row flex-col
             items-center
             gap-x-5
-          ">
-            <div className="
+          "
+          >
+            <div
+              className="
               relative
-              h-32
-              w-32
+              h-40
+              w-40
               lg:h-44
-              lg:w-44
-            ">
-              <Image 
+              lg:w-44              
+            "
+            >
+              <Image
                 fill
                 alt="Playlist"
                 className="object-cover"
@@ -42,23 +47,27 @@ const Liked = async () => {
                 sizes="300px"
               />
             </div>
-            <div className="
+            <div
+              className="
               flex
               flex-col
               gap-y-2
               mt-4
               md:mt-0
-            ">
-              <p className="hidden md:block font-semibold text-sm">
-                Playlist
-              </p>
-              <h1 className="
+              md:items-start items-center
+              w-full              
+            "
+            >
+              <p className="hidden md:block font-semibold text-sm">Playlist</p>
+              <h1
+                className="
                 text-white
                 text-4xl
                 sm:text-5xl
                 lg:text-7xl
-                font-bold
-              ">
+                font-bold                                
+              "
+              >
                 Liked Songs
               </h1>
             </div>
@@ -68,6 +77,6 @@ const Liked = async () => {
       <LikedContent songs={songs} />
     </div>
   );
-}
- 
+};
+
 export default Liked;
