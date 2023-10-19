@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Song } from "@/types";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
@@ -253,6 +253,27 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
     );
   }, [imagePath]);
 
+  const [swipeStartY, setSwipeStartY] = useState<number | null>(null);
+  const imageRef = useRef<HTMLDivElement | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setSwipeStartY(e.touches[0].clientY);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (swipeStartY !== null) {
+      const deltaY = e.touches[0].clientY - swipeStartY;
+      if (deltaY > 50) {
+        hideSongDetail();
+        setSwipeStartY(null);
+      }
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setSwipeStartY(null);
+  };
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
       <div
@@ -302,8 +323,15 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
             pt-12
             "
             >
-              <div className="relative w-[80vw] aspect-square">
+              <div
+                className="relative w-[80vw] aspect-square"
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+              >
                 <Image
+                  // @ts-ignore
+                  ref={imageRef}
                   className="object-fill rounded-lg"
                   src={imagePath || "/images/liked.png"}
                   layout="fill"
@@ -449,7 +477,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
         gap-x-3
       "
       >
-        <div          
+        <div
           className="
             flex
             items-center
@@ -460,8 +488,8 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
             gap-x-2                  
           "
         >
-          <LikeButton songId={song.id} songTitle={song.title} size={26}/>
-          <Icon size={34} className="text-white" onClick={handlePlay}/>
+          <LikeButton songId={song.id} songTitle={song.title} size={26} />
+          <Icon size={34} className="text-white" onClick={handlePlay} />
         </div>
       </div>
 
