@@ -6,7 +6,7 @@ const Account = () => {
     <div 
       className="
         bg-neutral-900                
-        md:h-[calc(100vh-95px)] h-[calc(100vh-75px)]
+        md:h-[calc(100%-80px)] h-[calc(100%-60px)]
         w-full
         overflow-hidden
         overflow-y-auto
