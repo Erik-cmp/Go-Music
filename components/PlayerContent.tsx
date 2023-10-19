@@ -266,6 +266,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
       if (deltaY > 50) {
         hideSongDetail();
         setSwipeStartY(null);
+        e.preventDefault();
       }
     }
   };
