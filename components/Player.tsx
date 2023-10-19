@@ -18,14 +18,14 @@ const Player = () => {
       bottom-0
       bg-black
       w-full
-      py-2
-      h-[80px]
-      px-4
+      md:py-2 py-1
+      md:h-[80px] h-[72px]
+      md:px-4 px-1   
       flex
       items-center
       justify-center
       text-neutral-400   
-      text-sm
+      md:text-sm text-xs
     ">
       No active song, play something to open the player!
     </div>      
@@ -40,7 +40,7 @@ const Player = () => {
       w-full
       md:py-2 py-1
       md:h-[80px] h-auto
-      md:px-4 px-1
+      md:px-4 px-1      
       flex
     ">
       <PlayerContent 

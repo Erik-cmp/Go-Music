@@ -114,7 +114,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   };
 
   const [play, { pause, sound }] = useSound(songUrl, {
-    volume: volume,    
+    volume: volume,
     onplay: () => {
       // console.log("Song starts playing");
       setIsPlaying(true);
@@ -269,7 +269,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
           gap-x-2                      
         "
         >
-          <div className="md:hidden w-[82vw] z-10" onClick={showSongDetail}>
+          <div className="md:hidden w-[76vw] z-10" onClick={showSongDetail}>
             <div className="truncate text-sm">
               <MediaItem data={song} />
             </div>
@@ -371,9 +371,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                 <button
                   onClick={toggleShuffleMode}
                   className={`transform transition ${
-                    shuffle
-                      ? "text-blue-500 hover:text-blue-400"
-                      : "text-neutral-400 hover:text-white"
+                    shuffle ? "text-blue-500" : "text-neutral-400"
                   }`}
                 >
                   <IoMdShuffle size={24} />
@@ -420,9 +418,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                   <IoMdRefresh
                     size={30}
                     className={`transform transition ${
-                      repeat
-                        ? "text-blue-500 hover:text-blue-400"
-                        : "text-neutral-400 hover:text-white"
+                      repeat ? "text-blue-500" : "text-neutral-400"
                     }`}
                   />
                 </button>
@@ -453,18 +449,19 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
         gap-x-3
       "
       >
-        <div
-          onClick={handlePlay}
+        <div          
           className="
             flex
             items-center
             justify-center
             rounded-full
             p-1
-            cursor-pointer
+            cursor-pointer      
+            gap-x-2                  
           "
         >
-          <Icon size={40} className="text-white" />
+          <LikeButton songId={song.id} songTitle={song.title} size={26}/>
+          <Icon size={34} className="text-white" onClick={handlePlay}/>
         </div>
       </div>
 
@@ -585,7 +582,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
           <Slider value={volume} onChange={(value) => setVolume(value)} />
         </div>
       </div>
-      <div className="md:hidden w-full h-1 bg-black absolute bottom-0 left-0">
+      <div className="md:hidden w-full h-1 absolute bottom-0 left-0 flex items-end">
         <ProgressBar songProgress={songProgress} onSeek={handleSeekChange} />
       </div>
     </div>
