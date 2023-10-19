@@ -106,7 +106,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
     const progress = sound?.seek() || 0;
     const duration = sound?.duration() || 0;
     // console.log(`${progress} >= ${duration - 0.2}`);
-    if (progress >= duration - 0.2) {
+    if (progress >= duration - 0.3) {
       setIsAtEnd(true);
     } else {
       setIsAtEnd(false);
