@@ -152,7 +152,13 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
             <BiSearch className="text-black" size={20} />
           </button>
           <button
-            onClick={() => router.push("/library")}
+            onClick={() => {
+              if (!user) {
+                return AuthModal.onOpen();
+              }
+
+              router.push("/library")
+            }}
             className="
               rounded-full
               p-2
