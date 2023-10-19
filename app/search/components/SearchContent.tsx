@@ -20,7 +20,7 @@ const SearchContent: React.FC<SearchContentProps> = ({
         flex-col
         gap-y-2
         w-full
-        px-6
+        md:px-6 px-2
         text-neutral-400
       ">
         No songs found.
@@ -29,20 +29,20 @@ const SearchContent: React.FC<SearchContentProps> = ({
   }
 
   return (  
-    <div className="flex flex-col gap-y-2 w-full px-6">
+    <div className="flex flex-col md:gap-y-2 w-full md:px-6 pl-3 pr-4">
       {songs.map((song) => (
         <div
           key={song.id}
-          className="flex items-center gap-x-4 w-full"
+          className="flex items-center gap-x-2 w-full"
         >
-          <div className="flex-1 w-[76vw]">
+          <div className="flex-1 w-[70vw]">
             <MediaItem 
               onClick={(id: string) => onPlay(id)}
               data={song}
-            />
+            />                        
           </div>
-          <LikeButton songId={song.id} songTitle={song.title} size={25}/>
-        </div>
+          <LikeButton songId={song.id} songTitle={song.title} size={25}/>              
+        </div>        
       ))}
     </div>
   );

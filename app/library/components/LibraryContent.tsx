@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import { TbPlaylist } from "react-icons/tb"
-import useAuthModal from "@/hooks/useAuthModal"
-import { useUser } from "@/hooks/useUser"
-import useUploadModal from "@/hooks/useUploadModal"
-import { Song } from "@/types"
-import MediaItem from "@/components/MediaItem"
-import useOnPlay from "@/hooks/useOnPlay"
-import useSubscribeModal from "@/hooks/useSubscribeModal"
-import { BsPlus } from "react-icons/bs"
+import { TbPlaylist } from "react-icons/tb";
+import useAuthModal from "@/hooks/useAuthModal";
+import { useUser } from "@/hooks/useUser";
+import useUploadModal from "@/hooks/useUploadModal";
+import { Song } from "@/types";
+import MediaItem from "@/components/MediaItem";
+import useOnPlay from "@/hooks/useOnPlay";
+import useSubscribeModal from "@/hooks/useSubscribeModal";
+import { BsPlus } from "react-icons/bs";
 
-interface LibraryProps{
+interface LibraryProps {
   songs: Song[];
 }
 
@@ -23,24 +23,40 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
   const onPlay = useOnPlay(songs);
 
   const onClick = () => {
-    if(!user) {
+    if (!user) {
       return authModal.onOpen();
     }
 
-    if(!subscription){
+    if (!subscription) {
       return subscribeModal.onOpen();
     }
 
-    return uploadModal.onOpen();    
+    return uploadModal.onOpen();
+  };
+
+  if (songs.length === 0){
+    return (
+      <div className="
+        flex
+        flex-col
+        gap-y-2
+        w-full                
+        text-neutral-400                
+        text-xs
+      ">
+        Your Library Is Empty, Upload a Song to Get Started!
+      </div>
+    )
   }
-  return ( 
+
+  return (
     <div className="flex flex-col">
       <div
         className="
           flex
           items-center
           justify-between
-          px-2
+          md:px-2 px-1
           pt-4
         "
       >
@@ -52,7 +68,7 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
           "
         >
           <TbPlaylist className="text-neutral-400" size={26} />
-          <p 
+          <p
             className="
               text-neutral-400
               font-medium
@@ -63,12 +79,12 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
           </p>
         </div>
         <div
-        style={{
-          position: "fixed",
-          bottom: "85px",
-          right: "12px",                          
-        }}
-        className="
+          style={{
+            position: "fixed",
+            bottom: "85px",
+            right: "12px",
+          }}
+          className="
           bg-blue-500
           rounded-full
           w-12
@@ -77,30 +93,37 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
           items-center
           justify-center
         "
-      >
-        <BsPlus 
-          onClick={onClick}
-          size={34}
-          className="text-black"
-        />
+        >
+          <BsPlus onClick={onClick} size={34} className="text-black" />
+        </div>
       </div>
-      </div>      
-      <div className="
+      <div
+        className="
+        flex
+        w-full
+        px-0
+      "
+      >
+        <div
+          className="
         flex
         flex-col
-        gap-y-2
+        md:gap-y-2 gap-y-0
         mt-4        
-      ">
-        {songs.map((item) => (
-          <MediaItem
-            onClick={(id: string) => onPlay(id)}
-            key={item.id}
-            data={item}
-          />
-        ))}
+        w-full
+      "
+        >
+          {songs.map((item) => (
+            <MediaItem
+              onClick={(id: string) => onPlay(id)}
+              key={item.id}
+              data={item}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
-}
- 
-export default Library
+};
+
+export default Library;

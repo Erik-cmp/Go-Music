@@ -336,7 +336,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                   className="object-fill rounded-lg"
                   src={imagePath || "/images/liked.png"}
                   layout="fill"
-                  alt="Image"
+                  alt="Image"                  
                 />
               </div>
               <div

@@ -39,6 +39,7 @@ const Liked = async () => {
                 alt="Playlist"
                 className="object-cover"
                 src="/images/liked.png"
+                sizes="300px"
               />
             </div>
             <div className="

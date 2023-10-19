@@ -47,7 +47,8 @@ const SongItem: React.FC<SongItemProps> = ({
             className="object-cover"
             src={imagePath || '/images/liked.png'}
             fill
-            alt="Image"
+            alt="Image"            
+            sizes="300px"
           />
         </div>
         <div className="flex flex-col items-start w-full pt-4 gap-y-1">

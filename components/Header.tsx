@@ -68,7 +68,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
       h-fit
       bg-gradient-to-b
       from-blue-700
-      p-6
+      md:p-6 p-4            
       ${isScrolled ? 'fixed top-0 bg-blue-900 rounded-tl-lg rounded-tr-lg p-6' : ''}
     `,        
         className
