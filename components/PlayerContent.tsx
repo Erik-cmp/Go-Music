@@ -14,6 +14,7 @@ import {
 import Vibrant from "node-vibrant";
 // @ts-ignore
 import useSound from "use-sound";
+import Tooltip from "react-tooltip";
 
 import MediaItem from "./MediaItem";
 import LikeButton from "./LikeButton";
@@ -201,6 +202,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
   const handleToggleRepeat = () => {
     setRepeat((repeat) => !repeat);
+    setShowTooltip(false);
   };
 
   useEffect(() => {
@@ -221,6 +223,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
   const toggleShuffleMode = () => {
     toggleShuffle();
+    setShowTooltip(false);
   };
 
   useEffect(() => {
@@ -257,16 +260,16 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchStartY, setTouchStartY] = useState(0);
   const [lastTouchTime, setLastTouchTime] = useState(0);
-  const [swipeInProgress, setSwipeInProgress] = useState(false);  
+  const [swipeInProgress, setSwipeInProgress] = useState(false);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchStartX(e.touches[0].clientX);
     setTouchStartY(e.touches[0].clientY);
     setLastTouchTime(new Date().getTime());
-    setSwipeInProgress(true);    
+    setSwipeInProgress(true);
   };
 
-  let timeout:any = null;
+  let timeout: any = null;
 
   const handleTouchMove = (e: React.TouchEvent) => {
     if (touchStartX !== 0) {
@@ -285,13 +288,13 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
             onPlayNext();
             setSwipeInProgress(false);
           } else if (deltaY > 50) {
-            hideSongDetail();            
-            setSwipeInProgress(false);            
-          }          
+            hideSongDetail();
+            setSwipeInProgress(false);
+          }
         }, 100);
       }
     }
-  }
+  };
 
   const handleTouchEnd = () => {
     setTouchStartX(0);
@@ -305,7 +308,26 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
     }
     setLastTouchTime(currentTime);
   };
-  
+
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  const handleMouseEnter = () => {
+    const delay = setTimeout(() => {
+      setShowTooltip(true);
+    }, 300);
+
+    setShowTooltipTimeout(delay as any);
+  };
+
+  const handleMouseLeave = () => {
+    if (showTooltipTimeout) {
+      clearTimeout(showTooltipTimeout);
+    }
+    setShowTooltip(false);
+  };
+
+  const [showTooltipTimeout, setShowTooltipTimeout] = useState(null);
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
       <div
@@ -368,7 +390,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                   className="object-fill rounded-lg"
                   src={imagePath || "/images/liked.png"}
                   layout="fill"
-                  alt="Image"                  
+                  alt="Image"
                 />
               </div>
               <div
@@ -552,13 +574,41 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
           {/* Shuffle Button Here */}
           <button
             onClick={toggleShuffleMode}
-            className={`transform transition ${
-              shuffle
-                ? "text-blue-500 hover:text-blue-400"
-                : "text-neutral-400 hover:text-white"
-            }`}
+            className="relative group"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
-            <IoMdShuffle size={18} />
+            <IoMdShuffle
+              size={18}
+              className={`transform transition ${
+                shuffle
+                  ? "text-blue-500 hover:text-blue-400"
+                  : "text-neutral-400 hover:text-white"
+              }`}
+            />
+            {showTooltip && (
+              <div
+                className="
+                w-[110px] 
+                opacity-0 
+                bg-neutral-800 
+                text-white 
+                text-sm 
+                font-semibold 
+                p-1 
+                rounded 
+                absolute 
+                top-[-2.5rem] 
+                left-1/2 
+                -translate-x-1/2 
+                transform 
+                transition-opacity                 
+                group-hover:opacity-100 
+                delay-1000"
+              >
+                Toggle Shuffle
+              </div>
+            )}
           </button>
           <AiFillStepBackward
             onClick={onPlayPrev}
@@ -598,15 +648,43 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
             transition
           "
           />
-          <button onClick={handleToggleRepeat} className="rotate-90">
+          <button
+            onClick={handleToggleRepeat}
+            className="relative group"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
             <IoMdRefresh
               size={24}
-              className={`transform transition ${
+              className={`transform transition rotate-90 ${
                 repeat
                   ? "text-blue-500 hover:text-blue-400"
                   : "text-neutral-400 hover:text-white"
               }`}
             />
+            {showTooltip && (
+              <div
+                className="
+                w-[110px] 
+                opacity-0 
+                bg-neutral-800 
+                text-white 
+                text-sm 
+                font-semibold 
+                p-1 
+                rounded 
+                absolute 
+                top-[-2.5rem] 
+                left-1/2 
+                -translate-x-1/2 
+                transform 
+                transition-opacity                 
+                group-hover:opacity-100 
+                delay-1000"
+              >
+                {repeat ? "Disable Repeat" : "Enable Repeat"}
+              </div>
+            )}
           </button>
         </div>
 
@@ -638,7 +716,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
           <VolumeIcon
             onClick={toggleMute}
             className="cursor-pointer text-white hover:opacity-75 transition"
-            size={34}
+            size={30}
           />
           <Slider value={volume} onChange={(value) => setVolume(value)} />
         </div>
