@@ -252,28 +252,60 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
     );
   }, [imagePath]);
 
-  const [swipeStartY, setSwipeStartY] = useState<number | null>(null);
   const imageRef = useRef<HTMLDivElement | null>(null);
 
+  const [touchStartX, setTouchStartX] = useState(0);
+  const [touchStartY, setTouchStartY] = useState(0);
+  const [lastTouchTime, setLastTouchTime] = useState(0);
+  const [swipeInProgress, setSwipeInProgress] = useState(false);  
+
   const handleTouchStart = (e: React.TouchEvent) => {
-    setSwipeStartY(e.touches[0].clientY);
+    setTouchStartX(e.touches[0].clientX);
+    setTouchStartY(e.touches[0].clientY);
+    setLastTouchTime(new Date().getTime());
+    setSwipeInProgress(true);    
   };
+
+  let timeout:any = null;
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (swipeStartY !== null) {
-      const deltaY = e.touches[0].clientY - swipeStartY;
-      if (deltaY > 50) {
-        hideSongDetail();
-        setSwipeStartY(null);
-        e.preventDefault();
+    if (touchStartX !== 0) {
+      const deltaX = e.touches[0].clientX - touchStartX;
+      const deltaY = e.touches[0].clientY - touchStartY;
+      if (!swipeInProgress && Math.abs(deltaX) > 50) {
+        setSwipeInProgress(true);
+      }
+      if (swipeInProgress) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          if (deltaX > 50) {
+            onPlayPrev();
+            setSwipeInProgress(false);
+          } else if (deltaX < -50) {
+            onPlayNext();
+            setSwipeInProgress(false);
+          } else if (deltaY > 50) {
+            hideSongDetail();            
+            setSwipeInProgress(false);            
+          }          
+        }, 300);
       }
     }
-  };
+  }
 
   const handleTouchEnd = () => {
-    setSwipeStartY(null);
+    setTouchStartX(0);
+    setSwipeInProgress(false);
   };
 
+  const handleTouchDoubleTap = () => {
+    const currentTime = new Date().getTime();
+    if (currentTime - lastTouchTime < 300) {
+      handlePlay();
+    }
+    setLastTouchTime(currentTime);
+  };
+  
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
       <div
@@ -328,6 +360,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleTouchEnd}
+                onTouchStartCapture={handleTouchDoubleTap}
               >
                 <Image
                   // @ts-ignore
