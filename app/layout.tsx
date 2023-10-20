@@ -13,7 +13,7 @@ import Player from "@/components/Player";
 import getActiveProductsWithPrices from "@/actions/getActiveProductsWithPrices";
 import { ShuffleProvider } from "@/contexts/ShuffleContext";
 import Head from "next/head";
-import { SongDetailProvider } from '@/contexts/SongDetailContext';
+import { SongDetailProvider } from "@/contexts/SongDetailContext";
 
 const figtree = Figtree({ subsets: ["latin"] });
 
@@ -34,9 +34,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <Head>
-        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-      </Head>
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <body className={figtree.className}>
         <VolumeProvider>
           <ToasterProvider />

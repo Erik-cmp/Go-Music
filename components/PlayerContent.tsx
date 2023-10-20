@@ -623,7 +623,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
               onMouseUp={handleSeekEnd}
               min="0"
               max="100"
-              step="1"
+              step={0.1}
               className="seek-bar"
             />
           </div>
