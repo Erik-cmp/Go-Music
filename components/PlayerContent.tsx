@@ -288,7 +288,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
             hideSongDetail();            
             setSwipeInProgress(false);            
           }          
-        }, 300);
+        }, 100);
       }
     }
   }
