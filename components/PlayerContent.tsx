@@ -459,7 +459,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                 >
                   <IoMdShuffle size={25} />
                 </button>
-                <div className="flex items-center gap-x-6">
+                <div className="flex items-center gap-x-[7vw] res">
                   <AiFillStepBackward
                     onClick={onPlayPrev}
                     size={36}
