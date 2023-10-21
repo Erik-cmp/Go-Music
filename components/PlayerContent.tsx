@@ -448,7 +448,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                   justify-between
                   items-center
                   w-full        
-                  gap-x-2                               
+                  gap-x-2                                                 
                 "
               >
                 <button
@@ -457,21 +457,22 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                     shuffle ? "text-blue-500" : "text-neutral-400"
                   }`}
                 >
-                  <IoMdShuffle size={24} />
+                  <IoMdShuffle size={25} />
                 </button>
-                <AiFillStepBackward
-                  onClick={onPlayPrev}
-                  size={32}
-                  className="
+                <div className="flex items-center gap-x-6">
+                  <AiFillStepBackward
+                    onClick={onPlayPrev}
+                    size={36}
+                    className="
                     text-neutral-400
                     cursor-pointer
                     hover:text-white
                     transition
                   "
-                />
-                <div
-                  onClick={handlePlay}
-                  className="
+                  />
+                  <div
+                    onClick={handlePlay}
+                    className="
                     flex
                     items-center
                     justify-center
@@ -484,22 +485,23 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                     hover:scale-110
                     transform             
                   "
-                >
-                  <Icon size={40} className="text-black" />
-                </div>
-                <AiFillStepForward
-                  onClick={onPlayNext}
-                  size={32}
-                  className="
+                  >
+                    <Icon size={40} className="text-black" />
+                  </div>
+                  <AiFillStepForward
+                    onClick={onPlayNext}
+                    size={36}
+                    className="
                     text-neutral-400
                     cursor-pointer
                     hover:text-white
-                    transition
+                    transition                    
                   "
-                />
+                  />
+                </div>
                 <button onClick={handleToggleRepeat} className="rotate-90">
                   <IoMdRefresh
-                    size={30}
+                    size={32}
                     className={`transform transition ${
                       repeat ? "text-blue-500" : "text-neutral-400"
                     }`}
