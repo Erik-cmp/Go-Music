@@ -14,7 +14,6 @@ import {
 import Vibrant from "node-vibrant";
 // @ts-ignore
 import useSound from "use-sound";
-import Tooltip from "react-tooltip";
 
 import MediaItem from "./MediaItem";
 import LikeButton from "./LikeButton";
@@ -190,14 +189,18 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
     sound?.seek(newTime);
   };
 
-  const handleSeekStart = () => {
-    setIsSeeking(true);
-    pause();
+  const handleSeekStart = () => {        
+    if(isPlaying){
+      setIsSeeking(true);    
+      pause();
+    } 
   };
 
-  const handleSeekEnd = () => {
-    setIsSeeking(false);
-    play();
+  const handleSeekEnd = () => {    
+    if(isSeeking){
+      setIsSeeking(false);  
+      play();
+    }
   };
 
   const handleToggleRepeat = () => {
