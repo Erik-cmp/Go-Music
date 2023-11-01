@@ -611,7 +611,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                 group-hover:opacity-100 
                 delay-1000"
               >
-                Toggle Shuffle
+                {shuffle ? "Disable Shuffle" : "Enable Shuffle"}
               </div>
             )}
           </button>
