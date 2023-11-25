@@ -165,6 +165,23 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
     }
   };
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === ' ') {
+        console.log("Called!");
+        event.preventDefault();
+        handlePlay();
+      }
+    };
+ 
+    window.addEventListener('keydown', handleKeyDown);
+ 
+    // Clean up event listener on component unmount
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);  
+
   const toggleMute = () => {
     if (volume === 0) {
       setVolume(prevVolume);
@@ -189,16 +206,16 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
     sound?.seek(newTime);
   };
 
-  const handleSeekStart = () => {        
-    if(isPlaying){
-      setIsSeeking(true);    
+  const handleSeekStart = () => {
+    if (isPlaying) {
+      setIsSeeking(true);
       pause();
-    } 
+    }
   };
 
-  const handleSeekEnd = () => {    
-    if(isSeeking){
-      setIsSeeking(false);  
+  const handleSeekEnd = () => {
+    if (isSeeking) {
+      setIsSeeking(false);
       play();
     }
   };
@@ -421,6 +438,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                     songId={song.id}
                     songTitle={song.title}
                     size={36}
+                    variant={1}
                   />
                 </div>
               </div>
@@ -522,7 +540,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
             </div>
           </div>
           <div className="hidden md:block">
-            <LikeButton songId={song.id} songTitle={song.title} size={25} />
+            <LikeButton songId={song.id} songTitle={song.title} size={28} variant={1} />
           </div>
         </div>
       </div>
@@ -548,7 +566,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
             gap-x-2                  
           "
         >
-          <LikeButton songId={song.id} songTitle={song.title} size={26} />
+          <LikeButton songId={song.id} songTitle={song.title} size={28} variant={1} />
           <Icon size={34} className="text-white" onClick={handlePlay} />
         </div>
       </div>

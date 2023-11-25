@@ -7,18 +7,21 @@ import { useEffect, useState } from "react";
 import useAuthModal from "@/hooks/useAuthModal";
 import { useUser } from "@/hooks/useUser";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { IoAddCircleOutline, IoRemoveCircleOutline, IoCheckmarkCircle } from "react-icons/io5";
 import toast from "react-hot-toast";
 
 interface LikeButtonProps {
   songId: string;
   songTitle: string;
   size: number;
+  variant: number;
 }
 
 const LikeButton: React.FC<LikeButtonProps> = ({
   songId,
   songTitle,
-  size
+  size,
+  variant
 }) => {
   const router = useRouter();
   const { supabaseClient } = useSessionContext();
@@ -49,7 +52,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({
     fetchData();
   }, [songId, supabaseClient, user?.id]);
 
-  const Icon = isLiked ? AiFillHeart : AiOutlineHeart;
+  const Icon = isLiked ? (variant == 1 ? IoCheckmarkCircle : IoRemoveCircleOutline ) : IoAddCircleOutline;
 
   const handleLike = async () => {
     if(!user) {
@@ -87,16 +90,18 @@ const LikeButton: React.FC<LikeButtonProps> = ({
     router.refresh();
   }
 
-  return (  
+  return (
     <button 
-      onClick={handleLike}
-      className="        
+      onClick={handleLike}      
+      className="
         hover:opacity-75
-        transition
-    ">
-      <Icon color={isLiked ? '#3B82F6' : 'white'} size={size}/>
+        transition      
+      "
+    >
+      <Icon color={variant === 1 ? (isLiked ? '#3B82F6' : 'white') : '#a3a3a3'} size={size}/>
     </button>
   );
+  
 }
  
 export default LikeButton;

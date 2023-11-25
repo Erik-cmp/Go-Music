@@ -20,6 +20,22 @@ const UploadModal = () => {
   const supabaseClient = useSupabaseClient();
   const router = useRouter()
 
+  const getAudioDuration = (file : File) => {
+    return new Promise<number>((resolve, reject) => {
+      const audio = new Audio();
+        
+      audio.addEventListener('loadedmetadata', () => {
+        resolve(audio.duration);
+      });
+        
+      audio.addEventListener('error', () => {
+        reject(new Error('Could not load file'));
+      });
+        
+      audio.src = URL.createObjectURL(file);
+    });
+  }
+
   const {
     register,
     handleSubmit,
@@ -53,6 +69,9 @@ const UploadModal = () => {
       }
 
       const uniqueID = uniqid();
+      let songLength : number = await getAudioDuration(songFile);      
+      songLength = Math.round(songLength);
+      console.log(songLength);
 
       // Upload song
       const {
@@ -98,7 +117,8 @@ const UploadModal = () => {
           title: values.title,
           author: values.author,
           image_path: imageData.path,
-          song_path: songData.path
+          song_path: songData.path,
+          song_length: songLength
         });
 
       if(supabaseError){

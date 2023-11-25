@@ -9,6 +9,13 @@ export const revalidate = 0;
 const Liked = async () => {
   const songs = await getLikedSongs();
 
+  const totalSongs = songs.length;
+
+  const totalDuration = songs.reduce((sum, song) => sum + song.song_length, 0);
+
+  const hours = Math.floor(totalDuration / 3600);
+  const minutes = Math.floor((totalDuration % 3600) / 60);
+
   return (
     <div
       className="
@@ -65,11 +72,19 @@ const Liked = async () => {
                 text-4xl
                 sm:text-5xl
                 lg:text-7xl
-                font-bold                                
+                font-bold                                                                               
               "
               >
                 Liked Songs
               </h1>
+              <p className="text-sm">
+                {totalSongs} {totalSongs === 1 ? "song" : "songs"},                
+                &nbsp;
+                <span className="text-neutral-400">                  
+                  {hours > 0 ? `${hours} hr ` : ""}
+                  {minutes} min
+                </span>
+              </p>
             </div>
           </div>
         </div>
