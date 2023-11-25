@@ -90,7 +90,7 @@ const LikedContent: React.FC<LikedContentProps> = ({ songs }) => {
           <div className="md:block hidden ">
             <p className="text-neutral-400">{i + 1}</p>
           </div>
-          <div className="md:w-[50vw] pointer-events-none w-full">
+          <div className="md:w-[50vw] pointer-events-none w-full truncate">
             <MediaItem onClick={(id: string) => onPlay(id)} data={song} />
           </div>
           <div className="md:block hidden text-sm text-neutral-400 w-[25vw]">
