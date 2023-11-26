@@ -59,7 +59,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
         <p className="text-white truncate">
           {data.title}
         </p>
-        <p className="text-neutral-400 truncate">
+        <p className="text-neutral-400 truncate text-sm">
           {data.description}
         </p>        
       </div>

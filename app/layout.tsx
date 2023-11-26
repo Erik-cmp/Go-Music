@@ -12,7 +12,6 @@ import { VolumeProvider } from "@/contexts/VolumeContext";
 import Player from "@/components/Player";
 import getActiveProductsWithPrices from "@/actions/getActiveProductsWithPrices";
 import { ShuffleProvider } from "@/contexts/ShuffleContext";
-import Head from "next/head";
 import { SongDetailProvider } from "@/contexts/SongDetailContext";
 import getPlaylistsByUser from "@/actions/getPlaylistsByUser";
 

@@ -19,8 +19,7 @@ const Playlist = async () => {
       overflow-y-auto
     "
     >
-      <Header>
-        
+      <Header>        
       </Header>
       <PlaylistContent playlists={playlists} />
     </div>

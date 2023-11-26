@@ -13,6 +13,7 @@ import useAuthModal from "@/hooks/useAuthModal";
 import usePlaylistUploadModal from "@/hooks/usePlaylistUploadModal";
 import Button from "@/components/Button";
 import { BsPlus } from "react-icons/bs";
+import useDeletePlaylistModal from "@/hooks/useDeletePlaylistModal";
 
 interface PlaylistContentProps {
   playlists: Playlist[];
@@ -25,6 +26,7 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
   const subscribeModal = useSubscribeModal();
   const authModal = useAuthModal();
   const playlistUploadModal = usePlaylistUploadModal();
+  const deletePlaylistModal = useDeletePlaylistModal();
 
   const onClick = () => {
     if (!user) {
@@ -43,6 +45,10 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
       router.replace("/");
     }
   }, [isLoading, user, router]);
+
+  const deletePlaylist = (playlist: Playlist) => {
+    return deletePlaylistModal.onOpen(playlist);
+  };  
 
   if (playlists.length === 0) {
     return (
@@ -105,7 +111,7 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
           Add Playlist
         </Button>
       </div>
-      {[...playlists].reverse().map((playlist, i) => (
+      {playlists.map((playlist, i) => (
         <div
           key={playlist.id}
           className="
@@ -137,7 +143,10 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
           <IoCloseCircleOutline
             size={24}
             className="text-neutral-400 hover:opacity-75 cursor-pointer"
-            onClick={() => {}}
+            onClick={() => {
+              console.log(playlist);
+              deletePlaylist(playlist);
+            }}            
           />
         </div>
       ))}

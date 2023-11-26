@@ -11,6 +11,7 @@ import useSubscribeModal from "@/hooks/useSubscribeModal";
 import usePlaylistUploadModal from "@/hooks/usePlaylistUploadModal";
 import ListItem from "./ListItem";
 import useLoadPlaylistImage from "@/hooks/useLoadPlaylistImage";
+import { useRouter } from "next/navigation";
 
 interface LibraryProps {
   playlists: Playlist[];
@@ -21,6 +22,7 @@ const Library: React.FC<LibraryProps> = ({ playlists }) => {
   const authModal = useAuthModal();
   const playlistUploadModal = usePlaylistUploadModal();
   const { user, subscription } = useUser();
+  const router = useRouter();      
 
   const imagePaths = useLoadPlaylistImage(playlists);
 
@@ -49,7 +51,13 @@ const Library: React.FC<LibraryProps> = ({ playlists }) => {
         "
       >
         <a
-          href="playlist"
+          onClick={() => {
+            if (!user) {
+              return authModal.onOpen();
+            }
+
+            router.push("/playlist");
+          }}
           className="group inline-flex items-center gap-x-2 cursor-pointer"
         >
           <TbBooks
@@ -80,7 +88,7 @@ const Library: React.FC<LibraryProps> = ({ playlists }) => {
         px-3
       "
       >
-        {playlists?.map((item, i) => {        
+        {playlists?.map((item, i) => {
           return (
             <ListItem
               key={item.id}

@@ -6,17 +6,20 @@ import AuthModal from "@/components/AuthModal";
 import UploadModal from "@/components/UploadModal";
 import PlaylistUploadModal from "@/components/PlaylistUploadModal";
 import DeleteModal from "@/components/DeleteModal";
+import DeletePlaylistModal from "@/components/DeletePlaylistModal";
 import SubscribeModal from "@/components/SubscribeModal";
-import { ProductWithPrice, Song } from "@/types";
+import { Playlist, ProductWithPrice, Song } from "@/types";
 
 interface ModalProviderProps{
   products: ProductWithPrice[];
   song: Song;
+  playlist: Playlist;
 }
 
 const ModalProvider: React.FC<ModalProviderProps> = ({
   products,
-  song
+  song,
+  playlist
 }) => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -33,7 +36,8 @@ const ModalProvider: React.FC<ModalProviderProps> = ({
       <AuthModal />
       <UploadModal />
       <PlaylistUploadModal />
-      <DeleteModal song={song}/>
+      <DeleteModal song={song}/>      
+      <DeletePlaylistModal playlist={playlist}/>
       <SubscribeModal products={products} />
     </>
   );
