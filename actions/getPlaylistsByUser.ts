@@ -21,7 +21,7 @@ const getPlaylistsByUser = async (): Promise<Playlist[]> => {
     .from('playlists')
     .select('*')
     .eq('user_id', sessionData.session?.user.id)
-    .order('created_at', {ascending: false})
+    .order('created_at', {ascending: true})
 
   if(error){
     console.log(error.message);

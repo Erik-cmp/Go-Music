@@ -166,7 +166,7 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
      pt-4 
     "
         >
-          {songs.map((song, i) => (
+          {[...songs].reverse().map((song, i) => (
             <div
               key={song.id}
               className="
