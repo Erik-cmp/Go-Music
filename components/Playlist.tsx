@@ -22,6 +22,8 @@ const Library: React.FC<LibraryProps> = ({ playlists }) => {
   const playlistUploadModal = usePlaylistUploadModal();
   const { user, subscription } = useUser();
 
+  const imagePaths = playlists?.map(item => useLoadPlaylistImage(item));
+
   const onClick = () => {
     console.log("Pass");
     console.log("PlaylistUploadModal state: ", playlistUploadModal.isOpen);
@@ -78,13 +80,11 @@ const Library: React.FC<LibraryProps> = ({ playlists }) => {
         px-3
       "
       >
-        {playlists?.map((item) => {
-          const imagePath = useLoadPlaylistImage(item);
-
+        {playlists?.map((item, i) => {        
           return (
             <ListItem
               key={item.id}
-              image={imagePath || "/images/liked.png"}
+              image={imagePaths[i] || "/images/liked.png"}
               name={item.title}
               href={item.id}
               variant="2"

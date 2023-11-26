@@ -9,6 +9,8 @@ interface PlaylistContentProps {
 }
 
 const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
+  const imagePaths = playlists?.map(item => useLoadPlaylistImage(item));
+
   return (
     <div
       className="
@@ -28,13 +30,11 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
         variant="1"
       />
 
-      {playlists?.slice(0, 5).map((item) => {
-        const imagePath = useLoadPlaylistImage(item);
-
+      {playlists?.slice(0, 5).map((item, i) => {        
         return (
           <ListItem
             key={item.id}
-            image={imagePath || "/images/liked.png"}
+            image={imagePaths[i] || "/images/liked.png"}
             name={item.title}
             href={item.id}
             variant="1"

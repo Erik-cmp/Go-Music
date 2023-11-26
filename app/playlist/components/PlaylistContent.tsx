@@ -16,6 +16,7 @@ interface PlaylistContentProps {
 const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
   const router = useRouter();
   const { isLoading, user } = useUser();
+  
 
   useEffect(() => {
     if (!isLoading && !user) {
