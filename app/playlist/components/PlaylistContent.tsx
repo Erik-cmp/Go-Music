@@ -8,6 +8,11 @@ import { useUser } from "@/hooks/useUser";
 import { Playlist } from "@/types";
 import PlaylistItem from "@/components/PlaylistItem";
 import { IoCloseCircleOutline } from "react-icons/io5";
+import useSubscribeModal from "@/hooks/useSubscribeModal";
+import useAuthModal from "@/hooks/useAuthModal";
+import usePlaylistUploadModal from "@/hooks/usePlaylistUploadModal";
+import Button from "@/components/Button";
+import { BsPlus } from "react-icons/bs";
 
 interface PlaylistContentProps {
   playlists: Playlist[];
@@ -15,8 +20,23 @@ interface PlaylistContentProps {
 
 const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
   const router = useRouter();
-  const { isLoading, user } = useUser();
-  
+  const { isLoading, user, subscription } = useUser();
+
+  const subscribeModal = useSubscribeModal();
+  const authModal = useAuthModal();
+  const playlistUploadModal = usePlaylistUploadModal();
+
+  const onClick = () => {
+    if (!user) {
+      return authModal.onOpen();
+    }
+
+    if (!subscription) {
+      return subscribeModal.onOpen();
+    }
+
+    return playlistUploadModal.onOpen();
+  };
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -30,13 +50,35 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
         className="
         flex
         flex-col
-        gap-y-2
+        gap-y-4
         w-full
-        px-6
+        px-5        
         text-neutral-400
       "
       >
-        You have no playlists.
+        <p>You have no playlists.</p>
+        <Button className="md:block hidden w-[150px]" onClick={onClick}>
+          Add Playlist
+        </Button>
+        <div
+        style={{
+          position: "fixed",
+          bottom: "85px",
+          right: "12px",
+        }}
+        className="
+          bg-blue-500
+          rounded-full
+          w-12
+          h-12
+          flex
+          items-center
+          justify-center
+          md:hidden          
+        "
+      >
+        <BsPlus onClick={onClick} size={34} className="text-black" />
+      </div>        
       </div>
     );
   }
@@ -52,6 +94,25 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
      md:px-6 pl-3 pr-4    
     "
     >
+      <div
+        style={{
+          position: "fixed",
+          bottom: "85px",
+          right: "12px",
+        }}
+        className="
+          bg-blue-500
+          rounded-full
+          w-12
+          h-12
+          flex
+          items-center
+          justify-center
+          md:hidden          
+        "
+      >
+        <BsPlus onClick={onClick} size={34} className="text-black" />
+      </div>      
       {[...playlists].reverse().map((playlist, i) => (
         <div
           key={playlist.id}

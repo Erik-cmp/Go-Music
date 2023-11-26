@@ -31,7 +31,7 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
         variant="1"
       />
 
-      {playlists?.slice(0, 5).map((item, i) => {        
+      {[...playlists].reverse().slice(0, 5).map((item, i) => {        
         return (
           <ListItem
             key={item.id}
