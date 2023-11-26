@@ -3,7 +3,7 @@
 import Image from "next/image";
 
 import { Playlist } from "@/types";
-import useLoadPlaylistImage from "@/hooks/useLoadPlaylistImage";
+import useLoadPlaylistImageSingle from "@/hooks/useLoadPlaylistImageSingle";
 
 interface PlaylistItemProps{
   data: Playlist
@@ -14,7 +14,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
   data,
   onDoubleClick
 }) => {  
-  const imageUrl = useLoadPlaylistImage(data);
+  const imageUrl = useLoadPlaylistImageSingle(data);
 
   const handleClick = () => {
     if(onDoubleClick){

@@ -22,7 +22,7 @@ const Library: React.FC<LibraryProps> = ({ playlists }) => {
   const playlistUploadModal = usePlaylistUploadModal();
   const { user, subscription } = useUser();
 
-  const imagePaths = playlists?.map(item => useLoadPlaylistImage(item));
+  const imagePaths = useLoadPlaylistImage(playlists);
 
   const onClick = () => {
     console.log("Pass");

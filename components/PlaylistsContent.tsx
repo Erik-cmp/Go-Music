@@ -9,7 +9,8 @@ interface PlaylistContentProps {
 }
 
 const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
-  const imagePaths = playlists?.map(item => useLoadPlaylistImage(item));
+  
+  const imagePaths = useLoadPlaylistImage(playlists);
 
   return (
     <div
