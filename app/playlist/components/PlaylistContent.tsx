@@ -56,29 +56,21 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
         text-neutral-400
       "
       >
+        <h1
+          className="
+                text-white
+                text-3xl
+                sm:text-4xl
+                lg:text-6xl
+                font-bold                                                                               
+              "
+        >
+          Your Playlists
+        </h1>
         <p>You have no playlists.</p>
-        <Button className="md:block hidden w-[150px]" onClick={onClick}>
+        <Button className="w-[150px]" onClick={onClick}>
           Add Playlist
         </Button>
-        <div
-        style={{
-          position: "fixed",
-          bottom: "85px",
-          right: "12px",
-        }}
-        className="
-          bg-blue-500
-          rounded-full
-          w-12
-          h-12
-          flex
-          items-center
-          justify-center
-          md:hidden          
-        "
-      >
-        <BsPlus onClick={onClick} size={34} className="text-black" />
-      </div>        
       </div>
     );
   }
@@ -94,25 +86,25 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
      md:px-6 pl-3 pr-4    
     "
     >
-      <div
-        style={{
-          position: "fixed",
-          bottom: "85px",
-          right: "12px",
-        }}
-        className="
-          bg-blue-500
-          rounded-full
-          w-12
-          h-12
-          flex
-          items-center
-          justify-center
-          md:hidden          
-        "
-      >
-        <BsPlus onClick={onClick} size={34} className="text-black" />
-      </div>      
+      <div className="flex justify-between items-center w-full p-2">
+        <h1
+          className="
+                text-white
+                text-3xl
+                sm:text-4xl
+                lg:text-6xl
+                font-bold                                                                               
+              "
+        >
+          Your Playlists
+        </h1>
+        <Button
+          className="md:w-[150px] w-[100px] md:text-lg text-xs"
+          onClick={onClick}
+        >
+          Add Playlist
+        </Button>
+      </div>
       {[...playlists].reverse().map((playlist, i) => (
         <div
           key={playlist.id}

@@ -103,7 +103,7 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
     <div className="flex flex-col">
       <div
         className="
-          flex
+          flex          
           space-between
           items-start
           justify-between          
@@ -112,8 +112,11 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
       >
         <div
           className="
-            inline-flex
+            flex
+            md:justify-start
+            flex-between
             items-center
+            w-full
             gap-x-2            
           "
         >
@@ -121,33 +124,16 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
             className="
               text-neutral-400
               font-medium              
-              text-lg
+              md:text-2xl
+              text-xl
+              w-full
             "
           >
             Uploaded Songs
           </p>
-          <div className="text-neutral-400 cursor-pointer hover:text-white hover:bg-neutral-800 transition bg-neutral-900 rounded-full md:block hidden">
-            <BsPlus onClick={onClick} size={28} />
-          </div>
-        </div>
-        <div
-          style={{
-            position: "fixed",
-            bottom: "85px",
-            right: "12px",
-          }}
-          className="
-          bg-blue-500
-          rounded-full
-          w-12
-          h-12
-          flex
-          items-center
-          justify-center
-          md:hidden          
-        "
-        >
-          <BsPlus onClick={onClick} size={34} className="text-black" />
+          <Button className="w-[150px] md:text-lg text-sm" onClick={onClick}>
+            Add Song
+          </Button>
         </div>
       </div>
       <div
