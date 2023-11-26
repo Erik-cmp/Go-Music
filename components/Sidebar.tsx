@@ -6,17 +6,18 @@ import { HiHome } from "react-icons/hi";
 import { BiSearch } from "react-icons/bi";
 import Box from "./Box";
 import SidebarItem from "./SidebarItem";
-import Library from "./Library";
-import { Song } from "@/types";
+import Library from "./Playlist";
+import { Playlist, Song } from "@/types";
 import usePlayer from "@/hooks/usePlayer";
 import { twMerge } from "tailwind-merge";
+import { TbPlaylist } from "react-icons/tb";
 
 interface SidebarProps {
-  children: React.ReactNode;
-  songs: Song[]
+  children: React.ReactNode;  
+  playlists: Playlist[];
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ children, songs }) => {
+const Sidebar: React.FC<SidebarProps> = ({ children, playlists }) => {
   const pathname = usePathname();
   const player = usePlayer();
 
@@ -25,7 +26,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children, songs }) => {
       {
         icon: HiHome,
         label: "Home",
-        active: pathname !== "/search",
+        active: pathname === "/",
         href: "/",
       },
       {
@@ -33,6 +34,12 @@ const Sidebar: React.FC<SidebarProps> = ({ children, songs }) => {
         label: "Search",
         active: pathname === "/search",
         href: "/search",
+      },
+      {
+        icon: TbPlaylist,
+        label: "Library",
+        active: pathname === "/library",
+        href: "/library",
       },
     ],
     [pathname]
@@ -74,7 +81,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children, songs }) => {
           </div>
         </Box>
         <Box className="overflow-y-auto h-full">
-          <Library songs={songs} />
+          <Library playlists={playlists} />
         </Box>        
       </div>
       <main className="h-full flex-1 overflow-y-auto py-2">

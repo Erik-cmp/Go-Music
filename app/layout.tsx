@@ -14,6 +14,7 @@ import getActiveProductsWithPrices from "@/actions/getActiveProductsWithPrices";
 import { ShuffleProvider } from "@/contexts/ShuffleContext";
 import Head from "next/head";
 import { SongDetailProvider } from "@/contexts/SongDetailContext";
+import getPlaylistsByUser from "@/actions/getPlaylistsByUser";
 
 const figtree = Figtree({ subsets: ["latin"] });
 
@@ -30,6 +31,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const userSongs = await getSongsByUserId();
+  const userPlaylists = await getPlaylistsByUser();
   const products = await getActiveProductsWithPrices();
 
   return (
@@ -42,9 +44,9 @@ export default async function RootLayout({
           <ToasterProvider />
           <SupabaseProvider>
             <UserProvider>
-              <ModalProvider products={products} />
+              <ModalProvider products={products} song={userSongs[0]} />
               <SongDetailProvider>
-                <Sidebar songs={userSongs}>{children}</Sidebar>
+                <Sidebar playlists={userPlaylists}>{children}</Sidebar>
                 <ShuffleProvider>
                   <Player />
                 </ShuffleProvider>

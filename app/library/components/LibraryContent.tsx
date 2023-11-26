@@ -1,6 +1,5 @@
 "use client";
 
-import { TbPlaylist } from "react-icons/tb";
 import useAuthModal from "@/hooks/useAuthModal";
 import { useUser } from "@/hooks/useUser";
 import useUploadModal from "@/hooks/useUploadModal";
@@ -9,6 +8,10 @@ import MediaItem from "@/components/MediaItem";
 import useOnPlay from "@/hooks/useOnPlay";
 import useSubscribeModal from "@/hooks/useSubscribeModal";
 import { BsPlus } from "react-icons/bs";
+import { IoCloseCircleOutline } from "react-icons/io5";
+import Button from "@/components/Button";
+import DeleteModal from "@/components/DeleteModal";
+import useDeleteModal from "@/hooks/useDeleteModal";
 
 interface LibraryProps {
   songs: Song[];
@@ -18,6 +21,7 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
   const subscribeModal = useSubscribeModal();
   const authModal = useAuthModal();
   const uploadModal = useUploadModal();
+  const deleteModal = useDeleteModal();
   const { user, subscription } = useUser();
 
   const onPlay = useOnPlay(songs);
@@ -34,19 +38,65 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
     return uploadModal.onOpen();
   };
 
-  if (songs.length === 0){
+  const deleteSong = (song: Song) => {
+    return deleteModal.onOpen(song);
+  };
+
+  const handleDoubleClick = (id: string) => {
+    onPlay(id);
+  };
+
+  let lastTouchTime = 0;
+
+  const handleTouchStart = (id: string) => {
+    const currentTime = new Date().getTime();
+    const timeDiff = currentTime - lastTouchTime;
+
+    if (timeDiff < 500) {
+      handleDoubleClick(id);
+    }
+
+    lastTouchTime = currentTime;
+  };
+
+  if (songs.length === 0) {
     return (
-      <div className="
+      <div
+        className="
         flex
         flex-col
-        gap-y-2
-        w-full                
-        text-neutral-400                
-        text-xs
-      ">
-        Your Library Is Empty, Upload a Song to Get Started!
+        gap-y-4
+        w-full                                          
+        py-2
+      "
+      >
+        <p className="text-sm text-neutral-400">
+          Your Library Is Empty, Upload a Song to Get Started!
+        </p>
+        <Button className="md:block hidden w-[120px]" onClick={onClick}>
+          Add Song
+        </Button>
+        <div
+          style={{
+            position: "fixed",
+            bottom: "85px",
+            right: "12px",
+          }}
+          className="
+          bg-blue-500
+          rounded-full
+          w-12
+          h-12
+          flex
+          items-center
+          justify-center
+          md:hidden          
+        "
+        >
+          <BsPlus onClick={onClick} size={34} className="text-black" />
+        </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -54,29 +104,31 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
       <div
         className="
           flex
-          items-center
-          justify-between
-          md:px-2 px-1
-          pt-4
+          space-between
+          items-start
+          justify-between          
+          pt-2          
         "
       >
         <div
           className="
             inline-flex
             items-center
-            gap-x-2
+            gap-x-2            
           "
         >
-          <TbPlaylist className="text-neutral-400" size={26} />
           <p
             className="
               text-neutral-400
-              font-medium
-              text-md
+              font-medium              
+              text-lg
             "
           >
-            Your Songs
+            Uploaded Songs
           </p>
+          <div className="text-neutral-400 cursor-pointer hover:text-white hover:bg-neutral-800 transition bg-neutral-900 rounded-full md:block hidden">
+            <BsPlus onClick={onClick} size={28} />
+          </div>
         </div>
         <div
           style={{
@@ -92,6 +144,7 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
           flex
           items-center
           justify-center
+          md:hidden          
         "
         >
           <BsPlus onClick={onClick} size={34} className="text-black" />
@@ -106,19 +159,56 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
       >
         <div
           className="
-        flex
-        flex-col
-        md:gap-y-2 gap-y-0
-        mt-4        
-        w-full
-      "
+     flex
+     flex-col
+     gap-y-2
+     w-full    
+     pt-4 
+    "
         >
-          {songs.map((item) => (
-            <MediaItem
-              onClick={(id: string) => onPlay(id)}
-              key={item.id}
-              data={item}
-            />
+          {songs.map((song, i) => (
+            <div
+              key={song.id}
+              className="
+           flex 
+           items-center 
+           md:gap-x-6 
+           gap-x-4 
+           w-full 
+           hover:bg-neutral-800/50 
+           rounded-md 
+           md:px-4 
+           pr-2          
+           "
+              onDoubleClick={() => handleDoubleClick(song.id)}
+              onTouchStart={() => handleTouchStart(song.id)}
+            >
+              <div className="md:block hidden ">
+                <p className="text-neutral-400">{i + 1}</p>
+              </div>
+              <div className="md:w-[50vw] pointer-events-none w-full truncate">
+                <MediaItem onClick={(id: string) => onPlay(id)} data={song} />
+              </div>
+              <div className="md:block hidden text-sm text-neutral-400 w-[25vw]">
+                {new Date(song.created_at).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "2-digit",
+                })}
+              </div>
+              <div className="md:block hidden w-[5vw]">
+                <p className="text-sm text-neutral-400">
+                  {`${Math.floor(song.song_length / 60)}`.padStart(2, "0")}:
+                  {`${song.song_length % 60}`.padStart(2, "0")}
+                </p>
+              </div>
+              {/* Delete Song on Click */}
+              <IoCloseCircleOutline
+                size={24}
+                className="text-neutral-400 hover:opacity-75 cursor-pointer"
+                onClick={() => deleteSong(song)}
+              />
+            </div>
           ))}
         </div>
       </div>
