@@ -32,6 +32,7 @@ export default async function RootLayout({
   const userSongs = await getSongsByUserId();
   const userPlaylists = await getPlaylistsByUser();
   const products = await getActiveProductsWithPrices();
+  const playlist = await getPlaylistsByUser();
 
   return (
     <html lang="en">
@@ -43,7 +44,7 @@ export default async function RootLayout({
           <ToasterProvider />
           <SupabaseProvider>
             <UserProvider>
-              <ModalProvider products={products} song={userSongs[0]} />
+              <ModalProvider products={products} song={userSongs[0]} playlist={playlist[0]} />
               <SongDetailProvider>
                 <Sidebar playlists={userPlaylists}>{children}</Sidebar>
                 <ShuffleProvider>
