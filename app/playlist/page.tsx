@@ -36,16 +36,16 @@ const Playlist = async () => {
               gap-y-2
               mt-4
               md:mt-0
-              md:items-start items-center
+              items-start
               w-full            
             "
             >              
               <h1
                 className="
                 text-white
-                text-4xl
-                sm:text-5xl
-                lg:text-7xl
+                text-3xl
+                sm:text-4xl
+                lg:text-6xl
                 font-bold                                                                               
               "
               >

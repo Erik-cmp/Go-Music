@@ -12,7 +12,7 @@ export const revalidate = 0;
 
 export default async function Home() {
   const songs = await getSongs();
-  const playlists = await getPlaylistsByUser();
+  const playlists = await getPlaylistsByUser();  
 
   // throw new Error('test');
 
@@ -30,16 +30,19 @@ export default async function Home() {
       <Header>
         <div className="mb-2">
           <Greeting />
-          <PlaylistContent playlists = {playlists}/>          
+          <PlaylistContent playlists={playlists} />
         </div>
         <div className="flex items-end justify-end w-full pt-1">
-          <a href="playlist" className="md:text-sm text-xs text-neutral-400 hover:text-white transition">
-            <div className="flex items-center">              
+          <a
+            href="playlist"
+            className="md:text-sm text-xs text-neutral-400 hover:text-white transition"
+          >
+            <div className="flex items-center">
               View more
               <IoIosArrowRoundForward size={22} />
-            </div>                        
+            </div>
           </a>
-        </div>        
+        </div>
       </Header>
       <div className="mb-7 px-6">
         <div className="flex justify-between items-center">

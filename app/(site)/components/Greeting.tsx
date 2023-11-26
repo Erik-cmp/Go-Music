@@ -33,7 +33,7 @@ const Greeting: React.FC<GreetingProps> = () => {
   }, []);
 
   return (
-    <h1 className="text-white text-6xl font-bold">
+    <h1 className="text-white md:text-6xl text-3xl font-bold">
       {greeting}
     </h1>
   );
