@@ -165,23 +165,6 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
     }
   };
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === ' ') {
-        console.log("Called!");
-        event.preventDefault();
-        handlePlay();
-      }
-    };
- 
-    window.addEventListener('keydown', handleKeyDown);
- 
-    // Clean up event listener on component unmount
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);  
-
   const toggleMute = () => {
     if (volume === 0) {
       setVolume(prevVolume);

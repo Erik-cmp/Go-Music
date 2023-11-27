@@ -165,6 +165,7 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
            rounded-md 
            md:px-4 
            pr-2          
+           cursor-pointer
            "
               onDoubleClick={() => handleDoubleClick(song.id)}
               onTouchStart={() => handleTouchStart(song.id)}

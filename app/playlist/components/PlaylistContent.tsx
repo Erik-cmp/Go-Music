@@ -124,6 +124,7 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
            rounded-md 
            md:px-4 
            pr-2          
+           cursor-pointer
            "
         >
           <div className="md:block hidden ">
