@@ -44,21 +44,24 @@ const ListItem: React.FC<ListItemProps> = ({
         items-center
         rounded-md
         overflow-hidden
-        gap-x-4
+        md:gap-x-4
+        gap-x-2
         bg-neutral-100/10
         hover:bg-neutral-100/20
         transition
-        pr-4
+        md:pr-4
+        pr-2
       ">
         <div className="
           relative
-          min-h-[64px]
-          min-w-[64px]
+          md:min-h-[64px]
+          md:min-w-[64px]
+          min-h-[48px]
+          min-w-[48px]
         ">
           <Image 
             className="object-cover"
-            fill
-            sizes="64px"
+            fill            
             src={image}
             alt="Image"
           />
