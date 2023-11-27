@@ -8,6 +8,7 @@ import MediaItem from "@/components/MediaItem";
 import useOnPlay from "@/hooks/useOnPlay";
 import useSubscribeModal from "@/hooks/useSubscribeModal";
 import { BsPlus } from "react-icons/bs";
+import { LuPlus } from "react-icons/lu";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import Button from "@/components/Button";
 import DeleteModal from "@/components/DeleteModal";
@@ -73,7 +74,10 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
         <p className="text-sm text-neutral-400">
           Your Library Is Empty, Upload a Song to Get Started!
         </p>
-        <Button className="md:block hidden w-[120px]" onClick={onClick}>
+        <Button
+          className="md:w-[140px] w-[120px] md:text-base text-sm flex gap-x-2 items-center justify-center"
+          onClick={onClick}
+        >
           Add Song
         </Button>
         <div
@@ -131,7 +135,10 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
           >
             Uploaded Songs
           </p>
-          <Button className="w-[150px] md:text-lg text-sm" onClick={onClick}>
+          <Button
+            className="md:w-[140px] w-[120px] md:text-base text-sm flex gap-x-2 items-center justify-center"
+            onClick={onClick}
+          >
             Add Song
           </Button>
         </div>

@@ -12,7 +12,8 @@ import useSubscribeModal from "@/hooks/useSubscribeModal";
 import useAuthModal from "@/hooks/useAuthModal";
 import usePlaylistUploadModal from "@/hooks/usePlaylistUploadModal";
 import Button from "@/components/Button";
-import { BsPlus } from "react-icons/bs";
+import { FiPlusCircle } from "react-icons/fi";
+import { LuPlus } from "react-icons/lu";
 import useDeletePlaylistModal from "@/hooks/useDeletePlaylistModal";
 
 interface PlaylistContentProps {
@@ -48,7 +49,7 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
 
   const deletePlaylist = (playlist: Playlist) => {
     return deletePlaylistModal.onOpen(playlist);
-  };  
+  };
 
   if (playlists.length === 0) {
     return (
@@ -74,8 +75,11 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
           Your Playlists
         </h1>
         <p>You have no playlists.</p>
-        <Button className="w-[150px]" onClick={onClick}>
-          Add Playlist
+        <Button
+          className="md:w-[140px] w-[120px] md:text-base text-sm flex gap-x-2 items-center justify-center"
+          onClick={onClick}
+        >          
+          Add Playlist          
         </Button>
       </div>
     );
@@ -105,10 +109,10 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
           Your Playlists
         </h1>
         <Button
-          className="md:w-[150px] w-[100px] md:text-lg text-xs"
+          className="md:w-[140px] w-[120px] md:text-base text-sm flex gap-x-2 items-center justify-center"
           onClick={onClick}
-        >
-          Add Playlist
+        >          
+          Add Playlist          
         </Button>
       </div>
       {playlists.map((playlist, i) => (
@@ -147,7 +151,7 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
             onClick={() => {
               console.log(playlist);
               deletePlaylist(playlist);
-            }}            
+            }}
           />
         </div>
       ))}
