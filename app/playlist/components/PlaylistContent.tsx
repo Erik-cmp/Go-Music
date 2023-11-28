@@ -76,10 +76,10 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
         </h1>
         <p>You have no playlists.</p>
         <Button
-          className="md:w-[140px] w-[120px] md:text-base text-sm flex gap-x-2 items-center justify-center"
+          className="w-[110px] md:text-base flex gap-x-2 items-center justify-center"
           onClick={onClick}
         >          
-          Add Playlist          
+          Add New         
         </Button>
       </div>
     );
@@ -109,10 +109,10 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
           Your Playlists
         </h1>
         <Button
-          className="md:w-[140px] w-[120px] md:text-base text-sm flex gap-x-2 items-center justify-center"
+          className="w-[110px] md:text-base flex gap-x-2 items-center justify-center"
           onClick={onClick}
         >          
-          Add Playlist          
+          Add New         
         </Button>
       </div>
       {playlists.map((playlist, i) => (

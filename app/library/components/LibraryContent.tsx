@@ -75,7 +75,7 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
           Your Library Is Empty, Upload a Song to Get Started!
         </p>
         <Button
-          className="md:w-[140px] w-[120px] md:text-base text-sm flex gap-x-2 items-center justify-center"
+          className="w-[150px] md:text-base flex gap-x-2 items-center justify-center"
           onClick={onClick}
         >
           Add Song
@@ -136,7 +136,7 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
             Uploaded Songs
           </p>
           <Button
-            className="md:w-[140px] w-[120px] md:text-base text-sm flex gap-x-2 items-center justify-center"
+            className="w-[150px] md:text-base flex gap-x-2 items-center justify-center"
             onClick={onClick}
           >
             Add Song
