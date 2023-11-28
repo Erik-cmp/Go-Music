@@ -60,7 +60,7 @@ const PlaylistUploadModal = () => {
       } = await supabaseClient
         .storage
         .from('images')
-        .upload(`playlistImage-${values.title}-${uniqueID}`, imageFile, {
+        .upload(`playlistImage-${uniqueID}`, imageFile, {
           cacheControl: '3600',
           upsert: false
         });      

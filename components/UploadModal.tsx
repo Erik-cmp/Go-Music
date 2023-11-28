@@ -68,7 +68,7 @@ const UploadModal = () => {
         return;
       }
 
-      const uniqueID = uniqid();
+      const uniqueID = uniqid();   
       let songLength : number = await getAudioDuration(songFile);      
       songLength = Math.round(songLength);
       console.log(songLength);
@@ -80,7 +80,7 @@ const UploadModal = () => {
       } = await supabaseClient
         .storage
         .from('songs')
-        .upload(`song-${values.title}-${uniqueID}`, songFile, {
+        .upload(`song-${uniqueID}`, songFile, {
           cacheControl: '3600',
           upsert: false
         });
@@ -98,7 +98,7 @@ const UploadModal = () => {
       } = await supabaseClient
         .storage
         .from('images')
-        .upload(`image-${values.title}-${uniqueID}`, imageFile, {
+        .upload(`image-${uniqueID}`, imageFile, {
           cacheControl: '3600',
           upsert: false
         });      
