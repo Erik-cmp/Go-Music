@@ -205,7 +205,7 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
               <Image
                 fill
                 alt="Playlist"
-                className="object-cover"
+                className="object-cover rounded"
                 src={imageUrl[index] as any}
                 sizes="300px"
               />

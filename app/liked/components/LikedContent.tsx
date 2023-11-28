@@ -70,7 +70,7 @@ const LikedContent: React.FC<LikedContentProps> = ({ songs }) => {
      md:px-6 pl-3 pr-4    
     "
     >
-      {[...songs].reverse().map((song, i) => (
+      {songs.map((song, i) => (
         <div
           key={song.id}
           className="

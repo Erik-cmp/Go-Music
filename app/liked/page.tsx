@@ -43,13 +43,13 @@ const Liked = async () => {
               h-40
               w-40
               lg:h-44
-              lg:w-44              
+              lg:w-44                                       
             "
             >
               <Image
                 fill
                 alt="Playlist"
-                className="object-cover"
+                className="object-cover rounded"
                 src="/images/liked.png"
                 sizes="300px"
               />
