@@ -4,27 +4,36 @@ import Image from "next/image";
 
 import { Playlist } from "@/types";
 import useLoadPlaylistImageSingle from "@/hooks/useLoadPlaylistImageSingle";
+import { useRouter } from "next/navigation";
+import useAuthModal from "@/hooks/useAuthModal";
+import { useUser } from "@/hooks/useUser";
 
 interface PlaylistItemProps{
-  data: Playlist
-  onDoubleClick?: (id: string) => void;
+  data: Playlist;
+  href: string;  
 }
 
 const PlaylistItem: React.FC<PlaylistItemProps> = ({
   data,
-  onDoubleClick
+  href
 }) => {  
   const imageUrl = useLoadPlaylistImageSingle(data);
 
+  const router = useRouter();  
+  const authModal = useAuthModal();
+  const user = useUser();
+
   const handleClick = () => {
-    if(onDoubleClick){
-      return onDoubleClick(data.id);
-    }    
+    if (!user) {
+      return authModal.onOpen();
+    }        
+    
+    router.push(href);
   }
 
   return (  
     <div
-      onClick={handleClick}
+      onDoubleClick={handleClick}
       className="
         flex
         items-center

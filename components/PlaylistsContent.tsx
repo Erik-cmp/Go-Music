@@ -28,7 +28,7 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
         image="/images/liked.png"
         name="Liked Songs"
         href="liked"
-        variant="1"
+        variant="1"        
       />
 
       {[...playlists].reverse().slice(0, 5).map((item, i) => {        

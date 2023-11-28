@@ -2,9 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { FaPlay } from "react-icons/fa"
-import useOnPlay from "@/hooks/useOnPlay";
-import { Song } from "@/types";
 import useAuthModal from "@/hooks/useAuthModal";
 import { useUser } from "@supabase/auth-helpers-react";
 
@@ -28,15 +25,16 @@ const ListItem: React.FC<ListItemProps> = ({
   const onClick = () => {  
     if (!user) {
       return authModal.onOpen();
-    }    
+    }        
     
-    router.push(href);
+    if(href === 'liked') router.push('liked')
+    else router.push('playlist');
   }
 
   if(variant === "1"){
     return ( 
       <button 
-      onClick={onClick}
+      onClick={onClick}      
       className="
         relative
         group
