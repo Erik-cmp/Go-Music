@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import useAuthModal from "@/hooks/useAuthModal";
 import { useUser } from "@supabase/auth-helpers-react";
+import { useRef } from "react";
 
 interface ListItemProps {
   image: string;
@@ -16,6 +17,7 @@ const ListItem: React.FC<ListItemProps> = ({ image, name, href, variant }) => {
   const router = useRouter();
   const authModal = useAuthModal();
   const user = useUser();
+  const lastTapTimeRef = useRef<number>(0);
 
   const onClick = () => {
     if (!user) {
@@ -30,10 +32,26 @@ const ListItem: React.FC<ListItemProps> = ({ image, name, href, variant }) => {
     }
   };
 
+  let lastTouchTime = 0;
+
+  const handleTouchStart = () => {
+    console.log('im called');
+    const currentTime = new Date().getTime();
+    const timeDiff = currentTime - lastTouchTime;
+
+    if (timeDiff < 500) {
+      console.log('called');
+      onClick();
+    }
+
+    lastTouchTime = currentTime;
+  };  
+
   if (variant === "1") {
     return (
       <button
         onClick={onClick}
+        onTouchStart={() => handleTouchStart()}
         className="
         relative
         group
@@ -70,6 +88,7 @@ const ListItem: React.FC<ListItemProps> = ({ image, name, href, variant }) => {
     return (
       <button
         onClick={onClick}
+        onTouchStart={() => handleTouchStart()}
         className="
         relative
         group

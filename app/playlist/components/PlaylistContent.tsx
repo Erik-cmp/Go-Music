@@ -32,6 +32,34 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
     
   const imageUrl = useLoadPlaylistImage(playlists)
 
+  let lastTouchTime = 0;
+
+  const handleTouchStart = (id : string) => {
+    console.log('im called');
+    const currentTime = new Date().getTime();
+    const timeDiff = currentTime - lastTouchTime;
+
+    if (timeDiff < 500) {
+      console.log('called');
+      redirect(id);
+    }
+
+    lastTouchTime = currentTime;
+  };  
+
+  const redirect = (href : string) => {
+    if (!user) {
+      return authModal.onOpen();
+    }
+
+    if (href === "liked") {
+      router.push("liked");
+    } else {
+      const newPath = `/playlist/${href}`;
+      router.replace(newPath);
+    }
+  };  
+
   const onClick = () => {
     if (!user) {
       return authModal.onOpen();
@@ -131,6 +159,7 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
           <div
             key={playlist.id}
             onDoubleClick={() => handleClick(playlist.id)}
+            onTouchStart={() => handleTouchStart(playlist.id)}
             className="
              flex 
              items-center 
