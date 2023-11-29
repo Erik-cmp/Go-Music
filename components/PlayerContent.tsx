@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Playlist, Song } from "@/types";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
+import { RiMenuAddFill } from "react-icons/ri";
 import {
   RxSpeakerOff,
   RxSpeakerQuiet,
@@ -34,9 +35,10 @@ import AddToPlaylist from "./AddToPlaylist";
 interface PlayerContentProps {
   song: Song;
   songUrl: string;  
+  playlist: Playlist[];
 }
 
-const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
+const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl, playlist }) => {
   const player = usePlayer();
   const { volume, setVolume } = useVolume();
   const { shuffle, toggleShuffle } = useShuffle();
@@ -372,16 +374,19 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
             }`}
             style={{ background: backgroundColor }}
           >
-            <div className="fixed top-0 left-0 p-4 z-10">
+            <div className="fixed top-0 left-0 p-4 z-10 flex justify-between w-full">
               <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center">
                 <RxCaretDown
                   onClick={hideSongDetail}
                   className="text-white"
                   size={34}
-                >
-                  Close
-                </RxCaretDown>
+                >                  
+                </RxCaretDown>                
               </div>
+              <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center">
+                {/* TODO: add playlist on mobile view (Overlay that occupies like 60% of the screen) */}
+                <RiMenuAddFill className="text-white" size={18}/>            
+              </div>                            
             </div>
             <div
               className="
@@ -539,7 +544,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
               {showAddToPlaylist && (
                 <div className="fixed z-10 bottom-[60px] left-10">
-                  <AddToPlaylist/>
+                  <AddToPlaylist playlist={playlist}/>
                 </div>
               )}
             </div>

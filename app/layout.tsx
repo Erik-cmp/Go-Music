@@ -48,7 +48,7 @@ export default async function RootLayout({
               <SongDetailProvider>
                 <Sidebar playlists={userPlaylists}>{children}</Sidebar>
                 <ShuffleProvider>
-                  <Player />
+                  <Player playlist={userPlaylists}/>
                 </ShuffleProvider>
               </SongDetailProvider>
             </UserProvider>

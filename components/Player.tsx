@@ -4,10 +4,16 @@ import useGetSongById from "@/hooks/useGetSongById";
 import useLoadSongUrl from "@/hooks/useLoadSongUrl";
 import usePlayer from "@/hooks/usePlayer";
 import PlayerContent from "./PlayerContent";
+import { Playlist } from "@/types";
 
-const Player = () => {
+interface PlayerProps {
+  playlist: Playlist[];
+}
+
+const Player: React.FC<PlayerProps> = ({ playlist }) => {
+
   const player = usePlayer();
-  const { song } = useGetSongById(player.activeId);  
+  const { song } = useGetSongById(player.activeId);    
 
   const songUrl = useLoadSongUrl(song!);
 
@@ -46,7 +52,8 @@ const Player = () => {
       <PlayerContent 
         key={songUrl}
         song={song}
-        songUrl={songUrl}        
+        songUrl={songUrl}    
+        playlist={playlist}    
       />
     </div>
   );
