@@ -37,11 +37,11 @@ const AddToPlaylist: React.FC<AddToPlaylistProps> = ({ playlist }) => {
             w-[200px]
           `}
         >
-          {playlist.map((playlistItem) => (
+          {playlist.map((playlist) => (
             // TODO: When this is clicked add song to playlist
-            <div className="flex gap-y-2 p-2 bg-neutral-800 hover:bg-neutral-700 rounded shadow transition">
-              <p key={playlistItem.id} className="text-white truncate">
-                {playlistItem.title}
+            <div key={playlist.id} className="flex gap-y-2 p-2 bg-neutral-800 hover:bg-neutral-700 rounded shadow transition">
+              <p className="text-white truncate">
+                {playlist.title}
               </p>
             </div>
           ))}
