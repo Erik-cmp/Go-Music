@@ -7,7 +7,7 @@ import PlayerContent from "./PlayerContent";
 
 const Player = () => {
   const player = usePlayer();
-  const { song } = useGetSongById(player.activeId);
+  const { song } = useGetSongById(player.activeId);  
 
   const songUrl = useLoadSongUrl(song!);
 
@@ -46,7 +46,7 @@ const Player = () => {
       <PlayerContent 
         key={songUrl}
         song={song}
-        songUrl={songUrl}
+        songUrl={songUrl}        
       />
     </div>
   );

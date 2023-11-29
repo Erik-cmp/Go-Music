@@ -8,10 +8,8 @@ import MediaItem from "@/components/MediaItem";
 import useOnPlay from "@/hooks/useOnPlay";
 import useSubscribeModal from "@/hooks/useSubscribeModal";
 import { BsPlus } from "react-icons/bs";
-import { LuPlus } from "react-icons/lu";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import Button from "@/components/Button";
-import DeleteModal from "@/components/DeleteModal";
 import useDeleteModal from "@/hooks/useDeleteModal";
 
 interface LibraryProps {

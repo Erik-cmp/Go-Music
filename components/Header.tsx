@@ -9,12 +9,14 @@ import { BiSearch } from "react-icons/bi";
 import { FaUserAlt } from "react-icons/fa";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { toast } from "react-hot-toast";
-
+import useGetPlaylistDetail from "@/hooks/useGetPlaylistDetail";
 import useAuthModal from "@/hooks/useAuthModal";
 import { useUser } from "@/hooks/useUser";
 import Button from "./Button";
 import usePlayer from "@/hooks/usePlayer";
 import { TbPlaylist } from "react-icons/tb";
+import Vibrant from "node-vibrant";
+import useLoadPlaylistImageSingle from "@/hooks/useLoadPlaylistImageSingle";
 
 interface HeaderProps {
   children: React.ReactNode;
@@ -39,41 +41,72 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
     }
   };
 
-  const [isScrolled, setIsScrolled] = useState(false);
+  const url = typeof window !== "undefined" ? window.location.href : "";
+  const id = url.split("/playlist/")[1];
+  // console.log(id);
+  const playlists = useGetPlaylistDetail(id);
+  // console.log(playlists.playlist?.title);
+  const imagePath = useLoadPlaylistImageSingle(playlists.playlist as any);
+
+  const [backgroundColor, setBackgroundColor] = useState(
+    "linear-gradient(to bottom, #1E40AF, transparent);"
+  );
 
   useEffect(() => {
-    console.log("useEffect is running");
-    const handleScroll = () => {
-      const offset = window.scrollY;
-      const scrollThreshold = 50;
-      console.log(offset);
-      console.log(scrollThreshold);
-      if (offset > scrollThreshold) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    }
+    const checkPath = () => {
+      const currentPath = window.location.pathname;
+      const isPlaylistPage = currentPath.includes("playlist/");
+      const isSearchOrLibraryPage =
+        currentPath.includes("search") || currentPath.includes("library");
 
-    window.addEventListener('scroll', handleScroll);    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);      
+      if (imagePath) {
+        let v = Vibrant.from(imagePath);
+        v.getPalette().then((palette) => {
+          setBackgroundColor(
+            isSearchOrLibraryPage
+              ? "transparent"
+              : isPlaylistPage
+              ? `linear-gradient(to bottom, ${palette.Vibrant?.hex}, transparent)`
+              : "linear-gradient(to bottom, #1E40AF, transparent)"
+          );
+        });
+      } else {
+        setBackgroundColor(
+          isSearchOrLibraryPage
+            ? "transparent"
+            : isPlaylistPage
+            ? `linear-gradient(to bottom, #1E40AF, transparent)`
+            : "linear-gradient(to bottom, #1E40AF, transparent)"
+        );
+      }
     };
-  }, [])  
+
+    checkPath();
+    
+    const handleRouteChange = () => {
+      checkPath();
+    };
+
+    window.addEventListener("popstate", handleRouteChange);
+
+    return () => {
+      window.removeEventListener("popstate", handleRouteChange);
+    };
+  }, [imagePath]);
 
   return (
     <div
       className={twMerge(
         `
-      h-fit
+      h-fit      
+      md:p-6 p-4       
       bg-gradient-to-b
-      from-blue-700
-      md:p-6 p-4            
-      ${isScrolled ? 'fixed top-0 bg-blue-900 rounded-tl-lg rounded-tr-lg p-6' : ''}
-    `,        
+      from-blue-700                 
+    `,
         className
       )}
-    >      
+      style={{ background: backgroundColor }}
+    >
       <div
         className="
         w-full
@@ -157,7 +190,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                 return AuthModal.onOpen();
               }
 
-              router.push("/library")
+              router.push("/library");
             }}
             className="
               rounded-full

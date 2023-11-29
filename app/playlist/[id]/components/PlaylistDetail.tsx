@@ -1,25 +1,123 @@
-// app/playlist/[id]/components/PlaylistDetail.tsx
-"use client"
-import { useEffect, useState } from 'react';
+"use client";
 
-export const revalidate = 0;
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-const PlaylistDetail = () => { 
- const [playlist, setPlaylist] = useState(null);
+import { useUser } from "@/hooks/useUser";
+import { Song } from "@/types";
+import MediaItem from "@/components/MediaItem";
+import LikeButton from "@/components/LikeButton";
+import useOnPlay from "@/hooks/useOnPlay";
+import useGetPlaylistDetail from "@/hooks/useGetPlaylistDetail";
 
- useEffect(() => {
- const url = typeof window !== 'undefined' ? window.location.href : '';
- const id = url.split('/playlist/')[1];
+interface PlaylistDetailProps {
+  songs: Song[];
+}
 
- fetch(`/api/playlist/${id}`)
-  .then(response => response.json())
-  .then(data => setPlaylist(data));
- }, []);
+const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ songs }) => {
 
- return (
- <div>
- </div>
- );
+  const url = typeof window !== "undefined" ? window.location.href : "";
+  const id = url.split("/playlist/")[1];
+  console.log(id);
+  const playlists = useGetPlaylistDetail(id);  
+
+  const router = useRouter();
+  const { isLoading, user } = useUser();
+
+  const onPlay = useOnPlay(songs);
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.replace("/");
+    }
+  }, [isLoading, user, router]);  
+  
+  const handleDoubleClick = (id : string) => {    
+    onPlay(id);
+  };  
+
+  let lastTouchTime = 0;
+
+  const handleTouchStart = (id : string) => {
+    const currentTime = new Date().getTime();
+    const timeDiff = currentTime - lastTouchTime;
+    
+    if (timeDiff < 500) {
+      handleDoubleClick(id);
+    }
+
+    lastTouchTime = currentTime;
+  };
+
+  if (songs.length === 0) {
+    return (
+      <div
+        className="
+        flex
+        flex-col
+        gap-y-2
+        w-full
+        px-6
+        text-neutral-400
+      "
+      >
+        {playlists.playlist?.title} is empty.
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="
+     flex
+     flex-col
+     gap-y-2
+     w-full    
+     md:p-6 p-3
+     md:px-6 pl-3 pr-4    
+    "
+    >
+      {songs.map((song, i) => (
+        <div
+          key={song.id}
+          className="
+           flex 
+           items-center 
+           md:gap-x-6 
+           gap-x-4 
+           w-full 
+           hover:bg-neutral-800/50 
+           rounded-md 
+           md:px-4 
+           pr-2          
+           "           
+           onDoubleClick={() => handleDoubleClick(song.id)}    
+           onTouchStart={() => handleTouchStart(song.id)}                                 
+        >
+          <div className="md:block hidden ">
+            <p className="text-neutral-400">{i + 1}</p>
+          </div>
+          <div className="md:w-[50vw] pointer-events-none w-full truncate">
+            <MediaItem onClick={(id: string) => onPlay(id)} data={song} />
+          </div>
+          <div className="md:block hidden text-sm text-neutral-400 w-[25vw]">
+            {new Date(song.created_at).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "2-digit",
+            })}
+          </div>
+          <div className="md:block hidden w-[5vw]">
+            <p className="text-sm text-neutral-400">
+              {`${Math.floor(song.song_length / 60)}`.padStart(2, "0")}:
+              {`${song.song_length % 60}`.padStart(2, "0")}
+            </p>
+          </div>
+          <LikeButton songId={song.id} songTitle={song.title} size={20} variant={2} />
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default PlaylistDetail;

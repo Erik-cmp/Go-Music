@@ -29,17 +29,8 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
   const authModal = useAuthModal();
   const playlistUploadModal = usePlaylistUploadModal();
   const deletePlaylistModal = useDeletePlaylistModal();
-
-  const [isOpen, setIsOpen] = useState(false);
-  const [index, setIndex] = useState(0);
+    
   const imageUrl = useLoadPlaylistImage(playlists)
-
-  // const totalSongs = songs.length;
-
-  // const totalDuration = songs.reduce((sum, song) => sum + song.song_length, 0);
-
-  // const hours = Math.floor(totalDuration / 3600);
-  // const minutes = Math.floor((totalDuration % 3600) / 60);  
 
   const onClick = () => {
     if (!user) {
@@ -53,13 +44,12 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
     return playlistUploadModal.onOpen();
   };
 
-  const handleClick = (i: number) => {
+  const handleClick = (id: string) => {
     if (!user) {
       return authModal.onOpen();
     }
 
-    setIsOpen(true);
-    setIndex(i);
+    router.replace('playlist/' + id);
   };
 
   useEffect(() => {
@@ -106,7 +96,7 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
     );
   }
 
-  if (!isOpen) {
+  
     return (
       <div
         className="
@@ -140,7 +130,7 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
         {playlists.map((playlist, i) => (
           <div
             key={playlist.id}
-            onDoubleClick={() => handleClick(i)}
+            onDoubleClick={() => handleClick(playlist.id)}
             className="
              flex 
              items-center 
@@ -181,75 +171,5 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
       </div>
     );
   }
-
-  return (
-    <div>
-        <div className="md:p-6 p-4">
-          <div
-            className="
-            flex            
-            md:flex-row flex-col
-            items-center
-            gap-x-5
-          "
-          >
-            <div
-              className="
-              relative
-              h-40
-              w-40
-              lg:h-44
-              lg:w-44              
-            "
-            >
-              <Image
-                fill
-                alt="Playlist"
-                className="object-cover rounded"
-                src={imageUrl[index] as any}
-                sizes="300px"
-              />
-            </div>
-            <div
-              className="
-              flex
-              flex-col
-              gap-y-2
-              mt-4
-              md:mt-0
-              md:items-start items-center
-              w-full              
-            "
-            >
-              <p className="hidden md:block font-semibold text-sm">Playlist</p>
-              <h1
-                className="
-                text-white
-                text-3xl
-                sm:text-3xl
-                lg:text-6xl
-                font-bold         
-                md:text-start
-                text-center                                   
-              "
-              >
-                {playlists[index].title}
-              </h1>
-              <p className="hidden md:block text-sm text-neutral-400">{playlists[index].description}</p>
-              {/* <p className="text-sm">
-                {totalSongs} {totalSongs === 1 ? "song" : "songs"},                
-                &nbsp;
-                <span className="text-neutral-400">                  
-                  {hours > 0 ? `${hours} hr ` : ""}
-                  {minutes} min
-                </span>
-              </p> */}
-            </div>
-          </div>
-        </div>
-        {/* PlaylistSongs component here with props of songs */}
-    </div>
-  );
-};
 
 export default PlaylistContent;

@@ -54,10 +54,10 @@ const Library: React.FC<LibraryProps> = ({ playlists }) => {
           onClick={() => {
             if (!user) {
               return authModal.onOpen();
-            }
+            }            
 
-            router.push("/playlist");
-          }}
+            router.replace('/playlist');
+          }}          
           className="group inline-flex items-center gap-x-2 cursor-pointer"
         >
           <TbBooks

@@ -9,7 +9,6 @@ interface PlaylistContentProps {
 }
 
 const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
-  
   const imagePaths = useLoadPlaylistImage(playlists);
 
   return (
@@ -28,20 +27,24 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
         image="/images/liked.png"
         name="Liked Songs"
         href="liked"
-        variant="1"        
+        variant="1"
       />
 
-      {[...playlists].reverse().slice(0, 5).map((item, i) => {        
-        return (
-          <ListItem
-            key={item.id}
-            image={imagePaths[i] || "/images/liked.png"}
-            name={item.title}
-            href={item.id}
-            variant="1"
-          />
-        );
-      })}
+      {[...playlists]
+        .reverse()
+        .slice(0, 5)
+        .map((item, i, arr) => {
+          const reversedIndex = arr.length - i;
+          return (
+            <ListItem
+              key={item.id}
+              image={imagePaths[reversedIndex] || "/images/liked.png"}
+              name={item.title}
+              href={item.id}
+              variant="1"
+            />
+          );
+        })}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -8,34 +8,33 @@ import { useUser } from "@supabase/auth-helpers-react";
 interface ListItemProps {
   image: string;
   name: string;
-  href: string;  
+  href: string;
   variant: string;
 }
 
-const ListItem: React.FC<ListItemProps> = ({
-  image,
-  name,
-  href,
-  variant
-}) => {
-  const router = useRouter();  
+const ListItem: React.FC<ListItemProps> = ({ image, name, href, variant }) => {
+  const router = useRouter();
   const authModal = useAuthModal();
   const user = useUser();
 
-  const onClick = () => {  
+  const onClick = () => {
     if (!user) {
       return authModal.onOpen();
-    }        
-    
-    if(href === 'liked') router.push('liked')
-    else router.push('playlist');
-  }
+    }
 
-  if(variant === "1"){
-    return ( 
-      <button 
-      onClick={onClick}      
-      className="
+    if (href === "liked") {
+      router.push("liked");
+    } else {
+      const newPath = `/playlist/${href}`;
+      router.replace(newPath);
+    }
+  };
+
+  if (variant === "1") {
+    return (
+      <button
+        onClick={onClick}
+        className="
         relative
         group
         flex
@@ -49,32 +48,29 @@ const ListItem: React.FC<ListItemProps> = ({
         transition
         md:pr-4
         pr-2
-      ">
-        <div className="
+      "
+      >
+        <div
+          className="
           relative
           md:min-h-[64px]
           md:min-w-[64px]
           min-h-[48px]
           min-w-[48px]
-        ">
-          <Image 
-            className="object-cover"
-            fill            
-            src={image}
-            alt="Image"
-          />
+        "
+        >
+          <Image className="object-cover" fill src={image} alt="Image" />
         </div>
         <p className="font-semibold truncate md:py-4 md:text-lg text-sm">
           {name}
         </p>
       </button>
     );
-  }
-  else if(variant === "2"){
-    return ( 
-      <button 
-      onClick={onClick}
-      className="
+  } else if (variant === "2") {
+    return (
+      <button
+        onClick={onClick}
+        className="
         relative
         group
         flex
@@ -85,15 +81,18 @@ const ListItem: React.FC<ListItemProps> = ({
         hover:bg-neutral-100/10
         transition
         p-2               
-      ">
-        <div className="
+      "
+      >
+        <div
+          className="
           relative
           min-h-[48px]
           min-w-[48px]
           overflow-hidden
           rounded-md                    
-        ">
-          <Image 
+        "
+        >
+          <Image
             className="object-cover"
             fill
             sizes="48px"
@@ -101,12 +100,10 @@ const ListItem: React.FC<ListItemProps> = ({
             alt="Image"
           />
         </div>
-        <p className="truncate font-medium">
-          {name}
-        </p>
+        <p className="truncate font-medium">{name}</p>
       </button>
-    );    
+    );
   }
-}
- 
+};
+
 export default ListItem;

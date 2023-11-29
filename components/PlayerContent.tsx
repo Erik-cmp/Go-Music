@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Song } from "@/types";
+import { Playlist, Song } from "@/types";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
 import {
@@ -30,9 +30,10 @@ import "./css/SeekBar.css";
 import "./css/Animation.css";
 import Image from "next/image";
 import useLoadImage from "@/hooks/useLoadImage";
+import AddToPlaylist from "./AddToPlaylist";
 interface PlayerContentProps {
   song: Song;
-  songUrl: string;
+  songUrl: string;  
 }
 
 const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
@@ -331,6 +332,17 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
   const [showTooltipTimeout, setShowTooltipTimeout] = useState(null);
 
+  const [showAddToPlaylist, setShowAddToPlaylist] = useState(false);
+
+  const handleRightClick = (e : any) => {
+    e.preventDefault();
+    setShowAddToPlaylist(true);
+  };
+
+  const handleMouseLeave2 = () => {
+    setShowAddToPlaylist(false);
+  };  
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
       <div
@@ -518,12 +530,27 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
           {/* MOBILE SONG DETAIL END */}
 
           <div className="hidden md:block">
-            <div className="truncate max-w-[28vw] text-base">
+            <div
+              className="truncate max-w-[28vw] text-base"
+              onContextMenu={handleRightClick}
+              onMouseLeave={handleMouseLeave2}
+            >
               <MediaItem data={song} />
+
+              {showAddToPlaylist && (
+                <div className="fixed z-10 bottom-[60px] left-10">
+                  <AddToPlaylist/>
+                </div>
+              )}
             </div>
           </div>
           <div className="hidden md:block">
-            <LikeButton songId={song.id} songTitle={song.title} size={28} variant={1} />
+            <LikeButton
+              songId={song.id}
+              songTitle={song.title}
+              size={28}
+              variant={1}
+            />
           </div>
         </div>
       </div>
@@ -549,7 +576,12 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
             gap-x-2                  
           "
         >
-          <LikeButton songId={song.id} songTitle={song.title} size={28} variant={1} />
+          <LikeButton
+            songId={song.id}
+            songTitle={song.title}
+            size={28}
+            variant={1}
+          />
           <Icon size={34} className="text-white" onClick={handlePlay} />
         </div>
       </div>

@@ -28,7 +28,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
       return authModal.onOpen();
     }        
     
-    router.push(href);
+    router.replace('playlist/' + href);
   }
 
   return (  
