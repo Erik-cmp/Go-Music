@@ -3,14 +3,13 @@
 import useLoadPlaylistImage from "@/hooks/useLoadPlaylistImage";
 import ListItem from "./ListItem";
 import { Playlist } from "@/types";
+import useLoadPlaylistImageSingle from "@/hooks/useLoadPlaylistImageSingle";
 
 interface PlaylistContentProps {
   playlists: Playlist[];
 }
 
 const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
-  const imagePaths = useLoadPlaylistImage(playlists);
-
   return (
     <div
       className="
@@ -33,12 +32,12 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
       {[...playlists]
         .reverse()
         .slice(0, 5)
-        .map((item, i, arr) => {
-          const reversedIndex = arr.length - i;
+        .map((item) => {          
+          const imagePaths = useLoadPlaylistImageSingle(item);
           return (
             <ListItem
               key={item.id}
-              image={imagePaths[reversedIndex] || "/images/liked.png"}
+              image={imagePaths || "/images/liked.png"}
               name={item.title}
               href={item.id}
               variant="1"

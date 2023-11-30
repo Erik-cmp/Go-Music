@@ -72,7 +72,8 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({ songs }) => {
                 sm:text-5xl
                 lg:text-7xl
                 font-bold      
-                mb-2                                                                         
+                md:mb-2                                                                         
+                mb-0
               "
           >
             {playlists.playlist?.title}

@@ -32,13 +32,18 @@ import "./css/Animation.css";
 import Image from "next/image";
 import useLoadImage from "@/hooks/useLoadImage";
 import AddToPlaylist from "./AddToPlaylist";
+import PlaylistItem from "./PlaylistItem";
 interface PlayerContentProps {
   song: Song;
-  songUrl: string;  
+  songUrl: string;
   playlist: Playlist[];
 }
 
-const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl, playlist }) => {
+const PlayerContent: React.FC<PlayerContentProps> = ({
+  song,
+  songUrl,
+  playlist,
+}) => {
   const player = usePlayer();
   const { volume, setVolume } = useVolume();
   const { shuffle, toggleShuffle } = useShuffle();
@@ -54,6 +59,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl, playlist }
   const [backgroundColor, setBackgroundColor] = useState(
     "linear-gradient(to bottom, #1e3a8a 0%, #171717 75%, #171717 75%, #171717 100%)"
   );
+  const [isAddPlaylistVisible, setIsAddPlaylistVisible] = useState(false);
 
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
 
@@ -227,6 +233,16 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl, playlist }
     setIsSongDetailVisible(false);
   };
 
+  const showAddPlaylist = () => {
+    console.log("add playlist show called");
+    setIsAddPlaylistVisible(true);
+  };
+
+  const hideAddPlaylist = () => {
+    console.log("add playlist hide called");
+    setIsAddPlaylistVisible(false);
+  };
+
   const toggleShuffleMode = () => {
     toggleShuffle();
     setShowTooltip(false);
@@ -302,6 +318,25 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl, playlist }
     }
   };
 
+  const handleTouchMove2 = (e: React.TouchEvent) => {
+    if (touchStartX !== 0) {
+      const deltaX = e.touches[0].clientX - touchStartX;
+      const deltaY = e.touches[0].clientY - touchStartY;
+      if (!swipeInProgress && Math.abs(deltaX) > 50) {
+        setSwipeInProgress(true);
+      }
+      if (swipeInProgress) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          if (deltaY > 50) {
+            hideAddPlaylist();
+            setSwipeInProgress(false);
+          }
+        }, 100);
+      }
+    }
+  };
+
   const handleTouchEnd = () => {
     setTouchStartX(0);
     setSwipeInProgress(false);
@@ -314,6 +349,16 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl, playlist }
     }
     setLastTouchTime(currentTime);
   };
+
+  function formatDate(dateString : any) {    
+    const options = { day: "numeric", month: "short", year: "numeric" };
+    const formattedDate = new Date(dateString).toLocaleDateString(
+      undefined,
+      // @ts-ignore
+      options
+    );
+    return formattedDate;
+  }
 
   const [showTooltip, setShowTooltip] = useState(false);
 
@@ -336,14 +381,14 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl, playlist }
 
   const [showAddToPlaylist, setShowAddToPlaylist] = useState(false);
 
-  const handleRightClick = (e : any) => {
+  const handleRightClick = (e: any) => {
     e.preventDefault();
     setShowAddToPlaylist(true);
   };
 
   const handleMouseLeave2 = () => {
     setShowAddToPlaylist(false);
-  };  
+  };
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
@@ -380,13 +425,16 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl, playlist }
                   onClick={hideSongDetail}
                   className="text-white"
                   size={34}
-                >                  
-                </RxCaretDown>                
+                ></RxCaretDown>
               </div>
               <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center">
                 {/* TODO: add playlist on mobile view (Overlay that occupies like 60% of the screen) */}
-                <RiMenuAddFill className="text-white" size={18}/>            
-              </div>                            
+                <RiMenuAddFill
+                  className="text-white"
+                  size={18}
+                  onClick={showAddPlaylist}
+                ></RiMenuAddFill>
+              </div>
             </div>
             <div
               className="
@@ -534,6 +582,50 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl, playlist }
 
           {/* MOBILE SONG DETAIL END */}
 
+          {/* ADD PLAYLIST OVERLAY FOR MOBILE */}
+          <div
+            className={`fixed top-0 left-0 flex flex-col items-start justify-start gap-y-4 w-full h-full z-10 bg-neutral-900 ${
+              isAddPlaylistVisible ? "slide-in" : "slide-out"
+            }`}
+          >
+            <div
+              className="flex flex-col items-center justify-center gap-x-2 w-full pt-4"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove2}
+              onTouchEnd={handleTouchEnd}
+            >
+              <div className="w-8 h-1 bg-neutral-600 rounded-full mb-4"></div>
+              <div className="flex items-start flex-col w-full p-2">
+                <MediaItem data={song} />
+                <p className="text-xs px-2 text-neutral-400 flex w-full justify-end">
+                  Uploaded {formatDate(song.created_at)}
+                </p>
+              </div>
+              <div className="w-full h-[0.5px] bg-neutral-800 rounded-full"></div>
+            </div>
+            <div className="scrollable-content w-full">
+              <div className="flex flex-col w-full px-4 pb-2 gap-y-2">
+                <h1 className="text-lg">
+                  Add <span className="font-bold">{song.title}</span> to
+                  Playlist:
+                </h1>
+              </div>
+              <div className="w-full px-2 grid grid-cols-1">
+                {playlist.map((playlist) => (
+                  // TODO: When this is clicked add song to playlist
+                  <div className="w-full">
+                    <PlaylistItem
+                      data={playlist}
+                      href={playlist.id}
+                      key={playlist.id}
+                      variant="2"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
           <div className="hidden md:block">
             <div
               className="truncate max-w-[28vw] text-base"
@@ -544,7 +636,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl, playlist }
 
               {showAddToPlaylist && (
                 <div className="fixed z-10 bottom-[60px] left-10">
-                  <AddToPlaylist playlist={playlist}/>
+                  <AddToPlaylist playlist={playlist} />
                 </div>
               )}
             </div>

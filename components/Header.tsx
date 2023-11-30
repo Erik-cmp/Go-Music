@@ -27,7 +27,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
   const player = usePlayer();
   const AuthModal = useAuthModal();
   const router = useRouter();
-
+  
   const supabaseClient = useSupabaseClient();
   const { user } = useUser();
 
@@ -125,16 +125,16 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
         "
         >
           <button
-            onClick={() => router.back()}
-            className="
+            onClick={() => window.history.back()}     
+            className={`
             rounded-full
             bg-black
             flex
             items-center
             justify-center
             hover:opacity-75
-            transition
-          "
+            transition            
+          `}
           >
             <RxCaretLeft className="text-white" size={35} />
           </button>
