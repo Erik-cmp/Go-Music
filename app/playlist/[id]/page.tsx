@@ -7,8 +7,7 @@ import PlaylistHeader from "./components/PlaylistHeader";
 export const revalidate = 0;
 
 const Playlist = async () => {
-  
-  // TODO: Change this to get all songs that's in a playlist from junction table
+    
   const songs = await getSongsByUserId();
 
   return (
@@ -22,9 +21,9 @@ const Playlist = async () => {
         rounded-lg        
     ">
       <Header>        
-        <PlaylistHeader songs={songs} />
+        <PlaylistHeader/>
       </Header>            
-      <PlaylistDetail songs={songs}/>        
+      <PlaylistDetail/>        
     </div>
   );
 };

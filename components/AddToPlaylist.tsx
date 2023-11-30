@@ -1,14 +1,64 @@
 "use client";
-import { Playlist } from "@/types";
+import { Playlist, Song } from "@/types";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useState } from "react";
 import { FaCaretRight } from "react-icons/fa6";
+import { toast } from "react-hot-toast";
+import { useUser } from "@/hooks/useUser";
+import uniqid from "uniqid";
 
 interface AddToPlaylistProps {
   playlist: Playlist[];
+  song: Song;
 }
 
-const AddToPlaylist: React.FC<AddToPlaylistProps> = ({ playlist }) => {
+const AddToPlaylist: React.FC<AddToPlaylistProps> = ({ playlist, song }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const supabaseClient = useSupabaseClient();
+  const { user } = useUser();
+
+  const addSongToPlaylist = async (playlist: Playlist, song: Song) => {
+    try {
+      setIsLoading(true);
+      
+      const existingRecord = await supabaseClient
+        .from("playlists_song")
+        .select("id")
+        .eq("playlist_id", playlist.id)
+        .eq("song_id", song.id)
+        .single();
+
+      if (existingRecord.data) {        
+        toast.error(`${song.title} is already in ${playlist.title}!`);
+        return;
+      }
+
+      const id = uniqid();
+
+      const { error } = await supabaseClient
+        .from("playlists_song")
+        .upsert([
+          {
+            id,
+            user_id: user?.id,
+            playlist_id: playlist.id,
+            song_id: song.id,
+          },
+        ]);
+
+      if (error) {
+        throw error;
+      }
+      
+      toast.success(`${song.title} added to ${playlist.title}!`);
+    } catch (error) {
+      console.error(error);
+      toast.error("Whoops, something went wrong...");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div
@@ -38,11 +88,12 @@ const AddToPlaylist: React.FC<AddToPlaylistProps> = ({ playlist }) => {
           `}
         >
           {playlist.map((playlist) => (
-            // TODO: When this is clicked add song to playlist
-            <div key={playlist.id} className="flex gap-y-2 p-2 bg-neutral-800 hover:bg-neutral-700 rounded shadow transition">
-              <p className="text-white truncate">
-                {playlist.title}
-              </p>
+            <div
+              key={playlist.id}
+              className="flex gap-y-2 p-2 bg-neutral-800 hover:bg-neutral-700 rounded shadow transition"
+              onClick={() => addSongToPlaylist(playlist, song)}
+            >
+              <p className="text-white truncate">{playlist.title}</p>
             </div>
           ))}
         </div>

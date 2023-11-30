@@ -4,22 +4,25 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import { useUser } from "@/hooks/useUser";
-import { Song } from "@/types";
+import { Playlist, Song } from "@/types";
 import MediaItem from "@/components/MediaItem";
-import LikeButton from "@/components/LikeButton";
 import useOnPlay from "@/hooks/useOnPlay";
 import useGetPlaylistDetail from "@/hooks/useGetPlaylistDetail";
+import useGetSongsInPlaylist from "@/hooks/useGetSongsInPlaylist";
+import { IoCloseCircleOutline } from "react-icons/io5";
+import { useSessionContext } from "@supabase/auth-helpers-react";
+import toast from "react-hot-toast";
+import RemoveSongFromPlaylistModal from "@/components/removeSongFromPlaylistModal";
+import useRemoveSongFromPlaylistModal from "@/hooks/useRemoveSongFromPlaylistModal";
 
-interface PlaylistDetailProps {
-  songs: Song[];
-}
-
-const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ songs }) => {
-
+const PlaylistDetail = () => {
   const url = typeof window !== "undefined" ? window.location.href : "";
   const id = url.split("/playlist/")[1];
-  console.log(id);
-  const playlists = useGetPlaylistDetail(id);  
+  // console.log(id);
+  const playlists = useGetPlaylistDetail(id);
+  const playlistSongs = useGetSongsInPlaylist(id);
+  const songs = playlistSongs.songs;
+  const { supabaseClient } = useSessionContext();
 
   const router = useRouter();
   const { isLoading, user } = useUser();
@@ -30,24 +33,48 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ songs }) => {
     if (!isLoading && !user) {
       router.replace("/");
     }
-  }, [isLoading, user, router]);  
-  
-  const handleDoubleClick = (id : string) => {    
+  }, [isLoading, user, router]);
+
+  const handleDoubleClick = (id: string) => {
     onPlay(id);
-  };  
+  };
 
   let lastTouchTime = 0;
 
-  const handleTouchStart = (id : string) => {
+  const handleTouchStart = (id: string) => {
     const currentTime = new Date().getTime();
     const timeDiff = currentTime - lastTouchTime;
-    
+
     if (timeDiff < 500) {
       handleDoubleClick(id);
     }
 
     lastTouchTime = currentTime;
   };
+
+  const removeSongFromPlaylist = async (song: Song, playlist: Playlist) => {
+    const { error } = await supabaseClient
+      .from("playlists_song")
+      .delete()
+      .eq("playlist_id", playlist.id)
+      .eq("song_id", song.id);
+
+    if (error) {
+      toast.error(error.message);
+    }    
+
+    window.location.reload()
+  };
+
+  // const removeSongFromPlaylistModal = useRemoveSongFromPlaylistModal();
+
+  // const removeSongFromPlaylist = (song: Song, playlist: Playlist) => {
+  //   return removeSongFromPlaylistModal.onOpen(song);
+  // }
+
+  useEffect(() => {
+
+  }, [supabaseClient, songs]);  
 
   if (songs.length === 0) {
     return (
@@ -90,9 +117,9 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ songs }) => {
            rounded-md 
            md:px-4 
            pr-2          
-           "           
-           onDoubleClick={() => handleDoubleClick(song.id)}    
-           onTouchStart={() => handleTouchStart(song.id)}                                 
+           "
+          onDoubleClick={() => handleDoubleClick(song.id)}
+          onTouchStart={() => handleTouchStart(song.id)}
         >
           <div className="md:block hidden ">
             <p className="text-neutral-400">{i + 1}</p>
@@ -113,7 +140,13 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ songs }) => {
               {`${song.song_length % 60}`.padStart(2, "0")}
             </p>
           </div>
-          <LikeButton songId={song.id} songTitle={song.title} size={20} variant={2} />
+          <IoCloseCircleOutline
+            size={24}
+            className="text-neutral-400 hover:opacity-75 cursor-pointer"
+            onClick={() =>
+              removeSongFromPlaylist(song, playlists.playlist as Playlist)
+            }
+          />
         </div>
       ))}
     </div>

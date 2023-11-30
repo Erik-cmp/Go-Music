@@ -1,24 +1,25 @@
 "use client"
 import Image from "next/image";
 import useGetPlaylistDetail from "@/hooks/useGetPlaylistDetail";
-import { Song } from "@/types";
 import useLoadPlaylistImageSingle from "@/hooks/useLoadPlaylistImageSingle";
+import useGetSongsInPlaylist from "@/hooks/useGetSongsInPlaylist";
 
 export const revalidate = 0;
 
-interface PlaylistHeaderProps {
-  songs: Song[];
-}
-
-const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({ songs }) => {
+const PlaylistHeader = () => {
   const url = typeof window !== "undefined" ? window.location.href : "";
   const id = url.split("/playlist/")[1];
-  console.log(id);
+
+  // console.log(id);
   const playlists = useGetPlaylistDetail(id);  
   const imagePath = useLoadPlaylistImageSingle(playlists.playlist as any);
-  console.log(imagePath);  
+  // console.log(imagePath);  
 
-  // TODO: Change this to get all songs associated with this playlist
+  const playlistSongs = useGetSongsInPlaylist(id);  
+  // console.log(playlistSongs);
+
+  const songs = playlistSongs.songs
+  
   const totalSongs = songs.length;
 
   const totalDuration = songs.reduce((sum, song) => sum + song.song_length, 0);

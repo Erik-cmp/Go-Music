@@ -53,7 +53,7 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
     }
 
     if (href === "liked") router.push("liked");
-    else router.push("/playlist" + href);
+    else router.push("playlist/" + href);
   };
 
   const onClick = () => {
@@ -180,8 +180,7 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
               month: "short",
               day: "2-digit",
             })}
-          </div>
-          {/* Delete Playlist when Clicked */}
+          </div>          
           <IoCloseCircleOutline
             size={24}
             className="text-neutral-400 hover:opacity-75 cursor-pointer"

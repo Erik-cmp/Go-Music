@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 
 import useAuthModal from "@/hooks/useAuthModal";
 import { useUser } from "@/hooks/useUser";
-import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { IoAddCircleOutline, IoRemoveCircleOutline, IoCheckmarkCircle } from "react-icons/io5";
 import toast from "react-hot-toast";
 

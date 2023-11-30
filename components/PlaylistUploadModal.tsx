@@ -26,8 +26,8 @@ const PlaylistUploadModal = () => {
     reset
   } = useForm<FieldValues>({
     defaultValues: {
-      author: '',
       title: '',
+      description: '',
       song: null,
       image: null,
     }

@@ -33,6 +33,10 @@ import Image from "next/image";
 import useLoadImage from "@/hooks/useLoadImage";
 import AddToPlaylist from "./AddToPlaylist";
 import PlaylistItem from "./PlaylistItem";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { toast } from "react-hot-toast";
+import { useUser } from "@/hooks/useUser";
+import uniqid from "uniqid";
 interface PlayerContentProps {
   song: Song;
   songUrl: string;
@@ -60,6 +64,9 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
     "linear-gradient(to bottom, #1e3a8a 0%, #171717 75%, #171717 75%, #171717 100%)"
   );
   const [isAddPlaylistVisible, setIsAddPlaylistVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const supabaseClient = useSupabaseClient();
+  const { user } = useUser();
 
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
 
@@ -350,7 +357,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
     setLastTouchTime(currentTime);
   };
 
-  function formatDate(dateString : any) {    
+  function formatDate(dateString: any) {
     const options = { day: "numeric", month: "short", year: "numeric" };
     const formattedDate = new Date(dateString).toLocaleDateString(
       undefined,
@@ -388,6 +395,34 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
 
   const handleMouseLeave2 = () => {
     setShowAddToPlaylist(false);
+  };
+
+  const addSongToPlaylist = async (playlist: Playlist, song: Song) => {
+    try {
+      setIsLoading(true);
+
+      const id = uniqid();
+
+      const { error } = await supabaseClient.from("playlists_song").upsert([
+        {
+          id: id,
+          user_id: user?.id,
+          playlist_id: playlist.id,
+          song_id: song.id,
+        },
+      ]);
+
+      if (error) {
+        throw error;
+      }
+
+      toast.success(`${song.title} added to ${playlist.title}!`);
+    } catch (error) {
+      console.error(error);
+      toast.error("Whoops, something went wrong...");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -428,7 +463,6 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
                 ></RxCaretDown>
               </div>
               <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center">
-                {/* TODO: add playlist on mobile view (Overlay that occupies like 60% of the screen) */}
                 <RiMenuAddFill
                   className="text-white"
                   size={18}
@@ -612,8 +646,11 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
               </div>
               <div className="w-full px-2 grid grid-cols-1">
                 {playlist.map((playlist) => (
-                  // TODO: When this is clicked add song to playlist
-                  <div className="w-full" key={playlist.id}>
+                  <div
+                    className="w-full"
+                    key={playlist.id}
+                    onClick={() => addSongToPlaylist(playlist, song)}
+                  >
                     <PlaylistItem
                       data={playlist}
                       href={playlist.id}
@@ -636,7 +673,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
 
               {showAddToPlaylist && (
                 <div className="fixed z-10 bottom-[60px] left-10">
-                  <AddToPlaylist playlist={playlist} />
+                  <AddToPlaylist playlist={playlist} song={song} />
                 </div>
               )}
             </div>
