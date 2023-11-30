@@ -400,22 +400,38 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
   const addSongToPlaylist = async (playlist: Playlist, song: Song) => {
     try {
       setIsLoading(true);
+      
+      const existingRecord = await supabaseClient
+        .from("playlists_song")
+        .select("id")
+        .eq("playlist_id", playlist.id)
+        .eq("song_id", song.id)
+        .single();
+        
+      console.log(existingRecord);
+
+      if (existingRecord.data) {        
+        toast.error(`${song.title} is already in ${playlist.title}!`);
+        return;
+      }
 
       const id = uniqid();
 
-      const { error } = await supabaseClient.from("playlists_song").upsert([
-        {
-          id: id,
-          user_id: user?.id,
-          playlist_id: playlist.id,
-          song_id: song.id,
-        },
-      ]);
+      const { error } = await supabaseClient
+        .from("playlists_song")
+        .upsert([
+          {
+            id,
+            user_id: user?.id,
+            playlist_id: playlist.id,
+            song_id: song.id,
+          },
+        ]);
 
       if (error) {
         throw error;
       }
-
+      
       toast.success(`${song.title} added to ${playlist.title}!`);
     } catch (error) {
       console.error(error);

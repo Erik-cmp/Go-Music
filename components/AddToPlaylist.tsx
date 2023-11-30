@@ -28,6 +28,8 @@ const AddToPlaylist: React.FC<AddToPlaylistProps> = ({ playlist, song }) => {
         .eq("playlist_id", playlist.id)
         .eq("song_id", song.id)
         .single();
+        
+      console.log(existingRecord);
 
       if (existingRecord.data) {        
         toast.error(`${song.title} is already in ${playlist.title}!`);
