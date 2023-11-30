@@ -12,8 +12,6 @@ import useGetSongsInPlaylist from "@/hooks/useGetSongsInPlaylist";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { useSessionContext } from "@supabase/auth-helpers-react";
 import toast from "react-hot-toast";
-import RemoveSongFromPlaylistModal from "@/components/removeSongFromPlaylistModal";
-import useRemoveSongFromPlaylistModal from "@/hooks/useRemoveSongFromPlaylistModal";
 
 const PlaylistDetail = () => {
   const url = typeof window !== "undefined" ? window.location.href : "";
@@ -65,12 +63,6 @@ const PlaylistDetail = () => {
 
     window.location.reload()
   };
-
-  // const removeSongFromPlaylistModal = useRemoveSongFromPlaylistModal();
-
-  // const removeSongFromPlaylist = (song: Song, playlist: Playlist) => {
-  //   return removeSongFromPlaylistModal.onOpen(song);
-  // }
 
   useEffect(() => {
 
