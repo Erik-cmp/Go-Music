@@ -1,6 +1,5 @@
 "use client";
 
-import useLoadPlaylistImage from "@/hooks/useLoadPlaylistImage";
 import ListItem from "./ListItem";
 import { Playlist } from "@/types";
 import useLoadPlaylistImageSingle from "@/hooks/useLoadPlaylistImageSingle";
@@ -10,6 +9,14 @@ interface PlaylistContentProps {
 }
 
 const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
+  const playlistsWithImages = [...playlists]
+    .reverse()
+    .slice(0, 5)
+    .map((item) => {
+      const imagePaths = useLoadPlaylistImageSingle(item);
+      return { item, imagePaths };
+    });
+
   return (
     <div
       className="
@@ -29,21 +36,15 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
         variant="1"
       />
 
-      {[...playlists]
-        .reverse()
-        .slice(0, 5)
-        .map((item) => {          
-          const imagePaths = useLoadPlaylistImageSingle(item);
-          return (
-            <ListItem
-              key={item.id}
-              image={imagePaths || "/images/liked.png"}
-              name={item.title}
-              href={item.id}
-              variant="1"
-            />
-          );
-        })}
+      {playlistsWithImages.map(({ item, imagePaths }) => (
+        <ListItem
+          key={item.id}
+          image={imagePaths || "/images/liked.png"}
+          name={item.title}
+          href={item.id}
+          variant="1"
+        />
+      ))}
     </div>
   );
 };
