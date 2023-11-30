@@ -613,7 +613,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
               <div className="w-full px-2 grid grid-cols-1">
                 {playlist.map((playlist) => (
                   // TODO: When this is clicked add song to playlist
-                  <div className="w-full">
+                  <div className="w-full" key={playlist.id}>
                     <PlaylistItem
                       data={playlist}
                       href={playlist.id}
