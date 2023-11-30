@@ -46,18 +46,24 @@ const useGetSongsInPlaylist = (playlistId?: string) => {
         if (songsError) {
           throw songsError;
         }
-        
-        const mappedSongs = songsData.map((song) => {
-          const playlistSong = playlistSongs.find(
-            (ps) => ps.song_id === song.id
+
+        const mappedSongs = songsData
+          .map((song) => {
+            const playlistSong = playlistSongs.find(
+              (ps) => ps.song_id === song.id
+            );
+            return {
+              ...song,
+              created_at: playlistSong
+                ? playlistSong.created_at
+                : song.created_at,
+            };
+          })
+          .sort(
+            (a, b) =>
+              new Date(a.created_at).getTime() -
+              new Date(b.created_at).getTime()
           );
-          return {
-            ...song,
-            created_at: playlistSong
-              ? playlistSong.created_at
-              : song.created_at,
-          };
-        });
 
         setSongs(mappedSongs as Song[]);
       } catch (error) {
