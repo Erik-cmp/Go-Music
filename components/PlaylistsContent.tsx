@@ -2,19 +2,24 @@
 
 import ListItem from "./ListItem";
 import { Playlist } from "@/types";
-import useLoadPlaylistImageSingle from "@/hooks/useLoadPlaylistImageSingle";
+import useLoadPlaylistImage from "@/hooks/useLoadPlaylistImage";
 
 interface PlaylistContentProps {
   playlists: Playlist[];
 }
 
 const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
+
+  const reversedPlaylist = [...playlists].reverse().slice(0, 5);
+  const imagePaths = useLoadPlaylistImage(reversedPlaylist);
+  console.log("imagePaths", imagePaths);
+
+
   const playlistsWithImages = [...playlists]
     .reverse()
     .slice(0, 5)
-    .map((item) => {
-      const imagePaths = useLoadPlaylistImageSingle(item);
-      return { item, imagePaths };
+    .map((item, i) => {      
+      return { item, i };
     });
 
   return (
@@ -36,10 +41,10 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
         variant="1"
       />
 
-      {playlistsWithImages.map(({ item, imagePaths }) => (
+      {playlistsWithImages.map(({ item, i }) => (
         <ListItem
           key={item.id}
-          image={imagePaths || "/images/liked.png"}
+          image={imagePaths[i] as any || "/images/liked.png"}
           name={item.title}
           href={item.id}
           variant="1"
