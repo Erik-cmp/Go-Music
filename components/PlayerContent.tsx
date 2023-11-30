@@ -635,7 +635,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
                   Uploaded {formatDate(song.created_at)}
                 </p>
               </div>
-              <div className="w-full h-[0.5px] bg-neutral-800 rounded-full"></div>
+              <div className="w-full h-[1px] bg-neutral-800 rounded-full"></div>
             </div>
             <div className="scrollable-content w-full">
               <div className="flex flex-col w-full px-4 pb-2 gap-y-2">
