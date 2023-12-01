@@ -6,7 +6,7 @@ interface ProgressBarProps {
 const ProgressBar: React.FC<ProgressBarProps> = ({ songProgress, onSeek }) => {
   return (
     <div
-      className="h-full bg-blue-500 z-20"
+      className="h-full bg-blue-500"
       style={{
         width: `${songProgress}%`,
         transition: "width 0.1s ease-in-out",
