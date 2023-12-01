@@ -42,8 +42,9 @@ const Liked = async () => {
               relative
               h-40
               w-40
-              lg:h-44
-              lg:w-44                                       
+              lg:h-48
+              lg:w-48     
+              aspect-square                                    
             "
             >
               <Image

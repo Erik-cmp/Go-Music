@@ -42,8 +42,9 @@ const PlaylistHeader = () => {
               relative
               h-40
               w-40
-              lg:h-44
-              lg:w-44                                       
+              lg:h-48
+              lg:w-48     
+              aspect-square                                                              
             "
         >
           <Image
@@ -51,7 +52,7 @@ const PlaylistHeader = () => {
             alt="Playlist"
             className="object-cover rounded"
             src={imagePath || '/images/liked.png'}
-            sizes="300px"
+            sizes="400px"
           />
         </div>
         <div
@@ -61,8 +62,7 @@ const PlaylistHeader = () => {
               gap-y-2
               mt-4
               md:mt-0
-              md:items-start items-center
-              w-full              
+              md:items-start items-center                                       
             "
         >
           <p className="hidden md:block font-semibold text-sm">Playlist</p>
