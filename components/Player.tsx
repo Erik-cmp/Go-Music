@@ -30,6 +30,7 @@ const Player: React.FC<PlayerProps> = ({ playlist }) => {
       justify-center
       text-neutral-400   
       md:text-sm text-xs
+      md:h-[80px] h-[60px]
     "        
       >
         No active song, play something to open the player!
