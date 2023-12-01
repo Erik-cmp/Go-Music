@@ -37,6 +37,8 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { toast } from "react-hot-toast";
 import { useUser } from "@/hooks/useUser";
 import uniqid from "uniqid";
+import AuthModal from "./AuthModal";
+import useAuthModal from "@/hooks/useAuthModal";
 interface PlayerContentProps {
   song: Song;
   songUrl: string;
@@ -67,6 +69,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const supabaseClient = useSupabaseClient();
   const { user } = useUser();
+  const AuthModal = useAuthModal();
 
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
 
@@ -390,6 +393,11 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
 
   const handleRightClick = (e: any) => {
     e.preventDefault();
+    
+    if (!user) {
+      return AuthModal.onOpen();
+    }
+
     setShowAddToPlaylist(true);
   };
 

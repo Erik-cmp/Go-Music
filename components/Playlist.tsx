@@ -22,7 +22,7 @@ const Library: React.FC<LibraryProps> = ({ playlists }) => {
   const authModal = useAuthModal();
   const playlistUploadModal = usePlaylistUploadModal();
   const { user, subscription } = useUser();
-  const router = useRouter();      
+  const router = useRouter();
 
   const imagePaths = useLoadPlaylistImage(playlists);
 
@@ -54,10 +54,10 @@ const Library: React.FC<LibraryProps> = ({ playlists }) => {
           onClick={() => {
             if (!user) {
               return authModal.onOpen();
-            }            
+            }
 
-            router.replace('/playlist');
-          }}          
+            router.replace("/playlist");
+          }}
           className="group inline-flex items-center gap-x-2 cursor-pointer"
         >
           <TbBooks
