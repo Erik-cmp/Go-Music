@@ -20,7 +20,7 @@ export default async function Home() {
       className="
       bg-neutral-900
       rounded-lg
-      md:h-[calc(100%-72px)] h-[calc(100%-60px)]
+      md:h-[calc(100%-72px)] h-[calc(100%-50px)]
       w-full
       overflow-hidden
       overflow-y-auto      

@@ -65,7 +65,7 @@ const SearchContent: React.FC<SearchContentProps> = ({ songs }) => {
           onTouchStart={() => handleTouchStart(song.id)}
         >
           <div className="md:w-[50vw] pointer-events-none w-full truncate">
-            <MediaItem onClick={(id: string) => onPlay(id)} data={song} />
+            <MediaItem onClick={(id: string) => onPlay(id)} data={song} variant="1" />
           </div>
           <div className="md:block hidden text-sm text-neutral-400 w-[25vw]">
             {new Date(song.created_at).toLocaleDateString("en-US", {

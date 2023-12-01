@@ -469,7 +469,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
         >
           <div className="md:hidden w-[76vw] z-10" onClick={showSongDetail}>
             <div className="truncate text-sm">
-              <MediaItem data={song} />
+              <MediaItem data={song} variant="2" />
             </div>
           </div>
 
@@ -656,7 +656,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
             >
               <div className="w-8 h-1 bg-neutral-600 rounded-full mb-4"></div>
               <div className="flex items-start flex-col w-full p-2">
-                <MediaItem data={song} />
+                <MediaItem data={song} variant="1" />
                 <p className="text-xs px-2 text-neutral-400 flex w-full justify-end">
                   Uploaded {formatDate(song.created_at)}
                 </p>
@@ -711,7 +711,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
               onContextMenu={handleRightClick}
               onMouseLeave={handleMouseLeave2}
             >
-              <MediaItem data={song} />
+              <MediaItem data={song} variant="1" />
 
               {showAddToPlaylist && (
                 <div className="fixed z-10 bottom-[60px] left-10">
@@ -931,7 +931,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
           <Slider value={volume} onChange={(value) => setVolume(value)} />
         </div>
       </div>
-      <div className="md:hidden w-full h-1 absolute bottom-0 left-0 flex items-end">
+      <div className="md:hidden w-full h-0.5 absolute bottom-0 left-0 flex items-end">
         <ProgressBar songProgress={songProgress} onSeek={handleSeekChange} />
       </div>
     </div>

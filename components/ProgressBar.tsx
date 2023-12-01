@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 interface ProgressBarProps {
   songProgress: number;
   onSeek: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -8,12 +6,13 @@ interface ProgressBarProps {
 const ProgressBar: React.FC<ProgressBarProps> = ({ songProgress, onSeek }) => {
   return (
     <div
-      className="h-[75%] bg-blue-500"
+      className="h-full bg-blue-500 z-20"
       style={{
         width: `${songProgress}%`,
         transition: "width 0.1s ease-in-out",
       }}
-    ></div>
+    >
+    </div>
   );
 };
 
