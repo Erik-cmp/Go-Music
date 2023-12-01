@@ -28,7 +28,7 @@ const PlaylistHeader = () => {
   const minutes = Math.floor((totalDuration % 3600) / 60);
 
   return (
-    <div className="md:mt-16 mt-8">
+    <div className="mt-8">
       <div
         className="
             flex            
