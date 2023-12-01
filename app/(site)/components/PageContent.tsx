@@ -28,11 +28,13 @@ const PageContent: React.FC<PageContentProps> = ({ songs }) => {
         lg:grid-cols-4
         xl:grid-cols-5
         2xl:grid-cols-6      
+        3xl:grid-cols-7
+        4xl:grid-cols-9     
         gap-4
         mt-4
       "
     >
-      {songs.slice(0, 60).map((item) => (
+      {songs.slice(0, 84).map((item) => (
         <SongItem
           key={item.id}
           onClick={(id: string) => onPlay(id)}
