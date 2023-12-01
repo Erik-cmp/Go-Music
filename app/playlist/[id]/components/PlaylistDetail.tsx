@@ -77,7 +77,7 @@ const PlaylistDetail = () => {
     }
   };
 
-  if (songs?.length === 0) {
+  if (songs2?.length === 0) {
     return (
       <div
         className="
@@ -86,7 +86,9 @@ const PlaylistDetail = () => {
         gap-y-2
         w-full
         px-6
-        text-neutral-400
+        text-neutral-400        
+        md:text-base        
+        text-xs
       "
       >
         {playlists.playlist?.title} is empty.
