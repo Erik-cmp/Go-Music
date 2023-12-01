@@ -6,7 +6,7 @@ import useGetSongsInPlaylist from "@/hooks/useGetSongsInPlaylist";
 
 export const revalidate = 0;
 
-const PlaylistHeader = () => {
+const PlaylistHeader = () => {  
   const url = typeof window !== "undefined" ? window.location.href : "";
   const id = url.split("/playlist/")[1];
 

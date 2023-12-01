@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { useUser } from "@/hooks/useUser";
 import { Playlist, Song } from "@/types";
@@ -9,9 +9,9 @@ import MediaItem from "@/components/MediaItem";
 import useOnPlay from "@/hooks/useOnPlay";
 import useGetPlaylistDetail from "@/hooks/useGetPlaylistDetail";
 import useGetSongsInPlaylist from "@/hooks/useGetSongsInPlaylist";
-import { IoCloseCircleOutline } from "react-icons/io5";
 import { useSessionContext } from "@supabase/auth-helpers-react";
 import toast from "react-hot-toast";
+import { IoCloseCircleOutline } from "react-icons/io5";
 
 const PlaylistDetail = () => {
   const url = typeof window !== "undefined" ? window.location.href : "";
@@ -19,13 +19,24 @@ const PlaylistDetail = () => {
   // console.log(id);
   const playlists = useGetPlaylistDetail(id);
   const playlistSongs = useGetSongsInPlaylist(id);
-  const songs = playlistSongs.songs;
+  const [songs, setSongs] = useState<Song[]>();
+  const songs2 = playlistSongs.songs;
+
+  useEffect(() => {
+    if (playlistSongs.songs.length > 0) {
+      setSongs(playlistSongs.songs);
+    }
+  }, [playlistSongs.songs]);
+
+  console.log("songs: ", songs);
+  console.log("songs2: ", songs2);  
+
   const { supabaseClient } = useSessionContext();
 
   const router = useRouter();
   const { isLoading, user } = useUser();
 
-  const onPlay = useOnPlay(songs);
+  const onPlay = useOnPlay(songs as Song[]);
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -59,16 +70,14 @@ const PlaylistDetail = () => {
 
     if (error) {
       toast.error(error.message);
-    }    
-
-    window.location.reload()
+    }
+    else{
+      setSongs((prevSongs) => prevSongs?.filter((existingSong) => existingSong.id !== song.id));
+      toast.success("Song removed from playlist!");
+    }
   };
 
-  useEffect(() => {
-
-  }, [supabaseClient, songs]);  
-
-  if (songs.length === 0) {
+  if (songs?.length === 0) {
     return (
       <div
         className="
@@ -96,7 +105,7 @@ const PlaylistDetail = () => {
      md:px-6 pl-3 pr-4    
     "
     >
-      {songs.map((song, i) => (
+      {songs?.map((song, i) => (
         <div
           key={song.id}
           className="
@@ -132,13 +141,13 @@ const PlaylistDetail = () => {
               {`${song.song_length % 60}`.padStart(2, "0")}
             </p>
           </div>
-          <IoCloseCircleOutline
-            size={24}
+          <button
+            onClick={() => removeSongFromPlaylist(song, playlists.playlist as Playlist)}
             className="text-neutral-400 hover:opacity-75 cursor-pointer"
-            onClick={() =>
-              removeSongFromPlaylist(song, playlists.playlist as Playlist)
-            }
-          />
+          >
+            <IoCloseCircleOutline size={24} />
+          </button>
+          {/* <RemoveButton songId={song.id} playlist={playlists?.playlist as Playlist} size={24} /> */}
         </div>
       ))}
     </div>

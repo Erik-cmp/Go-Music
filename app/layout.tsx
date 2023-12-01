@@ -44,11 +44,15 @@ export default async function RootLayout({
           <ToasterProvider />
           <SupabaseProvider>
             <UserProvider>
-              <ModalProvider products={products} song={userSongs[0]} playlist={playlist[0]} />
+              <ModalProvider
+                products={products}
+                song={userSongs[0]}
+                playlist={playlist[0]}
+              />
               <SongDetailProvider>
                 <Sidebar playlists={userPlaylists}>{children}</Sidebar>
                 <ShuffleProvider>
-                  <Player playlist={userPlaylists}/>
+                  <Player playlist={userPlaylists} />
                 </ShuffleProvider>
               </SongDetailProvider>
             </UserProvider>
