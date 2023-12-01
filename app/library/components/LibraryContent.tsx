@@ -11,6 +11,8 @@ import { BsPlus } from "react-icons/bs";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import Button from "@/components/Button";
 import useDeleteModal from "@/hooks/useDeleteModal";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
 
 interface LibraryProps {
   songs: Song[];
@@ -117,7 +119,7 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
             flex
             md:justify-start
             flex-between
-            items-center
+            items-end
             w-full
             gap-x-2            
           "
@@ -195,11 +197,18 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
                 </p>
               </div>
               {/* Delete Song on Click */}
-              <IoCloseCircleOutline
-                size={24}
-                className="text-neutral-400 hover:opacity-75 cursor-pointer"
-                onClick={() => deleteSong(song)}
-              />
+              <Tippy
+                content={<div style={{ fontWeight: "600" }}>Delete Song</div>}
+                delay={[100, 0]}
+              >
+                <div>
+                  <IoCloseCircleOutline
+                    size={24}
+                    className="text-neutral-400 hover:opacity-75 cursor-pointer"
+                    onClick={() => deleteSong(song)}
+                  />
+                </div>
+              </Tippy>
             </div>
           ))}
         </div>

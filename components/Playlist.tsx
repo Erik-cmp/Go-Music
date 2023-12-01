@@ -6,12 +6,13 @@ import { TbBooks } from "react-icons/tb";
 import useAuthModal from "@/hooks/useAuthModal";
 import { useUser } from "@/hooks/useUser";
 import { Playlist } from "@/types";
-import { IoIosArrowRoundForward } from "react-icons/io";
 import useSubscribeModal from "@/hooks/useSubscribeModal";
 import usePlaylistUploadModal from "@/hooks/usePlaylistUploadModal";
 import ListItem from "./ListItem";
 import useLoadPlaylistImage from "@/hooks/useLoadPlaylistImage";
 import { useRouter } from "next/navigation";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
 
 interface LibraryProps {
   playlists: Playlist[];
@@ -68,16 +69,24 @@ const Library: React.FC<LibraryProps> = ({ playlists }) => {
             Your Playlists
           </p>
         </a>
-
-        <div className="flex gap-x-1">
-          <BsPlus
-            onClick={onClick}
-            size={28}
-            className="
+        <Tippy
+          content={
+            <div style={{ fontWeight: "600" }}>
+              Add New Playlist
+            </div>
+          }
+          delay={[100, 0]}
+        >
+          <div className="flex gap-x-1">
+            <BsPlus
+              onClick={onClick}
+              size={28}
+              className="
           text-neutral-400 cursor-pointer hover:text-white hover:bg-neutral-800 transition bg-neutral-900 rounded-full
           "
-          />
-        </div>
+            />
+          </div>
+        </Tippy>
       </div>
       <div
         className="

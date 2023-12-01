@@ -37,8 +37,9 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { toast } from "react-hot-toast";
 import { useUser } from "@/hooks/useUser";
 import uniqid from "uniqid";
-import AuthModal from "./AuthModal";
 import useAuthModal from "@/hooks/useAuthModal";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
 interface PlayerContentProps {
   song: Song;
   songUrl: string;
@@ -70,6 +71,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
   const supabaseClient = useSupabaseClient();
   const { user } = useUser();
   const AuthModal = useAuthModal();
+  const [isMuted, setIsMuted] = useState(false);
 
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
 
@@ -187,8 +189,10 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
   const toggleMute = () => {
     if (volume === 0) {
       setVolume(prevVolume);
+      setIsMuted(false);
     } else {
       setPrevVolume(volume);
+      setIsMuted(true);
       setVolume(0);
     }
   };
@@ -657,11 +661,11 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
                   Uploaded {formatDate(song.created_at)}
                 </p>
               </div>
-              <div className="w-full h-[1px] bg-neutral-800 rounded-full"></div>
+              <div className="w-full h-[1px] bg-neutral-800"></div>
             </div>
             <div className="scrollable-content w-full">
               <div className="flex flex-col w-full px-4 pb-2 gap-y-2">
-                {user ? (                  
+                {user ? (
                   <>
                     {playlist.length > 0 ? (
                       <h1 className="text-lg">
@@ -674,9 +678,11 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
                       </div>
                     )}
                   </>
-                ) : (                  
+                ) : (
                   <div className="text-neutral-400 flex justify-center text-xs w-full p-2">
-                    <p>You need to be logged in to view and create playlists!</p>
+                    <p>
+                      You need to be logged in to view and create playlists!
+                    </p>
                   </div>
                 )}
               </div>
@@ -780,44 +786,30 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
         "
         >
           {/* Shuffle Button Here */}
-          <button
-            onClick={toggleShuffleMode}
-            className="relative group"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            <IoMdShuffle
-              size={18}
-              className={`transform transition ${
-                shuffle
-                  ? "text-blue-500 hover:text-blue-400"
-                  : "text-neutral-400 hover:text-white"
-              }`}
-            />
-            {showTooltip && (
-              <div
-                className="
-                w-[110px] 
-                opacity-0 
-                bg-neutral-800 
-                text-white 
-                text-sm 
-                font-semibold 
-                p-1 
-                rounded 
-                absolute 
-                top-[-2.5rem] 
-                left-1/2 
-                -translate-x-1/2 
-                transform 
-                transition-opacity                 
-                group-hover:opacity-100 
-                delay-1000"
-              >
+          <Tippy
+            content={
+              <div style={{ fontWeight: "600" }}>
                 {shuffle ? "Disable Shuffle" : "Enable Shuffle"}
               </div>
-            )}
-          </button>
+            }
+            delay={[100, 0]}
+          >
+            <button
+              onClick={toggleShuffleMode}
+              className="relative group"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
+              <IoMdShuffle
+                size={18}
+                className={`transform transition ${
+                  shuffle
+                    ? "text-blue-500 hover:text-blue-400"
+                    : "text-neutral-400 hover:text-white"
+                }`}
+              />
+            </button>
+          </Tippy>
           <AiFillStepBackward
             onClick={onPlayPrev}
             size={24}
@@ -856,48 +848,34 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
             transition
           "
           />
-          <button
-            onClick={handleToggleRepeat}
-            className="relative group"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            <IoMdRefresh
-              size={24}
-              className={`transform transition rotate-90 ${
-                repeat
-                  ? "text-blue-500 hover:text-blue-400"
-                  : "text-neutral-400 hover:text-white"
-              }`}
-            />
-            {showTooltip && (
-              <div
-                className="
-                w-[110px] 
-                opacity-0 
-                bg-neutral-800 
-                text-white 
-                text-sm 
-                font-semibold 
-                p-1 
-                rounded 
-                absolute 
-                top-[-2.5rem] 
-                left-1/2 
-                -translate-x-1/2 
-                transform 
-                transition-opacity                 
-                group-hover:opacity-100 
-                delay-1000"
-              >
+          <Tippy
+            content={
+              <div style={{ fontWeight: "600" }}>
                 {repeat ? "Disable Repeat" : "Enable Repeat"}
               </div>
-            )}
-          </button>
+            }
+            delay={[100, 0]}
+          >
+            <button
+              onClick={handleToggleRepeat}
+              className="relative group"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
+              <IoMdRefresh
+                size={24}
+                className={`transform transition rotate-90 ${
+                  repeat
+                    ? "text-blue-500 hover:text-blue-400"
+                    : "text-neutral-400 hover:text-white"
+                }`}
+              />
+            </button>
+          </Tippy>
         </div>
 
-        <div className="flex items-center justify-end mr-4 gap-x-2">
-          <div className="text-neutral-400 text-xs cursor-default">
+        <div className="flex items-center justify-center mr-4 gap-x-2">
+          <div className="text-neutral-400 text-xs cursor-default flex items-center w-[32px]">
             {formatTime(sound?.seek() || 0)}
           </div>
           <div className="flex items-center">
@@ -913,7 +891,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
               className="seek-bar"
             />
           </div>
-          <div className="text-neutral-400 text-xs cursor-default">
+          <div className="text-neutral-400 text-xs cursor-default flex items-center w-[32px]">
             {formatTime(sound?.duration() || 0)}
           </div>
         </div>
@@ -934,11 +912,22 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
           ></RiMenuAddFill>
         </div>
         <div className="flex items-center gap-x-2 w-[120px]">
-          <VolumeIcon
-            onClick={toggleMute}
-            className="cursor-pointer text-white hover:opacity-75 transition"
-            size={30}
-          />
+          <Tippy
+            content={
+              <div style={{ fontWeight: "600" }}>
+                {isMuted ? "Unmute" : "Mute"}
+              </div>
+            }
+            delay={[100, 0]}
+          >
+            <div>
+              <VolumeIcon
+                onClick={toggleMute}
+                className="cursor-pointer text-white hover:opacity-75 transition"
+                size={22}
+              />
+            </div>
+          </Tippy>
           <Slider value={volume} onChange={(value) => setVolume(value)} />
         </div>
       </div>

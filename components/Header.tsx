@@ -17,6 +17,8 @@ import usePlayer from "@/hooks/usePlayer";
 import { TbPlaylist } from "react-icons/tb";
 import Vibrant from "node-vibrant";
 import useLoadPlaylistImageSingle from "@/hooks/useLoadPlaylistImageSingle";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
 
 interface HeaderProps {
   children: React.ReactNode;
@@ -27,7 +29,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
   const player = usePlayer();
   const AuthModal = useAuthModal();
   const router = useRouter();
-  
+
   const supabaseClient = useSupabaseClient();
   const { user } = useUser();
 
@@ -82,7 +84,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
     };
 
     checkPath();
-    
+
     const handleRouteChange = () => {
       checkPath();
     };
@@ -124,9 +126,19 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
           items-center
         "
         >
-          <button
-            onClick={() => window.history.back()}     
-            className={`
+          <Tippy
+            content={<div style={{ fontWeight: "600", fontSize: "0.75rem" }}>Go Back</div>}
+            delay={[100, 0]}                        
+            placement="top"  
+            popperOptions={{
+              modifiers: [
+                { name: 'flip', enabled: false }
+              ],
+            }}                                  
+          >
+            <button
+              onClick={() => window.history.back()}
+              className={`
             rounded-full
             bg-black
             flex
@@ -135,12 +147,24 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
             hover:opacity-75
             transition            
           `}
+            >
+              <RxCaretLeft className="text-white" size={35} />
+            </button>
+          </Tippy>
+
+          <Tippy
+            content={<div style={{ fontWeight: "600", fontSize: "0.75rem" }}>Go Forward</div>}
+            delay={[100, 0]}
+            placement="top"
+            popperOptions={{
+              modifiers: [
+                { name: 'flip', enabled: false }
+              ],
+            }}             
           >
-            <RxCaretLeft className="text-white" size={35} />
-          </button>
-          <button
-            onClick={() => router.forward()}
-            className="
+            <button
+              onClick={() => router.forward()}
+              className="
             rounded-full
             bg-black
             flex
@@ -149,9 +173,10 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
             hover:opacity-75
             transition
           "
-          >
-            <RxCaretRight className="text-white" size={35} />
-          </button>
+            >
+              <RxCaretRight className="text-white" size={35} />
+            </button>
+          </Tippy>
         </div>
         <div className="flex lg:hidden gap-x-2 items-center">
           <button

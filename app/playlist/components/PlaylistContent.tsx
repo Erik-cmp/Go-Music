@@ -13,9 +13,9 @@ import useAuthModal from "@/hooks/useAuthModal";
 import usePlaylistUploadModal from "@/hooks/usePlaylistUploadModal";
 import Button from "@/components/Button";
 import useDeletePlaylistModal from "@/hooks/useDeletePlaylistModal";
-import { Song } from "@/types";
-import Image from "next/image";
 import useLoadPlaylistImage from "@/hooks/useLoadPlaylistImage";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
 
 interface PlaylistContentProps {
   playlists: Playlist[];
@@ -180,15 +180,22 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
               month: "short",
               day: "2-digit",
             })}
-          </div>          
-          <IoCloseCircleOutline
-            size={24}
-            className="text-neutral-400 hover:opacity-75 cursor-pointer"
-            onClick={() => {
-              console.log(playlist);
-              deletePlaylist(playlist);
-            }}
-          />
+          </div>
+          <Tippy
+            content={<div style={{ fontWeight: "600" }}>Delete Playlist</div>}
+            delay={[100, 0]}
+          >
+            <div>
+              <IoCloseCircleOutline
+                size={24}
+                className="text-neutral-400 hover:opacity-75 cursor-pointer"
+                onClick={() => {
+                  console.log(playlist);
+                  deletePlaylist(playlist);
+                }}
+              />
+            </div>
+          </Tippy>
         </div>
       ))}
     </div>

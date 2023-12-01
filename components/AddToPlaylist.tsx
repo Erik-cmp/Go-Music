@@ -6,6 +6,12 @@ import { FaCaretRight } from "react-icons/fa6";
 import { toast } from "react-hot-toast";
 import { useUser } from "@/hooks/useUser";
 import uniqid from "uniqid";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
+import useSubscribeModal from "@/hooks/useSubscribeModal";
+import useAuthModal from "@/hooks/useAuthModal";
+import usePlaylistUploadModal from "@/hooks/usePlaylistUploadModal";
+import { BsPlus } from "react-icons/bs";
 
 interface AddToPlaylistProps {
   playlist: Playlist[];
@@ -16,7 +22,10 @@ const AddToPlaylist: React.FC<AddToPlaylistProps> = ({ playlist, song }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const supabaseClient = useSupabaseClient();
-  const { user } = useUser();
+  const { user, subscription } = useUser();
+  const subscribeModal = useSubscribeModal();
+  const authModal = useAuthModal();
+  const playlistUploadModal = usePlaylistUploadModal();
 
   const addSongToPlaylist = async (playlist: Playlist, song: Song) => {
     try {
@@ -60,6 +69,26 @@ const AddToPlaylist: React.FC<AddToPlaylistProps> = ({ playlist, song }) => {
     }
   };
 
+  const formatDate = (value: any) => {
+    let date = new Date(value);
+    const day = date.getDate();
+    const month = date.toLocaleString("default", { month: "short" });
+    const year = date.getFullYear();
+    return `${day} ${month}, ${year}`;
+  };
+
+  const onClick = () => {
+    if (!user) {
+      return authModal.onOpen();
+    }
+
+    if (!subscription) {
+      return subscribeModal.onOpen();
+    }
+
+    return playlistUploadModal.onOpen();
+  };
+
   return (
     <div
       className="      
@@ -84,24 +113,51 @@ const AddToPlaylist: React.FC<AddToPlaylistProps> = ({ playlist, song }) => {
             p-1
             rounded
             shadow
-            w-[200px]
+            w-[200px]       
+            max-h-[30vh]
+            overflow-y-auto               
           `}
         >
-          {playlist.map((playlist) => (
-            <div
-              key={playlist.id}
-              className="flex gap-y-2 p-2 bg-neutral-800 hover:bg-neutral-700 rounded shadow transition"
-              onClick={() => addSongToPlaylist(playlist, song)}
+          <div
+            className="flex gap-y-2 p-2 bg-neutral-800 hover:bg-neutral-700 rounded-t-sm shadow transition justify-between items-center"
+            onClick={() => onClick()}
+          >
+            <p className="text-neutral-100 font-semibold text-">
+              Create Playlist
+            </p>
+            <BsPlus size={26} className="text-neutral-100" />
+          </div>
+          <div className="w-full h-[1px] bg-neutral-700"></div>
+          {playlist.map((playlist, index) => (
+            <Tippy
+              content={
+                <div>
+                  <p style={{ fontSize: "1rem" }}>{playlist.title}</p>
+                  <p style={{ fontSize: "0.875rem", color: "#a3a3a3" }}>
+                    Created {formatDate(playlist.created_at)}
+                  </p>
+                </div>
+              }
+              placement="right"
+              delay={[300, 0]}
             >
-              <p className="text-white truncate">{playlist.title}</p>
-            </div>
+              <div
+                key={playlist.id}
+                className={`flex gap-y-2 p-2 bg-neutral-800 hover:bg-neutral-700 ${
+                  index === 0 ? "rounded-b-sm" : "rounded-sm"
+                } shadow transition`}
+                onClick={() => addSongToPlaylist(playlist, song)}
+              >
+                <p className="text-neutral-100 truncate">{playlist.title}</p>
+              </div>
+            </Tippy>
           ))}
         </div>
       )}
 
       {playlist.length > 0 ? (
-        <div className="flex p-2 bg-neutral-800 hover:bg-neutral-700 transition shadow rounded justify-between items-center">
-          <p className="text-white">Add to playlist</p>
+        <div className="flex p-2 bg-neutral-800 hover:bg-neutral-700 transition shadow rounded-sm justify-between items-center">
+          <p className="text-neutral-100">Add to playlist</p>
           <FaCaretRight size={21} />
         </div>
       ) : (

@@ -12,6 +12,8 @@ import useGetSongsInPlaylist from "@/hooks/useGetSongsInPlaylist";
 import { useSessionContext } from "@supabase/auth-helpers-react";
 import toast from "react-hot-toast";
 import { IoCloseCircleOutline } from "react-icons/io5";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
 
 const PlaylistDetail = () => {
   const url = typeof window !== "undefined" ? window.location.href : "";
@@ -29,7 +31,7 @@ const PlaylistDetail = () => {
   }, [playlistSongs.songs]);
 
   console.log("songs: ", songs);
-  console.log("songs2: ", songs2);  
+  console.log("songs2: ", songs2);
 
   const { supabaseClient } = useSessionContext();
 
@@ -70,9 +72,10 @@ const PlaylistDetail = () => {
 
     if (error) {
       toast.error(error.message);
-    }
-    else{
-      setSongs((prevSongs) => prevSongs?.filter((existingSong) => existingSong.id !== song.id));
+    } else {
+      setSongs((prevSongs) =>
+        prevSongs?.filter((existingSong) => existingSong.id !== song.id)
+      );
       toast.success("Song removed from playlist!");
     }
   };
@@ -143,13 +146,19 @@ const PlaylistDetail = () => {
               {`${song.song_length % 60}`.padStart(2, "0")}
             </p>
           </div>
-          <button
-            onClick={() => removeSongFromPlaylist(song, playlists.playlist as Playlist)}
-            className="text-neutral-400 hover:opacity-75 cursor-pointer"
+          <Tippy
+            content={<div style={{ fontWeight: "600" }}>Remove from Playlist</div>}
+            delay={[100, 0]}
           >
-            <IoCloseCircleOutline size={24} />
-          </button>
-          {/* <RemoveButton songId={song.id} playlist={playlists?.playlist as Playlist} size={24} /> */}
+            <button
+              onClick={() =>
+                removeSongFromPlaylist(song, playlists.playlist as Playlist)
+              }
+              className="text-neutral-400 hover:opacity-75 cursor-pointer"
+            >
+              <IoCloseCircleOutline size={24} />
+            </button>
+          </Tippy>
         </div>
       ))}
     </div>
