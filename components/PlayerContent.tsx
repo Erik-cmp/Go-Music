@@ -661,14 +661,22 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
             </div>
             <div className="scrollable-content w-full">
               <div className="flex flex-col w-full px-4 pb-2 gap-y-2">
-                {playlist.length > 0 ? (
-                  <h1 className="text-lg">
-                    Add <span className="font-bold">{song.title}</span> to
-                    Playlist:
-                  </h1>
-                ) : (
+                {user ? (                  
+                  <>
+                    {playlist.length > 0 ? (
+                      <h1 className="text-lg">
+                        Add <span className="font-bold">{song.title}</span> to
+                        Playlist:
+                      </h1>
+                    ) : (
+                      <div className="text-neutral-400 flex justify-center text-xs w-full p-2">
+                        <p>You have no playlists. Create one to add songs!</p>
+                      </div>
+                    )}
+                  </>
+                ) : (                  
                   <div className="text-neutral-400 flex justify-center text-xs w-full p-2">
-                    <p>You have no playlists. Create one to add songs!</p>
+                    <p>You need to be logged in to view and create playlists!</p>
                   </div>
                 )}
               </div>
