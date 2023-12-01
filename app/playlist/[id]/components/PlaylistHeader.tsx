@@ -44,7 +44,8 @@ const PlaylistHeader = () => {
               w-40
               lg:h-48
               lg:w-48     
-              aspect-square                                                              
+              aspect-square  
+              shadow                                                            
             "
         >
           <Image
