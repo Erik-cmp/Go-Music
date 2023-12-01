@@ -140,9 +140,9 @@ const AddToPlaylist: React.FC<AddToPlaylistProps> = ({ playlist, song }) => {
               }
               placement="right"
               delay={[300, 0]}
+              key={playlist.id}
             >
-              <div
-                key={playlist.id}
+              <div                
                 className={`flex gap-y-2 p-2 bg-neutral-800 hover:bg-neutral-700 ${
                   index === 0 ? "rounded-b-sm" : "rounded-sm"
                 } shadow transition`}
