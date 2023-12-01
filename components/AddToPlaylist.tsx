@@ -21,38 +21,36 @@ const AddToPlaylist: React.FC<AddToPlaylistProps> = ({ playlist, song }) => {
   const addSongToPlaylist = async (playlist: Playlist, song: Song) => {
     try {
       setIsLoading(true);
-      
+
       const existingRecord = await supabaseClient
         .from("playlists_song")
         .select("id")
         .eq("playlist_id", playlist.id)
         .eq("song_id", song.id)
         .single();
-        
+
       console.log(existingRecord);
 
-      if (existingRecord.data) {        
+      if (existingRecord.data) {
         toast.error(`${song.title} is already in ${playlist.title}!`);
         return;
       }
 
       const id = uniqid();
 
-      const { error } = await supabaseClient
-        .from("playlists_song")
-        .upsert([
-          {
-            id,
-            user_id: user?.id,
-            playlist_id: playlist.id,
-            song_id: song.id,
-          },
-        ]);
+      const { error } = await supabaseClient.from("playlists_song").upsert([
+        {
+          id,
+          user_id: user?.id,
+          playlist_id: playlist.id,
+          song_id: song.id,
+        },
+      ]);
 
       if (error) {
         throw error;
       }
-      
+
       toast.success(`${song.title} added to ${playlist.title}!`);
     } catch (error) {
       console.error(error);
@@ -101,10 +99,16 @@ const AddToPlaylist: React.FC<AddToPlaylistProps> = ({ playlist, song }) => {
         </div>
       )}
 
-      <div className="flex p-2 bg-neutral-800 hover:bg-neutral-700 transition shadow rounded justify-between items-center">
-        <p className="text-white">Add to playlist</p>
-        <FaCaretRight size={21} />
-      </div>
+      {playlist.length > 0 ? (
+        <div className="flex p-2 bg-neutral-800 hover:bg-neutral-700 transition shadow rounded justify-between items-center">
+          <p className="text-white">Add to playlist</p>
+          <FaCaretRight size={21} />
+        </div>
+      ) : (
+        <div className="text-neutral-400 flex gap-y-2 p-2 text-sm text-center">
+          <p>You have no playlists.</p>
+        </div>
+      )}
     </div>
   );
 };

@@ -393,7 +393,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
 
   const handleRightClick = (e: any) => {
     e.preventDefault();
-    
+
     if (!user) {
       return AuthModal.onOpen();
     }
@@ -408,38 +408,36 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
   const addSongToPlaylist = async (playlist: Playlist, song: Song) => {
     try {
       setIsLoading(true);
-      
+
       const existingRecord = await supabaseClient
         .from("playlists_song")
         .select("id")
         .eq("playlist_id", playlist.id)
         .eq("song_id", song.id)
         .single();
-        
+
       console.log(existingRecord);
 
-      if (existingRecord.data) {        
+      if (existingRecord.data) {
         toast.error(`${song.title} is already in ${playlist.title}!`);
         return;
       }
 
       const id = uniqid();
 
-      const { error } = await supabaseClient
-        .from("playlists_song")
-        .upsert([
-          {
-            id,
-            user_id: user?.id,
-            playlist_id: playlist.id,
-            song_id: song.id,
-          },
-        ]);
+      const { error } = await supabaseClient.from("playlists_song").upsert([
+        {
+          id,
+          user_id: user?.id,
+          playlist_id: playlist.id,
+          song_id: song.id,
+        },
+      ]);
 
       if (error) {
         throw error;
       }
-      
+
       toast.success(`${song.title} added to ${playlist.title}!`);
     } catch (error) {
       console.error(error);
@@ -455,7 +453,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
         className="
         flex
         w-full
-        justify-start        
+        justify-between        
       "
       >
         <div
@@ -663,10 +661,16 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
             </div>
             <div className="scrollable-content w-full">
               <div className="flex flex-col w-full px-4 pb-2 gap-y-2">
-                <h1 className="text-lg">
-                  Add <span className="font-bold">{song.title}</span> to
-                  Playlist:
-                </h1>
+                {playlist.length > 0 ? (
+                  <h1 className="text-lg">
+                    Add <span className="font-bold">{song.title}</span> to
+                    Playlist:
+                  </h1>
+                ) : (
+                  <div className="text-neutral-400 flex justify-center text-xs w-full p-2">
+                    <p>You have no playlists. Create one to add songs!</p>
+                  </div>
+                )}
               </div>
               <div className="w-full px-2 grid grid-cols-1">
                 {playlist.map((playlist) => (
@@ -689,7 +693,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
 
           <div className="hidden md:block">
             <div
-              className="truncate max-w-[28vw] text-base"
+              className="truncate max-w-[28vw] lg:max-w-[20vw] text-base"
               onContextMenu={handleRightClick}
               onMouseLeave={handleMouseLeave2}
             >
@@ -702,7 +706,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
               )}
             </div>
           </div>
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <LikeButton
               songId={song.id}
               songTitle={song.title}
@@ -720,7 +724,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
         w-full
         justify-end
         items-center
-        gap-x-3
+        gap-x-3        
       "
       >
         <div
@@ -752,9 +756,9 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
         flex-col
         justify-center
         items-center
-        w-full
-        max-w-[722px]
-        gap-x-3        
+        w-full        
+        gap-x-3       
+        lg:gap-x-0 
       "
       >
         <div
@@ -764,7 +768,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
           items-center
           w-full        
           gap-x-3  
-          mb-1
+          mb-1          
         "
         >
           {/* Shuffle Button Here */}
@@ -907,7 +911,20 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
         </div>
       </div>
 
-      <div className="hidden md:flex w-full justify-end pr-2">
+      <div className="hidden md:flex w-full justify-end lg:pr-2 pr-0 gap-x-4">
+        <div className="flex items-center lg:hidden gap-x-2">
+          <LikeButton
+            songId={song.id}
+            songTitle={song.title}
+            size={28}
+            variant={1}
+          />
+          <RiMenuAddFill
+            className="text-white"
+            size={24}
+            onClick={showAddPlaylist}
+          ></RiMenuAddFill>
+        </div>
         <div className="flex items-center gap-x-2 w-[120px]">
           <VolumeIcon
             onClick={toggleMute}

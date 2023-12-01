@@ -55,11 +55,11 @@ const Sidebar: React.FC<SidebarProps> = ({ children, playlists }) => {
       <div
         className="
           hidden
-          md:flex
+          lg:flex
           flex-col
           gap-y-2
           bg-black
-          md:h-[calc(100%-72px)] h-[calc(100%-60px)]
+          lg:h-[calc(100%-72px)] h-[calc(100%-60px)]
           w-[300px]
           p-2
         "

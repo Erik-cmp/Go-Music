@@ -119,7 +119,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
         <div
           className="
           hidden
-          md:flex
+          lg:flex
           gap-x-2
           items-center
         "
@@ -153,7 +153,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
             <RxCaretRight className="text-white" size={35} />
           </button>
         </div>
-        <div className="flex md:hidden gap-x-2 items-center">
+        <div className="flex lg:hidden gap-x-2 items-center">
           <button
             onClick={() => router.push("/")}
             className="
@@ -234,7 +234,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
           ) : (
             <>
               {/* Hide this div on mobile */}
-              <div className="hidden md:flex">
+              <div className="hidden lg:flex">
                 <Button
                   onClick={AuthModal.onOpen}
                   className="
