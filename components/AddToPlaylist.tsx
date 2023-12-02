@@ -141,6 +141,7 @@ const AddToPlaylist: React.FC<AddToPlaylistProps> = ({ playlist, song }) => {
               placement="right"
               delay={[300, 0]}
               key={playlist.id}
+              touch={false}
             >
               <div                
                 className={`flex gap-y-2 p-2 bg-neutral-800 hover:bg-neutral-700 ${

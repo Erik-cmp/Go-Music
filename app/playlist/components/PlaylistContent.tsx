@@ -186,6 +186,7 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
           <Tippy
             content={<div style={{ fontWeight: "600" }}>Delete Playlist</div>}
             delay={[100, 0]}
+            touch={false}
           >
             <div>
               <IoCloseCircleOutline

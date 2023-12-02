@@ -547,6 +547,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
                     songTitle={song.title}
                     size={36}
                     variant={1}
+                    hasTooltip={false}
                   />
                 </div>
               </div>
@@ -726,6 +727,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
               songTitle={song.title}
               size={28}
               variant={1}
+              hasTooltip={true}
             />
           </div>
         </div>
@@ -757,6 +759,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
             songTitle={song.title}
             size={28}
             variant={1}
+            hasTooltip={false}
           />
           <Icon size={34} className="text-white" onClick={handlePlay} />
         </div>
@@ -793,6 +796,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
               </div>
             }
             delay={[100, 0]}
+            touch={false}
           >
             <button
               onClick={toggleShuffleMode}
@@ -855,6 +859,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
               </div>
             }
             delay={[100, 0]}
+            touch={false}
           >
             <button
               onClick={handleToggleRepeat}
@@ -904,6 +909,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
             songTitle={song.title}
             size={28}
             variant={1}
+            hasTooltip={false}
           />
           <RiMenuAddFill
             className="text-white"
@@ -919,6 +925,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
               </div>
             }
             delay={[100, 0]}
+            touch={false}
           >
             <div>
               <VolumeIcon

@@ -108,7 +108,7 @@ const LikedContent: React.FC<LikedContentProps> = ({ songs }) => {
               {`${song.song_length % 60}`.padStart(2, "0")}
             </p>
           </div>
-          <LikeButton songId={song.id} songTitle={song.title} size={20} variant={2} />
+          <LikeButton songId={song.id} songTitle={song.title} size={20} variant={2} hasTooltip={true} />
         </div>
       ))}
     </div>

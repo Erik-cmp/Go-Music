@@ -86,6 +86,7 @@ const SearchContent: React.FC<SearchContentProps> = ({ songs }) => {
             songTitle={song.title}
             size={24}
             variant={1}
+            hasTooltip={true}
           />
         </div>
       ))}

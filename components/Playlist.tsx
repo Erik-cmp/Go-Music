@@ -76,6 +76,7 @@ const Library: React.FC<LibraryProps> = ({ playlists }) => {
             </div>
           }
           delay={[100, 0]}
+          touch={false}
         >
           <div className="flex gap-x-1">
             <BsPlus

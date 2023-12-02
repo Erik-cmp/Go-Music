@@ -18,6 +18,7 @@ import "tippy.js/dist/tippy.css";
 interface LikeButtonProps {
   songId: string;
   songTitle: string;
+  hasTooltip: boolean;
   size: number;
   variant: number;
 }
@@ -25,6 +26,7 @@ interface LikeButtonProps {
 const LikeButton: React.FC<LikeButtonProps> = ({
   songId,
   songTitle,
+  hasTooltip,
   size,
   variant,
 }) => {
@@ -98,29 +100,49 @@ const LikeButton: React.FC<LikeButtonProps> = ({
     router.refresh();
   };
 
-  return (
-    <Tippy
-      content={
-        <div style={{ fontWeight: "600" }}>
-          {isLiked ? "Remove from Your Liked Songs" : "Add to Your Liked Songs"}
-        </div>
-      }
-      delay={[100, 0]}
-    >
+  if (hasTooltip) {
+    return (
+      <Tippy
+        content={
+          <div style={{ fontWeight: "600" }}>
+            {isLiked
+              ? "Remove from Your Liked Songs"
+              : "Add to Your Liked Songs"}
+          </div>
+        }
+        delay={[100, 0]}
+        touch={false}
+      >
+        <button
+          onClick={handleLike}
+          className="
+          hover:opacity-75
+          transition      
+        "
+        >
+          <Icon
+            color={variant === 1 ? (isLiked ? "#3B82F6" : "white") : "#a3a3a3"}
+            size={size}
+          />
+        </button>
+      </Tippy>
+    );
+  } else if (!hasTooltip) {
+    return (
       <button
         onClick={handleLike}
         className="
-        hover:opacity-75
-        transition      
-      "
+          hover:opacity-75
+          transition      
+        "
       >
         <Icon
           color={variant === 1 ? (isLiked ? "#3B82F6" : "white") : "#a3a3a3"}
           size={size}
         />
       </button>
-    </Tippy>
-  );
+    );
+  }
 };
 
 export default LikeButton;

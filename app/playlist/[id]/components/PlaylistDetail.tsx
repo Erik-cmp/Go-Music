@@ -151,6 +151,7 @@ const PlaylistDetail = () => {
           <Tippy
             content={<div style={{ fontWeight: "600" }}>Remove from Playlist</div>}
             delay={[100, 0]}
+            touch={false}
           >
             <button
               onClick={() =>

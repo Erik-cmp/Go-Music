@@ -134,7 +134,8 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
               modifiers: [
                 { name: 'flip', enabled: false }
               ],
-            }}                                  
+            }}            
+            touch={false}                      
           >
             <button
               onClick={() => window.history.back()}
@@ -161,6 +162,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                 { name: 'flip', enabled: false }
               ],
             }}             
+            touch={false}
           >
             <button
               onClick={() => router.forward()}

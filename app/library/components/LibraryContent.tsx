@@ -201,6 +201,7 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
               <Tippy
                 content={<div style={{ fontWeight: "600" }}>Delete Song</div>}
                 delay={[100, 0]}
+                touch={false}
               >
                 <div>
                   <IoCloseCircleOutline
