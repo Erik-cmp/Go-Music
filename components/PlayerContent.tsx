@@ -41,7 +41,6 @@ import uniqid from "uniqid";
 import useAuthModal from "@/hooks/useAuthModal";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
-import getPlaylistsByUser from "@/actions/getPlaylistsByUser";
 interface PlayerContentProps {
   song: Song;
   songUrl: string;
@@ -983,7 +982,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
               />
 
               {isPopupOpen && (
-                <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-75 bg-black backdrop-blur z-10">
+                <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-75 bg-black backdrop-blur z-10" onClick={() => setPopupOpen(false)}>
                   <div className="bg-neutral-800 rounded-md p-2 border border-neutral-700 max-h-[60vh] w-[400px] scrollable-content">
                     <div className="flex justify-end w-full">
                       <div className="flex items-center justify-center cursor-pointer">
