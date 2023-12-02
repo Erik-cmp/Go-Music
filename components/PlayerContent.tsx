@@ -711,7 +711,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
               onContextMenu={handleRightClick}
               onMouseLeave={handleMouseLeave2}
             >
-              <MediaItem data={song} variant="1" />
+              <MediaItem data={song} variant="3" />
 
               {showAddToPlaylist && (
                 <div className="fixed z-10 bottom-[60px] left-10">

@@ -46,7 +46,7 @@ const SearchContent: React.FC<SearchContentProps> = ({ songs }) => {
   };
 
   return (
-    <div className="flex flex-col md:gap-y-2 w-full md:px-6 pl-3 pr-4">
+    <div className="flex flex-col md:gap-y-1 w-full md:px-6 pl-3 pr-4">
       {songs.slice(0, 60).map((song) => (
         <div
           key={song.id}

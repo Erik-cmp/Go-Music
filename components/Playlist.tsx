@@ -92,7 +92,7 @@ const Library: React.FC<LibraryProps> = ({ playlists }) => {
         className="
         flex
         flex-col
-        gap-y-2
+        gap-y-1
         mt-4
         px-3
       "

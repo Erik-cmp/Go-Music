@@ -154,7 +154,7 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
           className="
      flex
      flex-col
-     gap-y-2
+     gap-y-1
      w-full    
      pt-4 
     "

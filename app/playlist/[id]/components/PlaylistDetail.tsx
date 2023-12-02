@@ -104,7 +104,7 @@ const PlaylistDetail = () => {
       className="
      flex
      flex-col
-     gap-y-2
+     gap-y-1
      w-full    
      md:p-6 p-3
      md:px-6 pl-3 pr-4    
