@@ -92,6 +92,7 @@ const PlaylistDetail = () => {
         text-neutral-400        
         md:text-base        
         text-xs
+        min-h-[80vh]
       "
       >
         {playlists.playlist?.title} is empty.
@@ -108,6 +109,7 @@ const PlaylistDetail = () => {
      w-full    
      md:p-6 p-3
      md:px-6 pl-3 pr-4    
+     min-h-[80vh]
     "
     >
       {songs?.map((song, i) => (

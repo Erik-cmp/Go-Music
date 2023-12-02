@@ -69,6 +69,7 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
         gap-y-4
         w-full                                          
         py-2
+        min-h-[80vh]
       "
       >
         <p className="text-sm text-neutral-400">
@@ -104,7 +105,7 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col min-h-[80vh]">
       <div
         className="
           flex          

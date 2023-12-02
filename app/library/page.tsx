@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import LibraryContent from "./components/LibraryContent";
 import getSongsByUserId from "@/actions/getSongsByUserId";
+import Footer from "@/components/Footer";
 
 const Library = async () => {
   const userSongs = await getSongsByUserId();  
@@ -22,7 +23,8 @@ const Library = async () => {
           </h1>          
         </div>
         <LibraryContent songs={userSongs} />
-      </Header>            
+      </Header>  
+      <Footer />          
     </div>
   );
 }

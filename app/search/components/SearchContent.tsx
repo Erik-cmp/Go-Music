@@ -21,6 +21,7 @@ const SearchContent: React.FC<SearchContentProps> = ({ songs }) => {
         w-full
         md:px-6 px-4
         text-neutral-400
+        min-h-[80vh]
       "
       >
         No songs found.
@@ -46,7 +47,7 @@ const SearchContent: React.FC<SearchContentProps> = ({ songs }) => {
   };
 
   return (
-    <div className="flex flex-col md:gap-y-1 w-full md:px-6 pl-3 pr-4">
+    <div className="flex flex-col md:gap-y-1 w-full md:px-6 pl-3 pr-4 min-h-[80vh]">
       {songs.slice(0, 60).map((song) => (
         <div
           key={song.id}

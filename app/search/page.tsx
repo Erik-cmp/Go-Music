@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import SearchInput from "@/components/SearchInput";
 import SearchContent from "./components/SearchContent";
 import getSongsByTitleAndAuthor from "@/actions/getSongsByTitleAndAuthor";
+import Footer from "@/components/Footer";
 
 interface SearchProps {
   searchParams: {
@@ -39,6 +40,7 @@ const Search = async ({ searchParams }: SearchProps) => {
         </div>
       </Header>
       <SearchContent songs={songs}/>
+      <Footer />
     </div>
   )
 }

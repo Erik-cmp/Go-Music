@@ -96,6 +96,7 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
         w-full
         px-5        
         text-neutral-400
+        min-h-[80vh]
       "
       >
         <h1
@@ -128,7 +129,8 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
        gap-y-2
        w-full    
        md:p-6 p-3
-       md:px-6 pl-3 pr-4    
+       md:px-6 pl-3 pr-4  
+       min-h-[80vh]  
       "
     >
       <div className="flex justify-between items-center w-full p-2">

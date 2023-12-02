@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import PlaylistDetail from "./components/PlaylistDetail";
 import getSongsByUserId from "@/actions/getSongsByUserId";
 import PlaylistHeader from "./components/PlaylistHeader";
+import Footer from "@/components/Footer";
 
 
 export const revalidate = 0;
@@ -23,7 +24,8 @@ const Playlist = async () => {
       <Header>        
         <PlaylistHeader/>
       </Header>            
-      <PlaylistDetail/>        
+      <PlaylistDetail/>     
+      <Footer />   
     </div>
   );
 };

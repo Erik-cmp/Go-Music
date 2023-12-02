@@ -52,6 +52,7 @@ const LikedContent: React.FC<LikedContentProps> = ({ songs }) => {
         w-full
         px-6
         text-neutral-400
+        min-h-[80vh]
       "
       >
         No liked songs.
@@ -68,6 +69,7 @@ const LikedContent: React.FC<LikedContentProps> = ({ songs }) => {
      w-full    
      md:p-6 p-3
      md:px-6 pl-3 pr-4    
+     min-h-[80vh]
     "
     >
       {songs.map((song, i) => (

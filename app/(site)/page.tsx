@@ -6,6 +6,7 @@ import Greeting from "./components/Greeting";
 import getPlaylistsByUser from "@/actions/getPlaylistsByUser";
 import PlaylistContent from "@/components/PlaylistsContent";
 import ViewMore from "./components/ViewMore";
+import Footer from "@/components/Footer";
 
 export const revalidate = 0;
 
@@ -33,7 +34,7 @@ export default async function Home() {
         </div>
         <ViewMore/>
       </Header>
-      <div className="mb-7 px-6">
+      <div className="mb-7 px-6 min-h-[80vh]">
         <div className="flex justify-between items-center">
           <h1 className="text-white text-2xl font-semibold">
             Recently Uploaded
@@ -41,6 +42,7 @@ export default async function Home() {
         </div>
         <PageContent songs={songs} />
       </div>
+      <Footer />
     </div>
   );
 }
