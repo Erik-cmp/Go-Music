@@ -5,6 +5,7 @@ import { Playlist, Song } from "@/types";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
 import { RiMenuAddFill } from "react-icons/ri";
+import { IoIosClose } from "react-icons/io";
 import {
   RxSpeakerOff,
   RxSpeakerQuiet,
@@ -655,7 +656,18 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
               onTouchMove={handleTouchMove2}
               onTouchEnd={handleTouchEnd}
             >
-              <div className="w-8 h-1 bg-neutral-600 rounded-full mb-4"></div>
+              <div className="md:block hidden w-full">
+                <div className="flex justify-end w-full px-2">
+                  <div className="flex w-8 h-8 rounded-full bg-transparent hover:bg-neutral-800/50 transition items-end justify-center">
+                    <IoIosClose
+                      onClick={hideAddPlaylist}
+                      className="text-white"
+                      size={34}
+                    ></IoIosClose>
+                  </div>
+                </div>
+              </div>
+              <div className="w-8 h-1 bg-neutral-600 rounded-full mb-4 md:hidden block"></div>
               <div className="flex items-start flex-col w-full p-2">
                 <MediaItem data={song} variant="1" />
                 <p className="text-xs px-2 text-neutral-400 flex w-full justify-end">
@@ -909,13 +921,21 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
             songTitle={song.title}
             size={28}
             variant={1}
-            hasTooltip={false}
+            hasTooltip={true}
           />
-          <RiMenuAddFill
-            className="text-white"
-            size={24}
-            onClick={showAddPlaylist}
-          ></RiMenuAddFill>
+          <Tippy
+            content={<div style={{ fontWeight: "600" }}>Add to Playlist</div>}
+            delay={[100, 0]}
+            touch={false}
+          >
+            <div>
+              <RiMenuAddFill
+                className="text-white hover:opacity-75 transition cursor-pointer"
+                size={24}
+                onClick={showAddPlaylist}
+              ></RiMenuAddFill>
+            </div>
+          </Tippy>
         </div>
         <div className="flex items-center gap-x-2 w-[120px]">
           <Tippy

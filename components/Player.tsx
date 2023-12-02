@@ -47,7 +47,7 @@ const Player: React.FC<PlayerProps> = ({ playlist }) => {
       w-full
       md:py-2 py-1
       md:h-[80px] h-auto
-      md:px-4 md:pr-2 px-1            
+      md:px-4 px-1            
       flex
     "
     >
