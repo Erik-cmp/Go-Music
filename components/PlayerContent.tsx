@@ -914,7 +914,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
         </div>
       </div>
 
-      <div className="hidden md:flex w-full justify-end lg:pr-2 pr-0 gap-x-4">
+      <div className="hidden md:flex w-full justify-end gap-x-4">
         <div className="flex items-center lg:hidden gap-x-2">
           <LikeButton
             songId={song.id}
