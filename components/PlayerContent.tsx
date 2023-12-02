@@ -915,14 +915,16 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
       </div>
 
       <div className="hidden md:flex w-full justify-end gap-x-4">
-        <div className="flex items-center lg:hidden gap-x-2">
-          <LikeButton
-            songId={song.id}
-            songTitle={song.title}
-            size={28}
-            variant={1}
-            hasTooltip={true}
-          />
+        <div className="flex items-center gap-x-2">
+          <div className="lg:hidden items-center justify-center flex">
+            <LikeButton
+              songId={song.id}
+              songTitle={song.title}
+              size={28}
+              variant={1}
+              hasTooltip={true}
+            />
+          </div>
           <Tippy
             content={<div style={{ fontWeight: "600" }}>Add to Playlist</div>}
             delay={[100, 0]}
