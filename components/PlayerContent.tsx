@@ -412,23 +412,23 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
   };
 
   const addSongToPlaylist = async (playlist: Playlist, song: Song) => {
-    try {      
+    try {
       setIsLoading(true);
-        
+
       const existingRecord = await supabaseClient
         .from("playlists_song")
         .select("id")
         .eq("playlist_id", playlist.id)
         .eq("song_id", song.id)
         .single();
-  
+
       if (existingRecord.data) {
         toast.error(`${song.title} is already in ${playlist.title}!`);
         return;
       }
-  
+
       const id = uniqid();
-        
+
       const { error: upsertError } = await supabaseClient
         .from("playlists_song")
         .upsert([
@@ -439,23 +439,23 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
             song_id: song.id,
           },
         ]);
-  
+
       if (upsertError) {
         throw upsertError;
       }
-        
+
       const { data: playlistData, error: playlistError } = await supabaseClient
         .from("playlists")
         .select("*")
         .eq("id", playlist.id)
         .single();
-  
+
       if (playlistError) {
         toast.error(playlistError.message);
-      } else {        
-        const songCount = playlistData?.song_count + 1;        
+      } else {
+        const songCount = playlistData?.song_count + 1;
         console.log("song count: ", songCount);
-          
+
         const { error: updateError } = await supabaseClient
           .from("playlists")
           .upsert({
@@ -468,7 +468,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
             song_count: songCount,
           })
           .eq("id", playlist.id);
-  
+
         if (updateError) {
           toast.error(updateError.message);
         } else {
@@ -482,7 +482,6 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
       setIsLoading(false);
     }
   };
-  
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
@@ -742,7 +741,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
                   </div>
                 )}
               </div>
-              <div className="w-full px-2 grid grid-cols-1 lg:hidden">                
+              <div className="w-full px-2 grid grid-cols-1 lg:hidden">
                 {playlist.map((playlist) => (
                   <div
                     className="w-full"
@@ -757,7 +756,13 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
                     />
                   </div>
                 ))}
-                <p className="text-xs text-neutral-400 w-full text-center p-1 pt-2">You might need to refresh the page to see changes.</p>
+                {user ? (
+                  <p className="text-xs text-neutral-400 w-full text-center p-1 pt-2">
+                    You might need to refresh the page to see changes.
+                  </p>
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
           </div>
@@ -982,7 +987,10 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
               />
 
               {isPopupOpen && (
-                <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-75 bg-black backdrop-blur z-10" onClick={() => setPopupOpen(false)}>
+                <div
+                  className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-75 bg-black backdrop-blur z-10"
+                  onClick={() => setPopupOpen(false)}
+                >
                   <div className="bg-neutral-800 rounded-md p-2 border border-neutral-700 max-h-[60vh] w-[400px] scrollable-content">
                     <div className="flex justify-end w-full">
                       <div className="flex items-center justify-center cursor-pointer">
@@ -1018,7 +1026,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
                         </p>
                       </div>
                     )}
-                    <div className="w-full grid grid-cols-1">                    
+                    <div className="w-full grid grid-cols-1">
                       {playlist.map((playlist) => (
                         <Tippy
                           content={
@@ -1055,7 +1063,13 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
                           </div>
                         </Tippy>
                       ))}
-                      <p className="text-xs text-neutral-400 w-full text-center p-1 pt-2">You might need to refresh the page to see changes.</p>
+                      {user ? (
+                        <p className="text-xs text-neutral-400 w-full text-center p-1 pt-2">
+                          You might need to refresh the page to see changes.
+                        </p>
+                      ) : (
+                        <></>
+                      )}
                     </div>
                   </div>
                 </div>
