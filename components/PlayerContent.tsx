@@ -73,6 +73,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
   const { user } = useUser();
   const AuthModal = useAuthModal();
   const [isMuted, setIsMuted] = useState(false);
+  const [isPopupOpen, setPopupOpen] = useState(false);
 
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
 
@@ -651,14 +652,14 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
             }`}
           >
             <div
-              className="flex flex-col items-center justify-center gap-x-2 w-full pt-4"
+              className="flex flex-col items-center justify-center gap-x-2 w-full pt-4 lg:hidden"
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove2}
               onTouchEnd={handleTouchEnd}
             >
-              <div className="md:block hidden w-full">
+              <div className="md:block hidden w-full cursor-pointer">
                 <div className="flex justify-end w-full px-2">
-                  <div className="flex w-8 h-8 rounded-full bg-transparent hover:bg-neutral-800/50 transition items-end justify-center">
+                  <div className="flex w-8 h-8 rounded-full bg-black hover:opacity-75 transition items-center justify-center">
                     <IoIosClose
                       onClick={hideAddPlaylist}
                       className="text-white"
@@ -677,29 +678,40 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
               <div className="w-full h-[1px] bg-neutral-800"></div>
             </div>
             <div className="scrollable-content w-full">
+              <div className="lg:flex justify-end w-full px-2 hidden cursor-pointer">
+                <div className="flex w-10 h-10 rounded-full bg-black hover:opacity-75 transition items-end justify-center">
+                  <IoIosClose
+                    onClick={hideAddPlaylist}
+                    className="text-white"
+                    size={40}
+                  ></IoIosClose>
+                </div>
+              </div>
               <div className="flex flex-col w-full px-4 pb-2 gap-y-2">
                 {user ? (
                   <>
                     {playlist.length > 0 ? (
-                      <h1 className="text-lg">
-                        Add <span className="font-bold">{song.title}</span> to
-                        Playlist:
-                      </h1>
+                      <div className="flex flex-col w-full items-center justify-center">
+                        <h1 className="text-lg w-full lg:hidden block">
+                          Add <span className="font-bold">{song.title}</span> to
+                          Playlist:
+                        </h1>
+                      </div>
                     ) : (
-                      <div className="text-neutral-400 flex justify-center text-xs w-full p-2">
+                      <div className="text-neutral-400 flex justify-center lg:text-base text-xs w-full p-2">
                         <p>You have no playlists. Create one to add songs!</p>
                       </div>
                     )}
                   </>
                 ) : (
-                  <div className="text-neutral-400 flex justify-center text-xs w-full p-2">
+                  <div className="text-neutral-400 flex justify-center lg:text-base text-xs w-full p-2">
                     <p>
                       You need to be logged in to view and create playlists!
                     </p>
                   </div>
                 )}
               </div>
-              <div className="w-full px-2 grid grid-cols-1">
+              <div className="w-full px-2 grid grid-cols-1 lg:hidden">
                 {playlist.map((playlist) => (
                   <div
                     className="w-full"
@@ -933,9 +945,88 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
             <div>
               <RiMenuAddFill
                 className="text-white hover:opacity-75 transition cursor-pointer"
-                size={24}
-                onClick={showAddPlaylist}
-              ></RiMenuAddFill>
+                size={22}
+                onClick={() => setPopupOpen(true)}
+              />
+
+              {isPopupOpen && (
+                <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-75 bg-black backdrop-blur z-10">
+                  <div className="bg-neutral-800 rounded-md p-2 border border-neutral-700 max-h-[60vh] w-[400px] scrollable-content">
+                    <div className="flex justify-end w-full">
+                      <div className="flex items-center justify-center cursor-pointer">
+                        <IoIosClose
+                          onClick={() => setPopupOpen(false)}
+                          className="text-neutral-400 hover:text-white"
+                          size={24}
+                        />
+                      </div>
+                    </div>
+                    {user ? (
+                      <>
+                        {playlist.length > 0 ? (
+                          <div className="flex flex-col w-full items-center justify-center">
+                            <h1 className="text-xl w-full text-center pt-2 pb-4 px-4">
+                              Add{" "}
+                              <span className="font-bold">{song.title}</span> to
+                              Playlist:
+                            </h1>
+                          </div>
+                        ) : (
+                          <div className="text-neutral-400 flex justify-center items-center text-center text-lg w-full h-[50vh] p-3">
+                            <p>
+                              You have no playlists. Create one to add songs!
+                            </p>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div className="text-neutral-400 flex justify-center items-center w-full text-center text-lg h-[50vh] p-3">
+                        <p>
+                          You need to be logged in to view and create playlists!
+                        </p>
+                      </div>
+                    )}
+                    <div className="w-full grid grid-cols-1">
+                      {playlist.map((playlist) => (
+                        <Tippy
+                          content={
+                            <div>
+                              <p style={{ fontSize: "1rem" }}>
+                                {playlist.title}
+                              </p>
+                              <p
+                                style={{
+                                  fontSize: "0.875rem",
+                                  color: "#a3a3a3",
+                                }}
+                              >
+                                Created {formatDate(playlist.created_at)}
+                              </p>
+                            </div>
+                          }
+                          placement="right"
+                          delay={[300, 0]}
+                          key={playlist.id}
+                          touch={false}
+                        >
+                          <div
+                            className="w-full transition"
+                            key={playlist.id}
+                            onClick={() => addSongToPlaylist(playlist, song)}
+                          >
+                            <PlaylistItem
+                              data={playlist}
+                              href={playlist.id}
+                              key={playlist.id}
+                              variant="3"
+                            />
+                          </div>
+                        </Tippy>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </Tippy>
         </div>

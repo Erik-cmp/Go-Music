@@ -31,7 +31,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ data, href, variant }) => {
 
   if (variant === "1") {
     return (
-      <div        
+      <div
         className="
           flex
           items-center
@@ -73,53 +73,99 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ data, href, variant }) => {
         </div>
       </div>
     );
+  } else if (variant === "2") {
+    return (
+      <div
+        onDoubleClick={handleClick}
+        className="
+          flex
+          items-center
+          gap-x-3
+          cursor-pointer
+          hover:bg-neutral-800/50
+          w-full
+          p-1.5
+          rounded
+        "
+      >
+        <div
+          className="
+          relative
+          rounded
+          min-h-[40px]
+          min-w-[40px]
+          overflow-hidden
+        "
+        >
+          <Image
+            fill
+            sizes="40px"
+            src={imageUrl || "/images/liked.png"}
+            alt="Media Item"
+            className="object-cover"
+          />
+        </div>
+        <div
+          className="
+          flex
+          flex-col        
+          overflow-hidden       
+        "
+        >
+          <p className="text-white text-sm truncate">{data.title}</p>
+          <p className="text-neutral-400 truncate text-xs">
+            {data.description}
+          </p>
+        </div>
+      </div>
+    );
+  } else if (variant === "3") {
+    return (
+      <div
+        className="
+          flex
+          items-center
+          gap-x-3
+          cursor-pointer          
+          w-full
+          p-1.5
+          rounded-md
+          hover:bg-neutral-700
+          transition
+        "
+      >
+        <div
+          className="
+          relative
+          rounded-md
+          min-h-[48px]
+          min-w-[48px]
+          overflow-hidden
+        "
+        >
+          <Image
+            fill
+            sizes="48px"
+            src={imageUrl || "/images/liked.png"}
+            alt="Media Item"
+            className="object-cover"
+          />
+        </div>
+        <div
+          className="
+          flex
+          flex-col          
+          overflow-hidden       
+        "
+        >
+          <p className="text-white truncate">{data.title}</p>
+          <p className="text-neutral-400 truncate text-sm">
+            {data.description}
+          </p>
+        </div>
+      </div>
+    );
   }
-
-  return (
-    <div
-      onDoubleClick={handleClick}
-      className="
-        flex
-        items-center
-        gap-x-3
-        cursor-pointer
-        hover:bg-neutral-800/50
-        w-full
-        p-1.5
-        rounded
-      "
-    >
-      <div
-        className="
-        relative
-        rounded
-        min-h-[40px]
-        min-w-[40px]
-        overflow-hidden
-      "
-      >
-        <Image
-          fill
-          sizes="40px"
-          src={imageUrl || "/images/liked.png"}
-          alt="Media Item"
-          className="object-cover"
-        />
-      </div>
-      <div
-        className="
-        flex
-        flex-col        
-        overflow-hidden       
-      "
-      >
-        <p className="text-white text-sm truncate">{data.title}</p>
-        <p className="text-neutral-400 truncate text-xs">
-          {data.description}
-        </p>
-      </div>
-    </div>
-  );  
 };
 
 export default PlaylistItem;
