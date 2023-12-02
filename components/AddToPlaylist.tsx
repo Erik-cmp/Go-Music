@@ -30,37 +30,66 @@ const AddToPlaylist: React.FC<AddToPlaylistProps> = ({ playlist, song }) => {
   const addSongToPlaylist = async (playlist: Playlist, song: Song) => {
     try {
       setIsLoading(true);
-
+        
       const existingRecord = await supabaseClient
         .from("playlists_song")
         .select("id")
         .eq("playlist_id", playlist.id)
         .eq("song_id", song.id)
         .single();
-
-      console.log(existingRecord);
-
+  
       if (existingRecord.data) {
         toast.error(`${song.title} is already in ${playlist.title}!`);
         return;
       }
-
+  
       const id = uniqid();
-
-      const { error } = await supabaseClient.from("playlists_song").upsert([
-        {
-          id,
-          user_id: user?.id,
-          playlist_id: playlist.id,
-          song_id: song.id,
-        },
-      ]);
-
-      if (error) {
-        throw error;
+        
+      const { error: upsertError } = await supabaseClient
+        .from("playlists_song")
+        .upsert([
+          {
+            id,
+            user_id: user?.id,
+            playlist_id: playlist.id,
+            song_id: song.id,
+          },
+        ]);
+  
+      if (upsertError) {
+        throw upsertError;
       }
-
-      toast.success(`${song.title} added to ${playlist.title}!`);
+        
+      const { data: playlistData, error: playlistError } = await supabaseClient
+        .from("playlists")
+        .select("*")
+        .eq("id", playlist.id)
+        .single();
+  
+      if (playlistError) {
+        toast.error(playlistError.message);
+      } else {        
+        const songCount = playlistData?.song_count + 1;
+          
+        const { error: updateError } = await supabaseClient
+          .from("playlists")
+          .upsert({
+            id: playlistData.id,
+            created_at: playlistData.created_at,
+            title: playlistData.title,
+            description: playlistData?.description,
+            image_path: playlistData.image_path,
+            user_id: playlistData.user_id,
+            song_count: songCount,
+          })
+          .eq("id", playlist.id);
+  
+        if (updateError) {
+          toast.error(updateError.message);
+        } else {
+          toast.success(`${song.title} added to ${playlist.title}!`);
+        }
+      }
     } catch (error) {
       console.error(error);
       toast.error("Whoops, something went wrong...");
@@ -68,6 +97,7 @@ const AddToPlaylist: React.FC<AddToPlaylistProps> = ({ playlist, song }) => {
       setIsLoading(false);
     }
   };
+  
 
   const formatDate = (value: any) => {
     let date = new Date(value);

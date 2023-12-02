@@ -64,21 +64,53 @@ const PlaylistDetail = () => {
   };
 
   const removeSongFromPlaylist = async (song: Song, playlist: Playlist) => {
+    // Delete the song from playlists_song table
     const { error } = await supabaseClient
       .from("playlists_song")
       .delete()
       .eq("playlist_id", playlist.id)
       .eq("song_id", song.id);
-
+  
     if (error) {
       toast.error(error.message);
-    } else {
+    } else {      
       setSongs((prevSongs) =>
         prevSongs?.filter((existingSong) => existingSong.id !== song.id)
       );
-      toast.success("Song removed from playlist!");
+        
+      const { data: playlistData, error: playlistError } = await supabaseClient
+        .from("playlists")
+        .select("*")
+        .eq("id", playlist.id)
+        .single();
+  
+      if (playlistError) {
+        toast.error(playlistError.message);
+      } else {
+        const songCount = playlistData?.song_count - 1;
+          
+        const { error: updateError } = await supabaseClient
+          .from("playlists")
+          .upsert({
+            id: playlistData.id,
+            created_at: playlistData.created_at,
+            title: playlistData.title,
+            description: playlistData?.description,
+            image_path: playlistData.image_path,
+            user_id: playlistData.user_id,
+            song_count: songCount,
+          })
+          .eq("id", playlist.id);
+  
+        if (updateError) {
+          toast.error(updateError.message);
+        } else {
+          toast.success("Song removed from playlist!");
+        }
+      }
     }
   };
+  
 
   if (songs2?.length === 0) {
     return (

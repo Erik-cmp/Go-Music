@@ -68,7 +68,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ data, href, variant }) => {
         >
           <p className="text-white truncate">{data.title}</p>
           <p className="text-neutral-400 truncate text-sm">
-            {data.description}
+            {`${data.song_count} ${data.song_count === 1 ? "song" : "songs"}`}
           </p>
         </div>
       </div>
@@ -114,7 +114,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ data, href, variant }) => {
         >
           <p className="text-white text-sm truncate">{data.title}</p>
           <p className="text-neutral-400 truncate text-xs">
-            {data.description}
+            {`${data.song_count} ${data.song_count === 1 ? "song" : "songs"}`}
           </p>
         </div>
       </div>
@@ -160,7 +160,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ data, href, variant }) => {
         >
           <p className="text-white truncate">{data.title}</p>
           <p className="text-neutral-400 truncate text-sm">
-            {data.description}
+            {`${data.song_count} ${data.song_count === 1 ? "song" : "songs"}`}
           </p>
         </div>
       </div>
