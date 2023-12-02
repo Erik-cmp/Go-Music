@@ -8,17 +8,20 @@ import { useRef } from "react";
 
 interface ListItemProps {
   image: string;
-  name: string;
+  name: string;  
   href: string;
   variant: string;
 }
 
-const ListItem: React.FC<ListItemProps> = ({ image, name, href, variant }) => {
+const ListItem: React.FC<ListItemProps> = ({
+  image,
+  name,  
+  href,
+  variant,
+}) => {
   const router = useRouter();
   const authModal = useAuthModal();
   const user = useUser();
-  const lastTapTimeRef = useRef<number>(0);
-
   const onClick = () => {
     if (!user) {
       return authModal.onOpen();
@@ -35,17 +38,17 @@ const ListItem: React.FC<ListItemProps> = ({ image, name, href, variant }) => {
   let lastTouchTime = 0;
 
   const handleTouchStart = () => {
-    console.log('im called');
+    console.log("im called");
     const currentTime = new Date().getTime();
     const timeDiff = currentTime - lastTouchTime;
 
     if (timeDiff < 500) {
-      console.log('called');
+      console.log("called");
       onClick();
     }
 
     lastTouchTime = currentTime;
-  };  
+  };
 
   if (variant === "1") {
     return (
@@ -99,7 +102,7 @@ const ListItem: React.FC<ListItemProps> = ({ image, name, href, variant }) => {
         gap-x-3        
         hover:bg-neutral-100/10
         transition
-        p-2               
+        p-1.5               
       "
       >
         <div
@@ -119,7 +122,9 @@ const ListItem: React.FC<ListItemProps> = ({ image, name, href, variant }) => {
             alt="Image"
           />
         </div>
-        <p className="truncate font-medium">{name}</p>
+        <div className="flex flex-col w-full truncate">
+          <p className="font-medium truncate w-full items-start text-start">{name}</p>
+        </div>
       </button>
     );
   }

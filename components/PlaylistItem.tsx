@@ -38,7 +38,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ data, href, variant }) => {
           gap-x-3
           cursor-pointer          
           w-full
-          p-2
+          p-1.5
           rounded-md
         "
       >
@@ -62,8 +62,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ data, href, variant }) => {
         <div
           className="
           flex
-          flex-col
-          gap-y-1
+          flex-col          
           overflow-hidden       
         "
         >
@@ -86,7 +85,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ data, href, variant }) => {
         cursor-pointer
         hover:bg-neutral-800/50
         w-full
-        p-2
+        p-1.5
         rounded
       "
     >
@@ -110,8 +109,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ data, href, variant }) => {
       <div
         className="
         flex
-        flex-col
-        gap-y-1
+        flex-col        
         overflow-hidden       
       "
       >

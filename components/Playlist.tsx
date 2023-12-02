@@ -103,7 +103,7 @@ const Library: React.FC<LibraryProps> = ({ playlists }) => {
               key={item.id}
               image={imagePaths[i] || "/images/liked.png"}
               name={item.title}
-              href={item.id}
+              href={item.id}              
               variant="2"
             />
           );
