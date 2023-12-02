@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
+import { MdOutlineTimer } from "react-icons/md";
 
 const PlaylistDetail = () => {
   const url = typeof window !== "undefined" ? window.location.href : "";
@@ -70,25 +71,25 @@ const PlaylistDetail = () => {
       .delete()
       .eq("playlist_id", playlist.id)
       .eq("song_id", song.id);
-  
+
     if (error) {
       toast.error(error.message);
-    } else {      
+    } else {
       setSongs((prevSongs) =>
         prevSongs?.filter((existingSong) => existingSong.id !== song.id)
       );
-        
+
       const { data: playlistData, error: playlistError } = await supabaseClient
         .from("playlists")
         .select("*")
         .eq("id", playlist.id)
         .single();
-  
+
       if (playlistError) {
         toast.error(playlistError.message);
       } else {
         const songCount = playlistData?.song_count - 1;
-          
+
         const { error: updateError } = await supabaseClient
           .from("playlists")
           .upsert({
@@ -101,7 +102,7 @@ const PlaylistDetail = () => {
             song_count: songCount,
           })
           .eq("id", playlist.id);
-  
+
         if (updateError) {
           toast.error(updateError.message);
         } else {
@@ -110,7 +111,6 @@ const PlaylistDetail = () => {
       }
     }
   };
-  
 
   if (songs2?.length === 0) {
     return (
@@ -140,10 +140,44 @@ const PlaylistDetail = () => {
      gap-y-1
      w-full    
      md:p-6 p-3
-     md:px-6 pl-3 pr-4    
+     md:px-6 px-3    
      min-h-[80vh]
     "
     >
+      <div
+        className="                  
+         flex-col
+         items-center 
+         justify-center         
+         w-full                
+         md:flex
+         hidden
+         pr-2          
+         "
+      >
+        <div className="flex w-full items-center justify-center gap-x-4 px-4 text-sm font-medium text-neutral-400">
+          <div className="w-[1.25%] hover:text-white transition">#</div>
+          <div className="w-[45%] hover:text-white transition flex justify-start">
+            Title
+          </div>
+          <div className="w-[35%] flex justify-center hover:text-white transition">
+            Date Uploaded
+          </div>
+          <div className="w-[15%] text-neutral-400 flex justify-center hover:text-white transition">
+            <Tippy
+              content={<div style={{ fontWeight: "600" }}>Duration</div>}
+              delay={[100, 0]}
+              touch={false}
+            >
+              <div>
+                <MdOutlineTimer size={18} />
+              </div>
+            </Tippy>
+          </div>
+          <div className="w-[4%] flex justify-end"></div>
+        </div>
+        <div className="w-full h-[1px] rounded-full bg-neutral-700 my-2"></div>
+      </div>
       {songs?.map((song, i) => (
         <div
           key={song.id}
@@ -161,27 +195,33 @@ const PlaylistDetail = () => {
           onDoubleClick={() => handleDoubleClick(song.id)}
           onTouchStart={() => handleTouchStart(song.id)}
         >
-          <div className="md:block hidden ">
+          <div className="md:block hidden w-[0.5%]">
             <p className="text-neutral-400">{i + 1}</p>
           </div>
-          <div className="md:w-[50vw] pointer-events-none w-full truncate">
-            <MediaItem onClick={(id: string) => onPlay(id)} data={song} variant="1" />
+          <div className="md:w-[45%] pointer-events-none w-[90%] truncate">
+            <MediaItem
+              onClick={(id: string) => onPlay(id)}
+              data={song}
+              variant="1"
+            />
           </div>
-          <div className="md:block hidden text-sm text-neutral-400 w-[25vw]">
+          <div className="md:flex hidden text-sm text-neutral-400 w-[35%] justify-center">
             {new Date(song.created_at).toLocaleDateString("en-US", {
               year: "numeric",
               month: "short",
               day: "2-digit",
             })}
           </div>
-          <div className="md:block hidden w-[5vw]">
+          <div className="md:flex hidden w-[15%] justify-center">
             <p className="text-sm text-neutral-400">
               {`${Math.floor(song.song_length / 60)}`.padStart(2, "0")}:
               {`${song.song_length % 60}`.padStart(2, "0")}
             </p>
           </div>
           <Tippy
-            content={<div style={{ fontWeight: "600" }}>Remove from Playlist</div>}
+            content={
+              <div style={{ fontWeight: "600" }}>Remove from Playlist</div>
+            }
             delay={[100, 0]}
             touch={false}
           >
@@ -189,7 +229,7 @@ const PlaylistDetail = () => {
               onClick={() =>
                 removeSongFromPlaylist(song, playlists.playlist as Playlist)
               }
-              className="text-neutral-400 hover:opacity-75 cursor-pointer"
+              className="text-neutral-400 hover:opacity-75 cursor-pointer md:w-[4%] flex w-[10%] justify-end"
             >
               <IoCloseCircleOutline size={24} />
             </button>

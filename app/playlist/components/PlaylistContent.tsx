@@ -101,12 +101,12 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
       >
         <h1
           className="
-                text-white
-                text-3xl
-                sm:text-4xl
-                lg:text-6xl
-                font-bold                                                                               
-              "
+                  text-white                  
+                  text-3xl                                                                        
+                  md:hidden
+                  block
+                  font-bold
+                "
         >
           Your Playlists
         </h1>
@@ -127,20 +127,19 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
        flex
        flex-col
        gap-y-2
-       w-full    
-       md:p-6 p-3
-       md:px-6 pl-3 pr-4  
+       w-full           
+       md:px-6 pl-3 pr-3  
        min-h-[80vh]  
       "
     >
-      <div className="flex justify-between items-center w-full p-2">
+      <div className="flex md:justify-end justify-between items-center w-full p-2">
         <h1
           className="
-                  text-white
-                  text-3xl
-                  sm:text-4xl
-                  lg:text-6xl
-                  font-bold                                                                               
+                  text-white                  
+                  text-3xl                                                                        
+                  md:hidden
+                  block
+                  font-bold
                 "
         >
           Your Playlists
@@ -151,6 +150,29 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
         >
           Add New
         </Button>
+      </div>
+      <div
+        className="                  
+         flex-col
+         items-center 
+         justify-center         
+         w-full                
+         md:flex
+         hidden
+         pr-2                   
+         "
+      >
+        <div className="flex w-full items-center justify-center gap-x-4 px-4 text-sm font-medium text-neutral-400">
+          <div className="w-[1.25%] hover:text-white transition">#</div>
+          <div className="w-[55%] hover:text-white transition flex justify-start">
+            Title
+          </div>
+          <div className="w-[40%] flex justify-center hover:text-white transition">
+            Date Uploaded
+          </div>
+          <div className="w-[4%] flex justify-end"></div>
+        </div>
+        <div className="w-full h-[1px] rounded-full bg-neutral-700 my-2"></div>
       </div>
       {playlists.map((playlist, i) => (
         <div
@@ -173,10 +195,10 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
           <div className="md:block hidden ">
             <p className="text-neutral-400">{i + 1}</p>
           </div>
-          <div className="lg:w-[72.5vw] md:w-[60vw] pointer-events-none w-full truncate">
+          <div className="md:w-[55%] pointer-events-none w-[90%] truncate">
             <PlaylistItem data={playlists[i]} href={playlist.id} variant="1" />
           </div>
-          <div className="md:block hidden text-sm text-neutral-400 lg:w-[7.5vw] md:w-[20vw]">
+          <div className="md:flex hidden text-sm text-neutral-400 w-[40%] justify-center">
             {new Date(playlist.created_at).toLocaleDateString("en-US", {
               year: "numeric",
               month: "short",
@@ -188,7 +210,7 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
             delay={[100, 0]}
             touch={false}
           >
-            <div>
+            <div className="md:w-[4%] flex justify-end w-[10%]">
               <IoCloseCircleOutline
                 size={24}
                 className="text-neutral-400 hover:opacity-75 cursor-pointer"

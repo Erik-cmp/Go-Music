@@ -13,6 +13,7 @@ import Button from "@/components/Button";
 import useDeleteModal from "@/hooks/useDeleteModal";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
+import { MdOutlineTimer } from "react-icons/md";
 
 interface LibraryProps {
   songs: Song[];
@@ -160,6 +161,39 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
      pt-4 
     "
         >
+          <div
+            className="                  
+         flex-col
+         items-center 
+         justify-center         
+         w-full                
+         md:flex
+         hidden
+         pr-2 
+         pt-4
+         "
+          >
+            <div className="flex w-full items-center justify-center gap-x-4 px-4 text-sm font-medium text-neutral-400">
+              <div className="w-[1.25%] hover:text-white transition">#</div>
+              <div className="w-[45%] hover:text-white transition flex justify-start">Title</div>
+              <div className="w-[35%] flex justify-center hover:text-white transition">
+                Date Uploaded
+              </div>
+              <div className="w-[15%] text-neutral-400 flex justify-center hover:text-white transition">
+                <Tippy
+                  content={<div style={{ fontWeight: "600" }}>Duration</div>}
+                  delay={[100, 0]}
+                  touch={false}
+                >
+                  <div>
+                    <MdOutlineTimer size={18} />
+                  </div>
+                </Tippy>
+              </div>
+              <div className="w-[4%] flex justify-end"></div>
+            </div>
+            <div className="w-full h-[1px] rounded-full bg-neutral-700 my-2"></div>
+          </div>
           {songs.map((song, i) => (
             <div
               key={song.id}
@@ -178,20 +212,24 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
               onDoubleClick={() => handleDoubleClick(song.id)}
               onTouchStart={() => handleTouchStart(song.id)}
             >
-              <div className="md:block hidden ">
+              <div className="md:block hidden w-[0.5%]">
                 <p className="text-neutral-400">{i + 1}</p>
               </div>
-              <div className="md:w-[50vw] pointer-events-none w-full truncate">
-                <MediaItem onClick={(id: string) => onPlay(id)} data={song} variant="1" />
+              <div className="md:w-[45%] pointer-events-none w-[90%] truncate">
+                <MediaItem
+                  onClick={(id: string) => onPlay(id)}
+                  data={song}
+                  variant="1"
+                />
               </div>
-              <div className="md:block hidden text-sm text-neutral-400 w-[25vw]">
+              <div className="md:flex hidden text-sm text-neutral-400 w-[35%] justify-center">
                 {new Date(song.created_at).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "short",
                   day: "2-digit",
                 })}
               </div>
-              <div className="md:block hidden w-[5vw]">
+              <div className="md:flex hidden w-[15%] justify-center">
                 <p className="text-sm text-neutral-400">
                   {`${Math.floor(song.song_length / 60)}`.padStart(2, "0")}:
                   {`${song.song_length % 60}`.padStart(2, "0")}
@@ -203,7 +241,7 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
                 delay={[100, 0]}
                 touch={false}
               >
-                <div>
+                <div className="md:w-[4%] w-[10%] flex justify-end">
                   <IoCloseCircleOutline
                     size={24}
                     className="text-neutral-400 hover:opacity-75 cursor-pointer"
