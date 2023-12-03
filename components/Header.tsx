@@ -21,6 +21,7 @@ import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import useLoadUserImage from "@/hooks/useLoadUserImage";
 import Image from "next/image";
+import { Playlist } from "@/types";
 
 interface HeaderProps {
   children: React.ReactNode;
@@ -49,14 +50,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
   const url = typeof window !== "undefined" ? window.location.href : "";
   const id = url.split("/playlist/")[1];
   const playlists = useGetPlaylistDetail(id);
-  let imagePath = "";
-  if (url.includes("playlist/")) {
-    //@ts-ignore
-    imagePath = useLoadPlaylistImageSingle(playlists.playlist);
-  } else if (url.includes("account")) {
-    //@ts-ignore
-    imagePath = useLoadUserImage(userDetail?.userDetails?.avatar_url);
-  }
+  const imagePath = useLoadPlaylistImageSingle(playlists.playlist as Playlist);
   const userImagePath = useLoadUserImage(
     userDetail?.userDetails?.avatar_url as string
   );
@@ -68,10 +62,10 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
   useEffect(() => {
     const checkPath = () => {
       const currentPath = window.location.pathname;
-      const isPlaylistPage =
-        currentPath.includes("playlist/") || currentPath.includes("account");
+      const isPlaylistPage = currentPath.includes("playlist/");
       const isSearchOrLibraryPage =
         currentPath.includes("search") || currentPath.includes("library");
+      const isAccountPage = currentPath.includes("account");
 
       if (imagePath) {
         let v = Vibrant.from(imagePath);
@@ -92,6 +86,17 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
             ? `linear-gradient(to bottom, #1E40AF, transparent)`
             : "linear-gradient(to bottom, #1E40AF, transparent)"
         );
+      }
+
+      if (isAccountPage) {
+        if (userImagePath) {
+          let v = Vibrant.from(userImagePath);
+          v.getPalette().then((palette) => {
+            setBackgroundColor(
+              `linear-gradient(to bottom, ${palette.Vibrant?.hex}, transparent)`
+            );
+          });
+        }
       }
     };
 
