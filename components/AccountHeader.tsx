@@ -27,8 +27,7 @@ const AccountHeader: React.FC<AccountHeaderProps> = (playlist) => {
 
   return (
     <div
-      className="  
-  "
+      className="rounded-lg"
     >
       <Header>
         <div className="mt-8">
