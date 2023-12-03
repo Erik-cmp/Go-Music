@@ -2,6 +2,7 @@ import getPlaylistsByUser from "@/actions/getPlaylistsByUser";
 import AccountHeader from "@/components/AccountHeader";
 import getSongsByUserId from "@/actions/getSongsByUserId";
 import AccountContent from "./components/AccountContent";
+import Footer from "@/components/Footer";
 
 const Account = async () => {
   const playlist = await getPlaylistsByUser();
@@ -20,6 +21,7 @@ const Account = async () => {
     >
       <AccountHeader playlist={playlist} songs={songs} />
       <AccountContent />
+      <Footer />
     </div>
   );
 };

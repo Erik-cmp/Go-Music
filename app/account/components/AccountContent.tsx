@@ -6,7 +6,6 @@ import { useUser } from "@/hooks/useUser";
 import { postData } from "@/libs/helpers";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 
 const AccountContent = () => {
   const router = useRouter();
@@ -35,7 +34,7 @@ const AccountContent = () => {
   };
   
   return (  
-    <div className="mb-7 p-6">
+    <div className="mb-7 p-6 min-h-[55vh]">
       {!subscription && (
         <div className="flex flex-col gap-y-4">
           <p className="flex flex-col gap-y-4 text-2xl font-semibold">User Information:</p>
