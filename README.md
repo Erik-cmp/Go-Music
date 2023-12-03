@@ -1,18 +1,3 @@
-Go-Tunes 1.2 Roadmap:
--Users are able to search songs, playlists, and users.
--Users are able to look at other users (and look at playlists/songs they've created that are public)
--Users are able to add/remove friend other users (Add friend lists to user page).
--Set playlists and songs to public/private. 
--On home page show latest updated playlists (add updated_at column to playlists table).
-
-Go-Tunes 1.2.x:
--Add edit playlist feature
--Fix profile edit feature
--Fix user not instantly updating after edit
--Fix song count not instantly updating after edit
--Add edit song title, author, cover feature
--Fix other bugs
-
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
