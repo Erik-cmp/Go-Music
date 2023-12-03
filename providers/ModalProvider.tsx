@@ -9,6 +9,7 @@ import DeleteModal from "@/components/DeleteModal";
 import DeletePlaylistModal from "@/components/DeletePlaylistModal";
 import SubscribeModal from "@/components/SubscribeModal";
 import { Playlist, ProductWithPrice, Song } from "@/types";
+import UserUpdateModal from "@/components/UserUpdateModal";
 
 interface ModalProviderProps{
   products: ProductWithPrice[];
@@ -36,6 +37,7 @@ const ModalProvider: React.FC<ModalProviderProps> = ({
       <AuthModal />
       <UploadModal />
       <PlaylistUploadModal />
+      <UserUpdateModal />
       <DeleteModal song={song}/>      
       <DeletePlaylistModal playlist={playlist}/>
       <SubscribeModal products={products} />

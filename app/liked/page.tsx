@@ -45,8 +45,7 @@ const Liked = async () => {
               w-40
               lg:h-48
               lg:w-48     
-              aspect-square  
-              shadow                                  
+              aspect-square                                         
             "
             >
               <Image

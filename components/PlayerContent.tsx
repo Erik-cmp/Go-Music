@@ -548,7 +548,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
                   // @ts-ignore
                   ref={imageRef}
                   className="object-fill rounded-lg"
-                  src={imagePath || "/images/liked.png"}
+                  src={imagePath || "/images/song.png"}
                   layout="fill"
                   alt="Image"
                 />

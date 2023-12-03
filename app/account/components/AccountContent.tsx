@@ -35,7 +35,7 @@ const AccountContent = () => {
   };
   
   return (  
-    <div className="mb-7 px-6">
+    <div className="mb-7 p-6">
       {!subscription && (
         <div className="flex flex-col gap-y-4">
           <p className="flex flex-col gap-y-4 text-2xl font-semibold">User Information:</p>

@@ -44,7 +44,7 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
       {playlistsWithImages.map(({ item, i }) => (
         <ListItem
           key={item.id}
-          image={imagePaths[i] as any || "/images/liked.png"}
+          image={imagePaths[i] as any || "/images/song.png"}
           name={item.title}
           href={item.id}          
           variant="1"

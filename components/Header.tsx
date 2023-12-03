@@ -19,6 +19,8 @@ import Vibrant from "node-vibrant";
 import useLoadPlaylistImageSingle from "@/hooks/useLoadPlaylistImageSingle";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
+import useLoadUserImage from "@/hooks/useLoadUserImage";
+import Image from "next/image";
 
 interface HeaderProps {
   children: React.ReactNode;
@@ -32,6 +34,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 
   const supabaseClient = useSupabaseClient();
   const { user } = useUser();
+  const userDetail = useUser();
 
   const handleLogout = async () => {
     const { error } = await supabaseClient.auth.signOut();
@@ -45,19 +48,28 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 
   const url = typeof window !== "undefined" ? window.location.href : "";
   const id = url.split("/playlist/")[1];
-  // console.log(id);
   const playlists = useGetPlaylistDetail(id);
-  // console.log(playlists.playlist?.title);
-  const imagePath = useLoadPlaylistImageSingle(playlists.playlist as any);
+  let imagePath = "";
+  if (url.includes("playlist/")) {
+    //@ts-ignore
+    imagePath = useLoadPlaylistImageSingle(playlists.playlist);
+  } else if (url.includes("account")) {
+    //@ts-ignore
+    imagePath = useLoadUserImage(userDetail?.userDetails?.avatar_url);
+  }
+  const userImagePath = useLoadUserImage(
+    userDetail?.userDetails?.avatar_url as string
+  );
 
   const [backgroundColor, setBackgroundColor] = useState(
-    "linear-gradient(to bottom, #1E40AF, transparent);"
+    "linear-gradient(to bottom, #1E40AF, transparent)"
   );
 
   useEffect(() => {
     const checkPath = () => {
       const currentPath = window.location.pathname;
-      const isPlaylistPage = currentPath.includes("playlist/");
+      const isPlaylistPage =
+        currentPath.includes("playlist/") || currentPath.includes("account");
       const isSearchOrLibraryPage =
         currentPath.includes("search") || currentPath.includes("library");
 
@@ -127,15 +139,17 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
         "
         >
           <Tippy
-            content={<div style={{ fontWeight: "600", fontSize: "0.75rem" }}>Go Back</div>}
-            delay={[100, 0]}                        
-            placement="top"  
+            content={
+              <div style={{ fontWeight: "600", fontSize: "0.75rem" }}>
+                Go Back
+              </div>
+            }
+            delay={[100, 0]}
+            placement="top"
             popperOptions={{
-              modifiers: [
-                { name: 'flip', enabled: false }
-              ],
-            }}            
-            touch={false}                      
+              modifiers: [{ name: "flip", enabled: false }],
+            }}
+            touch={false}
           >
             <button
               onClick={() => window.history.back()}
@@ -154,14 +168,16 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
           </Tippy>
 
           <Tippy
-            content={<div style={{ fontWeight: "600", fontSize: "0.75rem" }}>Go Forward</div>}
+            content={
+              <div style={{ fontWeight: "600", fontSize: "0.75rem" }}>
+                Go Forward
+              </div>
+            }
             delay={[100, 0]}
             placement="top"
             popperOptions={{
-              modifiers: [
-                { name: 'flip', enabled: false }
-              ],
-            }}             
+              modifiers: [{ name: "flip", enabled: false }],
+            }}
             touch={false}
           >
             <button
@@ -251,16 +267,53 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
               <Button onClick={handleLogout} className="bg-white px-6 py-2">
                 Logout
               </Button>
-              <Button
-                onClick={() => router.push("/account")}
-                className="bg-white"
+
+              <Tippy
+                content={
+                  <div style={{ fontWeight: "600", fontSize: "0.75rem" }}>
+                    Go to Profile Page
+                  </div>
+                }
+                delay={[100, 0]}
+                placement="top"
+                popperOptions={{
+                  modifiers: [{ name: "flip", enabled: false }],
+                }}
+                touch={false}
               >
-                <FaUserAlt />
-              </Button>
+                <div
+                  className="
+                relative
+                h-10
+                w-10  
+                aspect-square                                         
+                rounded-full
+                cursor-pointer
+                hover:opacity-75
+                transition                                              
+                "
+                  onClick={() => router.push("/account")}
+                >
+                  {userImagePath ? (
+                    <Image
+                      fill
+                      alt="Playlist"
+                      className="object-cover rounded-full border-2 border-white"
+                      src={
+                        userImagePath ? userImagePath : `/images/profile.png`
+                      }
+                      sizes="64px"
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center rounded-full w-full h-full bg-white text-black">
+                      <FaUserAlt />
+                    </div>
+                  )}
+                </div>
+              </Tippy>
             </div>
           ) : (
             <>
-              {/* Hide this div on mobile */}
               <div className="hidden lg:flex">
                 <Button
                   onClick={AuthModal.onOpen}

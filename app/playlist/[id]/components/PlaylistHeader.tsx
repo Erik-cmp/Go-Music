@@ -44,15 +44,14 @@ const PlaylistHeader = () => {
               w-40
               lg:h-48
               lg:w-48     
-              aspect-square  
-              shadow                                                            
+              aspect-square                                                                 
             "
         >
           <Image
             fill
             alt="Playlist"
             className="object-cover rounded"
-            src={imagePath || '/images/liked.png'}
+            src={imagePath || '/images/song.png'}
             sizes="400px"
           />
         </div>

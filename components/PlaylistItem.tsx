@@ -54,7 +54,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ data, href, variant }) => {
           <Image
             fill
             sizes="48px"
-            src={imageUrl || "/images/liked.png"}
+            src={imageUrl || "/images/song.png"}
             alt="Media Item"
             className="object-cover"
           />
@@ -100,7 +100,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ data, href, variant }) => {
           <Image
             fill
             sizes="40px"
-            src={imageUrl || "/images/liked.png"}
+            src={imageUrl || "/images/song.png"}
             alt="Media Item"
             className="object-cover"
           />
@@ -146,7 +146,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ data, href, variant }) => {
           <Image
             fill
             sizes="48px"
-            src={imageUrl || "/images/liked.png"}
+            src={imageUrl || "/images/song.png"}
             alt="Media Item"
             className="object-cover"
           />

@@ -49,7 +49,7 @@ const MediaItem: React.FC<MediaItemProps> = ({ data, onClick, variant }) => {
           <Image
             fill
             sizes="40px"
-            src={imageUrl || "/images/liked.png"}
+            src={imageUrl || "/images/song.png"}
             alt="Media Item"
             className="object-cover"
           />
@@ -95,7 +95,7 @@ const MediaItem: React.FC<MediaItemProps> = ({ data, onClick, variant }) => {
           <Image
             fill
             sizes="40px"
-            src={imageUrl || "/images/liked.png"}
+            src={imageUrl || "/images/song.png"}
             alt="Media Item"
             className="object-cover"
           />
@@ -142,7 +142,7 @@ const MediaItem: React.FC<MediaItemProps> = ({ data, onClick, variant }) => {
           <Image
             fill
             sizes="56px"
-            src={imageUrl || "/images/liked.png"}
+            src={imageUrl || "/images/song.png"}
             alt="Media Item"
             className="object-cover"
           />

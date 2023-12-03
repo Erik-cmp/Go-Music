@@ -40,6 +40,7 @@ const Library: React.FC<LibraryProps> = ({ playlists }) => {
 
     return playlistUploadModal.onOpen();
   };
+  
   return (
     <div className="flex flex-col">
       <div
@@ -102,7 +103,7 @@ const Library: React.FC<LibraryProps> = ({ playlists }) => {
           return (
             <ListItem
               key={item.id}
-              image={imagePaths[i] || "/images/liked.png"}
+              image={imagePaths[i] || "/images/song.png"}
               name={item.title}
               href={item.id}              
               variant="2"
