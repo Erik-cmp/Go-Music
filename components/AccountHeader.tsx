@@ -26,9 +26,7 @@ const AccountHeader: React.FC<AccountHeaderProps> = (playlist) => {
   };
 
   return (
-    <div
-      className="rounded-lg"
-    >
+    <div>
       <Header>
         <div className="mt-8">
           <div
@@ -117,8 +115,7 @@ const AccountHeader: React.FC<AccountHeaderProps> = (playlist) => {
             </div>
           </div>
         </div>
-      </Header>
-      <AccountContent />
+      </Header>      
     </div>
   );
 };
