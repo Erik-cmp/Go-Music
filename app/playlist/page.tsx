@@ -20,19 +20,7 @@ const Playlist = async () => {
 "
     >
       <Header>
-        <h1
-          className="
-                  text-white                  
-                  text-5xl
-                  lg:text-6xl
-                  font-bold    
-                  md:pb-4 
-                  md:flex                                                                          
-                  hidden
-                "
-        >
-          Your Playlists
-        </h1>
+        <></>
       </Header>
       <PlaylistContent playlists={playlists} />
       <Footer />

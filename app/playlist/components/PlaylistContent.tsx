@@ -102,14 +102,14 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
         <h1
           className="
                   text-white                  
-                  text-3xl                                                                        
-                  md:hidden
+                  md:text-5xl                                                                                          
+                  text-3xl
                   block
                   font-bold
                 "
         >
           Your Playlists
-        </h1>
+        </h1>        
         <p>You have no playlists.</p>
         <Button
           className="w-[110px] md:text-base flex gap-x-2 items-center justify-center"
@@ -126,18 +126,18 @@ const PlaylistContent: React.FC<PlaylistContentProps> = ({ playlists }) => {
       className="
        flex
        flex-col
-       gap-y-2
+       gap-y-4
        w-full           
        md:px-6 pl-3 pr-3  
        min-h-[80vh]  
       "
     >
-      <div className="flex md:justify-end justify-between items-center w-full p-2">
+      <div className="flex justify-between items-center w-full p-2">
         <h1
           className="
                   text-white                  
-                  text-3xl                                                                        
-                  md:hidden
+                  md:text-5xl                                                                                          
+                  text-3xl
                   block
                   font-bold
                 "
