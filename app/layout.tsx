@@ -39,7 +39,7 @@ export default async function RootLayout({
       <head>
         <link rel="icon" href="/favicon.ico" />
       </head>
-      <body className={figtree.className}>
+      <body className={figtree.className} style={{ overflow: 'hidden' }}>
         <VolumeProvider>
           <ToasterProvider />
           <SupabaseProvider>
