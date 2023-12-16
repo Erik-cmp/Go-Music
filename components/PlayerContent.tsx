@@ -940,7 +940,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
           </Tippy>
         </div>
 
-        <div className="flex items-center justify-center mr-4 gap-x-2">
+        <div className="flex items-center justify-center gap-x-2">
           <div className="text-neutral-400 text-xs cursor-default flex items-center w-[32px]">
             {formatTime(sound?.seek() || 0)}
           </div>
