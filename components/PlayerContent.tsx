@@ -786,7 +786,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
             <LikeButton
               songId={song.id}
               songTitle={song.title}
-              size={28}
+              size={24}
               variant={1}
               hasTooltip={true}
             />
@@ -963,13 +963,13 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
         </div>
       </div>
 
-      <div className="hidden md:flex w-full justify-end gap-x-4">
+      <div className="hidden md:flex w-full justify-end gap-x-3">
         <div className="flex items-center gap-x-2">
           <div className="lg:hidden items-center justify-center flex">
             <LikeButton
               songId={song.id}
               songTitle={song.title}
-              size={28}
+              size={24}
               variant={1}
               hasTooltip={true}
             />
@@ -982,7 +982,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
             <div>
               <RiMenuAddFill
                 className="text-white hover:opacity-75 transition cursor-pointer"
-                size={22}
+                size={20}
                 onClick={() => setPopupOpen(true)}
               />
 
@@ -1091,7 +1091,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
               <VolumeIcon
                 onClick={toggleMute}
                 className="cursor-pointer text-white hover:opacity-75 transition"
-                size={22}
+                size={20}
               />
             </div>
           </Tippy>
