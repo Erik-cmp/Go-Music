@@ -1091,7 +1091,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
               <VolumeIcon
                 onClick={toggleMute}
                 className="cursor-pointer text-white hover:opacity-75 transition"
-                size={20}
+                size={21}
               />
             </div>
           </Tippy>
