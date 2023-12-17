@@ -1077,7 +1077,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
             </div>
           </Tippy>
         </div>
-        <div className="flex items-center gap-x-2 w-[120px]">
+        <div className="flex items-center gap-x-1 w-[120px]">
           <Tippy
             content={
               <div style={{ fontWeight: "600" }}>
