@@ -21,7 +21,7 @@ interface LibraryProps {
 const Library: React.FC<LibraryProps> = ({ playlists }) => {
   const subscribeModal = useSubscribeModal();
   const authModal = useAuthModal();
-  const playlistUploadModal = usePlaylistUploadModal();
+  const playlistUploadModal = usePlaylistUploadModal();  
   const { user, subscription } = useUser();
   const router = useRouter();
 

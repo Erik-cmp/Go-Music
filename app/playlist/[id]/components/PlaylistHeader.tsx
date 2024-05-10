@@ -1,31 +1,45 @@
-"use client"
+"use client";
 import Image from "next/image";
 import useGetPlaylistDetail from "@/hooks/useGetPlaylistDetail";
 import useLoadPlaylistImageSingle from "@/hooks/useLoadPlaylistImageSingle";
 import useGetSongsInPlaylist from "@/hooks/useGetSongsInPlaylist";
+import usePlaylistEditModal from "@/hooks/usePlaylistEditModal";
+import { useEffect, useState } from "react";
+import { Playlist } from "@/types";
 
 export const revalidate = 0;
 
-const PlaylistHeader = () => {  
+interface PlaylistHeaderProps {  
+  playlists: Playlist[];
+}
+
+const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({ playlists }) => {
+  const playlistEditModal = usePlaylistEditModal();
+  const [playlistData, setPlaylistData] = useState(null);
+
   const url = typeof window !== "undefined" ? window.location.href : "";
   const id = url.split("/playlist/")[1];
 
-  // console.log(id);
-  const playlists = useGetPlaylistDetail(id);  
-  const imagePath = useLoadPlaylistImageSingle(playlists.playlist as any);
-  // console.log(imagePath);  
-
-  const playlistSongs = useGetSongsInPlaylist(id);  
+  // console.log(id);  
+  const imagePath = useLoadPlaylistImageSingle(playlists[0] as any);
+  // console.log(imagePath);
+  const playlistSongs = useGetSongsInPlaylist(id);
   // console.log(playlistSongs);
 
-  const songs = playlistSongs.songs
-  
+  const songs = playlistSongs.songs;
+
   const totalSongs = songs.length;
 
   const totalDuration = songs.reduce((sum, song) => sum + song.song_length, 0);
 
   const hours = Math.floor(totalDuration / 3600);
   const minutes = Math.floor((totalDuration % 3600) / 60);
+
+  const onClick = () => {
+    playlistEditModal.setPlaylistData(playlists[0]);
+    playlistEditModal.setImagePath(imagePath);
+    return playlistEditModal.onOpen();
+  };
 
   return (
     <div className="mt-8">
@@ -51,7 +65,7 @@ const PlaylistHeader = () => {
             fill
             alt="Playlist"
             className="object-cover rounded"
-            src={imagePath || '/images/song.png'}
+            src={imagePath || "/images/song.png"}
             sizes="400px"
           />
         </div>
@@ -77,10 +91,10 @@ const PlaylistHeader = () => {
                 mb-0
               "
           >
-            {playlists.playlist?.title}
+            {playlists[0].title}
           </h1>
           <p className="text-xs text-neutral-400">
-            {playlists.playlist?.description}
+            {playlists[0].description}
           </p>
           <p className="text-sm">
             {totalSongs} {totalSongs === 1 ? "song" : "songs"}, &nbsp;
@@ -90,6 +104,14 @@ const PlaylistHeader = () => {
             </span>
           </p>
         </div>
+      </div>
+      <div className="flex w-full justify-end">
+        <p
+          className="md:text-sm text-xs text-neutral-400 hover:text-white transition cursor-pointer items-center"
+          onClick={onClick}
+        >
+          Edit Details
+        </p>
       </div>
     </div>
   );

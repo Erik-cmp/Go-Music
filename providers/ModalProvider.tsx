@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import AuthModal from "@/components/AuthModal";
 import UploadModal from "@/components/UploadModal";
 import PlaylistUploadModal from "@/components/PlaylistUploadModal";
+import PlaylistEditModal from "@/components/PlaylistEditModal";
 import DeleteModal from "@/components/DeleteModal";
 import DeletePlaylistModal from "@/components/DeletePlaylistModal";
 import SubscribeModal from "@/components/SubscribeModal";
@@ -37,6 +38,7 @@ const ModalProvider: React.FC<ModalProviderProps> = ({
       <AuthModal />
       <UploadModal />
       <PlaylistUploadModal />
+      <PlaylistEditModal />
       <UserUpdateModal />
       <DeleteModal song={song}/>      
       <DeletePlaylistModal playlist={playlist}/>

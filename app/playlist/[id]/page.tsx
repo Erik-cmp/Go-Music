@@ -3,6 +3,7 @@ import PlaylistDetail from "./components/PlaylistDetail";
 import getSongsByUserId from "@/actions/getSongsByUserId";
 import PlaylistHeader from "./components/PlaylistHeader";
 import Footer from "@/components/Footer";
+import getPlaylistsByUser from "@/actions/getPlaylistsByUser";
 
 
 export const revalidate = 0;
@@ -10,6 +11,7 @@ export const revalidate = 0;
 const Playlist = async () => {
     
   const songs = await getSongsByUserId();
+  const playlist = await getPlaylistsByUser();
 
   return (
     <div 
@@ -22,7 +24,7 @@ const Playlist = async () => {
         rounded-lg        
     ">
       <Header>        
-        <PlaylistHeader/>
+        <PlaylistHeader playlists={playlist}/>
       </Header>            
       <PlaylistDetail/>     
       <Footer />   
