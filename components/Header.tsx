@@ -22,7 +22,6 @@ import "tippy.js/dist/tippy.css";
 import useLoadUserImage from "@/hooks/useLoadUserImage";
 import Image from "next/image";
 import { Playlist } from "@/types";
-import "../app/globals.css";
 
 interface HeaderProps {
   children: React.ReactNode;
@@ -273,7 +272,10 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
               items-center
             "
             >
-              <Button onClick={handleLogout} className="bg-white px-6 py-2">
+              <Button
+                onClick={handleLogout}
+                className="bg-white px-6 py-2 w-auto"
+              >
                 Logout
               </Button>
 
@@ -291,7 +293,16 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                 touch={false}
               >
                 <div
-                  className="account-button"
+                  className="
+                  relative
+                  h-12
+                  w-12
+                  aspect-square                                         
+                  rounded-full
+                  cursor-pointer
+                  hover:opacity-75
+                  transition                                              
+                  "
                   onClick={() => router.push("/account")}
                 >
                   {userImagePath ? (
