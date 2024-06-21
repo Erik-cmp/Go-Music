@@ -56,3 +56,17 @@ body,
     gap: 0.75rem;
   }
 }
+
+.account-button {
+  position: relative;
+  height: 3rem; /* 12 units in Tailwind's default spacing */
+  width: 3rem;  /* 12 units in Tailwind's default spacing */
+  aspect-ratio: 1 / 1; /* Ensures the aspect ratio is 1:1 */
+  border-radius: 50%;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.account-button:hover {
+  opacity: 0.75;
+}
