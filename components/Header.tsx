@@ -290,8 +290,8 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                 <div
                   className="
                 relative
-                h-10
-                w-10  
+                h-12
+                w-12
                 aspect-square                                         
                 rounded-full
                 cursor-pointer
