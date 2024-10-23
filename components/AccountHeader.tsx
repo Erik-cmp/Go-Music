@@ -40,17 +40,16 @@ const AccountHeader: React.FC<AccountHeaderProps> = (playlist) => {
             <div
               className="
             relative
-            h-40
-            w-40
-            lg:h-48
-            lg:w-48     
+            h-40            
+            lg:h-48              
+            w-fit
             aspect-square    
-            rounded-full                                                                        
+            rounded-full                                                                             
           "
             >
               <Image
                 fill
-                alt="Playlist"
+                alt="User Profile"
                 className="object-cover rounded-full"
                 src={!imagePath ? "/images/profile.png" : imagePath}
                 sizes="300px"
@@ -63,8 +62,8 @@ const AccountHeader: React.FC<AccountHeaderProps> = (playlist) => {
             gap-y-2
             mt-4
             md:mt-0
-            md:items-start items-center
-            w-full                                             
+            md:items-start items-center  
+            w-full                                                  
           "
             >
               <p className="hidden md:block font-semibold text-sm">Profile</p>

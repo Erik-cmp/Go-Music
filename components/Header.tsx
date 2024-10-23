@@ -308,7 +308,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                   {userImagePath ? (
                     <Image
                       fill
-                      alt="Playlist"
+                      alt="User Profile"
                       className="object-cover rounded-full border-2 border-white"
                       src={
                         userImagePath ? userImagePath : `/images/profile.png`
